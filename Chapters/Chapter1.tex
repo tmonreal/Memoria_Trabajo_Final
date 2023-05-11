@@ -60,18 +60,17 @@ la clasificación de HTA de la tabla \ref{tab:TablaHTA} [2].
 
 \begin{table}[h]
 	\centering
-	\caption[Tabla HTA]{Clasificación de la presión arterial por niveles.}
+	\caption[Clasificación de la presión arterial por niveles]{Clasificación de la presión arterial por niveles.}
 	\begin{tabular}{l c c c}    
 		\toprule
-		\textbf{Grado} 	      & \textbf{PAS} 	& \textbf{}	& \textbf{PAD}  \\
+		\textbf{Grado} 	      & \textbf{Presión arterial sistólica} 	& \textbf{}	& \textbf{Presión arterial diastólica}  \\
 		\midrule
-		Óptima                & <\ 120 mmHg   & 				  & <\ 80 mmHg \\		
-    Normal                & 120-129 mmHg  & 	y/o			& 80-84 mmHg \\	
-    Normal-alta           & 130-139 mmHg  & 	y/o			& 85-89 mmHg \\	
-    HTA de grado I        & 140-159 mmHg  & 	y/o			& 90-99 mmHg \\
-    HTA de grado II       & 160-170 mmHg  & 	y/o			& 100-109 mmHg \\		
-    HTA de grado III      & <\ 180 mmHg   & 	y/o			& <\ 110 mmHg \\	
-    HTA sistólica aislada & >\ 139 mmHg 	& 	        & <\ 89 mmHg \\	
+		Óptima                & <\ 120 mmHg                           & 	y			  & <\ 80 mmHg \\		
+    Normal                & 120-129 mmHg                          &  	y/o			& 80-84 mmHg \\	
+    Normal-alta           & 130-139 mmHg                          & 	y/o			& 85-89 mmHg \\	
+    HTA de grado I        & 140-159 mmHg                          & 	y/o			& 90-99 mmHg \\
+    HTA de grado II       & 160-179 mmHg                          & 	y/o			& 100-109 mmHg \\		
+    HTA de grado III      & $\geq$  180 mmHg                      & 	y/o			& $\geq$  110 mmHg \\	
 		\bottomrule
 		\hline
 	\end{tabular}
@@ -102,14 +101,14 @@ en la tabla \ref{tab:HTA-MAPA}.
 
 \begin{table}[h]
 	\centering
-	\caption[Tabla HTA-MAPA]{Valores de referencia para definir HTA por MAPA.}
+	\caption[Valores de referencia para definir HTA por MAPA]{Valores de referencia para definir HTA por MAPA.}
 	\begin{tabular}{l c c c}    
 		\toprule
-		\textbf{} 	      & \textbf{PAS} 	& \textbf{}	& \textbf{PAD}  \\
+		\textbf{} 	      & \textbf{Presión arterial sistólica} 	& \textbf{}	& \textbf{Presión arterial diastólica}  \\
 		\midrule
-    PA de 24 horas     &  $\geq$ 130 mmHg   & 	y/o			&  $\geq$ 80 mmHg \\	
-    PA diurna          &  $\geq$ 135 mmHg   & 	y/o			&  $\geq$ 85 mmHg \\	
-    PA nocturna        &  $\geq$ 120 mmHg   & 	y/o			&  $\geq$ 70 mmHg \\	
+    PA de 24 horas     &  $\geq$ 130 mmHg                     & 	y/o			&  $\geq$ 80 mmHg \\	
+    PA diurna          &  $\geq$ 135 mmHg                     & 	y/o			&  $\geq$ 85 mmHg \\	
+    PA nocturna        &  $\geq$ 120 mmHg                     & 	y/o			&  $\geq$ 70 mmHg \\	
 		\bottomrule
 		\hline
 	\end{tabular}
@@ -136,79 +135,81 @@ dispositivo.
 %----------------------------------------------------------------------------------------
 \section{Contexto y motivación}
 
-%Si estás familiarizado con \LaTeX{}, entonces podés explorar la estructura de directorios de esta plantilla y proceder a personalizarla agregando tu información en el bloque \emph{INFORMACIÓN DE LA PORTADA} en el archivo \file{memoria.tex}.  
+La incorporación de técnicas de inteligencia artificial (IA) en la medicina cardiovascular es una de las principales 
+motivaciones en la realización de este trabajo. A medida que la IA se desarrolla en distintos campos, su aplicación 
+en el ámbito de la salud experimenta un crecimiento significativo. Sin embargo, uno de los desafíos clave que la IA 
+enfrenta en la medicina es la limitación de datos disponibles para entrenar modelos de aprendizaje profundo [8].
 
-%Se puede continuar luego modificando el resto de los archivos siguiendo los lineamientos que se describen en la sección \ref{sec:FillingFile} en la página \pageref{sec:FillingFile}.
+En el caso particular del Hospital Alemán de Buenos Aires, el servicio de cardiología posee una gran cantidad de 
+datos de informes de presurometrías de pacientes hipertensos. Aunque el personal carece de experiencia en herramientas 
+de aprendizaje automático o aprendizaje profundo, los profesionales médicos comprenden el potencial de estos datos de 
+MAPA para facilitar la identificación de patrones, factores de riesgo y respuestas al tratamiento de HTA. Además, 
+es importante destacar que este trabajo se alinea con la misión del Hospital Alemán, que busca la actualización constante 
+de tecnologías para garantizar una mejor atención médica basada en la investigación [9]. 
 
-%Debés asegurarte de leer el capítulo \ref{Chapter2} acerca de las convenciones utilizadas para las Memoria de los Trabajos Finales de la \degreename.
-
-%Si sos nuevo en \LaTeX{}, se recomienda que continúes leyendo el documento ya que contiene información básica para aprovechar el potencial de esta herramienta.
-Explicar porqué se realiza el trabajo.
 
 %----------------------------------------------------------------------------------------
 % 1.3 (1 hoja)------------------------------------------------------------------------------------
 %----------------------------------------------------------------------------------------
-Qué se pretende lograr. Que no se encuentra incluido en el trabajo. Cuáles son los requisitos para considerar el trabajo finalizado.
 
 \section{Objetivos, alcance y requerimientos}
 
 \subsection{Objetivos}
-Escribir Objetivos
+El propósito de este trabajo fue el desarrollo de un software de IA que permite predecir el riesgo de sufrir un evento 
+grave en pacientes hipertensos. En particular, se busca predecir la ocurrencia de eventos cardiovasculares adversos 
+mayores (MACE, por sus siglas en inglés). Este es un criterio de valoración compuesto que es empleado con frecuencia 
+en la investigación cardiovascular. A pesar del uso generalizado del término en ensayos clínicos, las definiciones de 
+MACE pueden diferir \cite{Kip2008}. Para este trabajo, se definió como la combinación de: accidente cerebrovascular no 
+fatal, infarto agudo de miocardio, insuficiencia cardíaca, insuficiencia renal crónica o muerte. De este modo, un valor 
+de MACE equivalente a la unidad indica la existencia de alguno de los eventos graves mencionados anteriormente, mientras 
+que un valor nulo se refiere la ausencia de estos. 
+
+Como resultado, este trabajo permite al servicio de cardiología e hipertensión del Hospital Alemán definir estrategias 
+de tratamiento integral personalizadas para cada grupo de riesgo. 
 
 \subsection{Alcance}
-Escribir alcance
+Se encuentra dentro del alcance del trabajo elaborar un dataset con variables provenientes de presurometrías. El conjunto 
+de datos debe estar en cumplimiento con la ley 25.326 para garantizar el derecho al honor y a la intimidad de los 
+pacientes en cuestión. Además, es parte del alcance del trabajo seleccionar y elaborar un modelo de inteligencia 
+artificial que prediga MACE en pacientes hipertensos. Asimismo, se incluye en el alcance la definición de métricas 
+para evaluar el correcto desempeño del modelo.
+
+Sin embargo, no se encuentra dentro del alcance del proyecto la instalación del software desarrollado dentro de los 
+establecimientos del Hospital Alemán. Tampoco se encuentra dentro del alcance la implementación de una aplicación 
+visual e interactiva para que utilice el usuario final.
+
 
 \subsection{Requerimientos}
-Enumerar requerimientos
+A continuación, se listan los requerimientos principales del trabajo agrupados por afinidad:
 
-%Esta plantilla se distribuye como una único archivo .zip que se puede descomprimir en varios archivos y carpetas. Asimismo, se puede consultar el repositorio git para obtener la última versión de los archivos, \url{https://github.com/patriciobos/Plantilla-CESE.git}. Los nombres de las carpetas son, o pretender ser, auto-explicativos.
+\begin{enumerate}
+	\item Requerimientos funcionales:
+		\begin{enumerate}
+			\item El código desarrollado deberá ser 
+			capaz de estratificar a los pacientes en diferentes grupos de riesgo.
+			\item El área bajo la curva ROC (acrónimo de \emph{Receiver Operating Characteristic}, 
+			o característica operativa del receptor) del modelo deberá ser superior a 85\%.
+		\end{enumerate}
+	\item Requerimientos de documentación:
+		\begin{enumerate}
+			\item El código desarrollado deberá estar bien documentado. 
+			Es decir, se deben incluir comentarios que permitan a cualquier persona comprender
+			qué se está haciendo y por qué. 
+		\end{enumerate}
+	\item Requerimiento de testing:
+		\begin{enumerate}
+			\item Los resultados del código desarrollado deberán ser aprobados por el cliente 
+			y los usuarios finales.
+		\end{enumerate}
+	\item Requerimientos reglamentarios:
+		\begin{enumerate}
+			\item Los datos clínicos deberán ser de carácter anónimo, cumpliendo con la ley 25.326 que reglamenta la protección de datos personales. 
+			Para ello, se distinguirá a cada paciente mediante un número de identificación.
+		\end{enumerate}
 
-%\keyword{Appendices} -- Esta es la carpeta donde se deben poner los apéndices. Cada apéndice debe ir en su propio archivo \file{.tex}. Se incluye un ejemplo y una plantilla en la carpeta.
+\end{enumerate}
 
-%\keyword{Chapters} -- Esta es la carpeta donde se deben poner los capítulos de la memoria. Cada capítulo debe ir un su propio archivo \file{.tex} por separado.  Se ofrece por defecto, la siguiente estructura de capítulos y se recomienda su utilización dentro de lo posible:
 
-\begin{itemize}
-\item Capítulo 1: Introducción general	
-\item Capítulo 2: Introducción específica
-\item Capítulo 3: Diseño e implementación
-\item Capítulo 4: Ensayos y resultados
-\item Capítulo 5: Conclusiones
-
-\end{itemize}
-
-%Esta estructura de capítulos es la que se recomienda para las memorias de la especialización.
-
-%\keyword{Figures} -- Esta carpeta contiene todas las figuras de la memoria.  Estas son las versiones finales de las imágenes que van a ser incluidas en la memoria.  Pueden ser imágenes en formato \textit{raster}\footnote{\url{https://en.wikipedia.org/wiki/Raster_graphics}} como \file{.png}, \file{.jpg} o en formato vectoriales\footnote{\url{https://en.wikipedia.org/wiki/Vector_graphics}} como \file{.pdf}, \file{.ps}.  Se debe notar que utilizar imágenes vectoriales disminuye notablemente el peso del documento final y acelera el tiempo de compilación por lo que es recomendable su utilización siempre que sea posible.
-
-%\subsection{Archivos}
-
-%También están incluidos varios archivos, la mayoría de ellos son de texto plano y se puede ver su contenido en un editor de texto. Después de la compilación inicial, se verá que más archivos auxiliares son creados por \ LaTeX{} o BibTeX, pero son de uso interno y no es necesario hacer nada en particular con ellos.  Toda la información necesaria para compilar el documento se encuentra en los archivos \file{.tex}, \file{.bib}, \file{.cls} y en las imágenes de la carpeta Figures.
-
-%\keyword{referencias.bib} - este es un archivo importante que contiene toda la información de referencias bibliográficas que se utilizarán para las citas en la memoria en conjunto con BibTeX. Usted puede escribir las entradas bibliográficas en forma manual, aunque existen también programas de gestión de referencias que facilitan la creación y gestión de las referencias y permiten exportarlas en formato BibTeX.  También hay disponibles sitios web como \url{books.google.com} que permiten obtener toda la información necesaria para una cita en formato BibTeX. Ver sección \ref{sec:biblio}
-
-%\keyword{MastersDoctoralThesis.cls} -- este es un archivo importante. Es el archivos con la clase que le informa a \LaTeX{} cómo debe dar formato a la memoria. El usuario de la plantilla no debería necesitar modificar nada de este archivo.
-
-%\keyword{memoria.pdf} -- esta es su memoria con una tipografía bellamente compuesta (en formato de archivo PDF) creado por \LaTeX{}. Se distribuye con la plantilla y después de compilar por primera vez sin hacer ningún cambio se debería obtener una versión idéntica a este documento.
-
-%\keyword{memoria.tex} -- este es un archivo importante. Este es el archivo que tiene que compilar \LaTeX{} para producir la memoria como un archivo PDF. Contiene un marco de trabajo y estructuras que le indican a \LaTeX{} cómo diagramar la memoria.  Está altamente comentado para que se pueda entender qué es lo que realiza cada línea de código y por qué está incluida en ese lugar.  En este archivo se debe completar la información personalizada de las primeras sección según se indica en la sección \ref{sec:FillingFile}.
-
-%Archivos que \emph{no} forman parte de la distribución de la plantilla pero que son generados por \LaTeX{} como archivos auxiliares necesarios para la producción de la memoria.pdf son:
-
-%\keyword{memoria.aux} -- este es un archivo auxiliar generado por \LaTeX{}, si se borra \LaTeX{} simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}.
-
-%\keyword{memoria.bbl} -- este es un archivo auxiliar generado por BibTeX, si se borra BibTeX simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}. Mientras que el archivo \file{.bib} contiene todas las referencias que hay, este archivo \file{.bbl} contine sólo las referencias que han sido citadas y se utiliza para la construcción de la bibiografía.
-
-%\keyword{memoria.blg} -- este es un archivo auxiliar generado por BibTeX, si se borra BibTeX simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}.
-
-%\keyword{memoria.lof} -- este es un archivo auxiliar generado por \LaTeX{}, si se borra \LaTeX{} simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}.  Le indica a \LaTeX{} cómo construir la sección \emph{Lista de Figuras}.
- 
-%\keyword{memoria.log} --  este es un archivo auxiliar generado por \LaTeX{}, si se borra \LaTeX{} simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}. Contiene mensajes de \LaTeX{}. Si se reciben errores o advertencias durante la compilación, se guardan en este archivo \file{.log}.
-
-%\keyword{memoria.lot} -- este es un archivo auxiliar generado por \LaTeX{}, si se borra \LaTeX{} simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}.  Le indica a \LaTeX{} cómo construir la sección \emph{Lista de Tablas}.
-
-%\keyword{memoria.out} -- este es un archivo auxiliar generado por \LaTeX{}, si se borra \LaTeX{} simplemente lo regenera cuando se compila el archivo principal \file{memoria.tex}.
-
-%De esta larga lista de archivos, sólo aquellos con la extensión \file{.bib}, \file{.cls} y \file{.tex} son importantes.  Los otros archivos auxiliares pueden ser ignorados o borrados ya que \LaTeX{} y BibTeX los regenerarán durante la compilación.
 
 %----------------------------------------------------------------------------------------
 % 1.4 (1 hoja)------------------------------------------------------------------------------------
