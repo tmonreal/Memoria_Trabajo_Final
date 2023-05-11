@@ -217,112 +217,40 @@ A continuación, se listan los requerimientos principales del trabajo agrupados 
 
 \section{Estado del arte}
 
-%Ante de comenzar a editar la plantilla debemos tener un editor \LaTeX{} instalado en nuestra computadora.  En forma análoga a lo que sucede en lenguaje C, que se puede crear y editar código con casi cualquier editor, existen ciertos entornos de trabajo que nos pueden simplificar mucho la tarea.  En este sentido, se recomienda, sobre todo para los principiantes en \LaTeX{} la utilización de TexMaker, un programa gratuito y multi-plantaforma que está disponible tanto para windows como para sistemas GNU/linux.
+En el presente trabajo se llevó a cabo una exhaustiva revisión de la literatura relacionada con la predicción 
+de MACE a partir de datos de presurometrías.
+Después de revisar la literatura, no se encontró ningún trabajo que tuviera como objetivo predecir eventos 
+cardíacos mayores a partir de informes de presurometrías. Sin embargo, se hallaron trabajos que si bien no 
+tienen el mismo objetivo que este, proporcionan una perspectiva útil y algunas ideas interesantes
+ para el desarrollo.
 
-%La versión más reciente de TexMaker es la 4.5 y se puede descargar del siguiente link: \url{http://www.xm1math.net/texmaker/download.html}. Se puede consultar el manual de usuario en el siguiente link: \url{http://www.xm1math.net/texmaker/doc.html}.
- 
+En primer lugar, se encontraron trabajos que buscan predecir MACE a partir de otras fuentes, como historias clínicas 
+o resultados de pruebas de laboratorio. Tal es el caso de Huang \emph{et al.} (2017), Zhang \emph{et al.} (2020) y 
+Wang \emph{et al.} (2022), quienes utilizan información proveniente de historiales médicos para predecir eventos 
+cardíacos mayores. Estos trabajos desarrollan modelos de aprendizaje de máquina con resultados aceptables. 
+Sin embargo, es importante tener en cuenta que 
+al emplear información de historiales clínicos se requiere recopilar datos durante un período prolongado. 
+Esto contrasta con el uso de datos de MAPA, que brindan una visión más inmediata y detallada de la PA de los pacientes, 
+permitiendo realizar inferencias más eficientes.
 
-\subsection{Predicción de MACE a partir de otras fuentes}
+En segundo lugar, existen numerosos estudios que en lugar de centrarse en la predicción de MACE, se enfocan en 
+predecir el riesgo de algunas enfermedades en particular. Se tuvieron en cuenta un total de 17 artículos científicos 
+relevantes: (\cite{Mortazavi2016}, \cite{Voors2017}, \cite{Samuel2017}, \cite{Weng2017}, \cite{Bowen2017}, 
+\cite{Lorenzoni2019}, \cite{Kwon20191}, \cite{Kwon20192}, \cite{Kwon20193}, \cite{Lim2019}, \cite{Chen2019}, 
+\cite{Awan2019}, \cite{Chicco2020}, \cite{Adler2020}, \cite{Javeed2020}, \cite{Cohen2021}, \cite{Rao2021}).  
+Si bien los objetivos de estos estudios varían en cada caso, las técnicas de IA utilizadas son similares. 
+Se puede destacar que los modelos de aprendizaje profundo demostraron el mejor rendimiento en la predicción de 
+insuficiencia cardíaca y diabetes. Por otro lado, los modelos de aprendizaje de máquina clásicos obtuvieron 
+mejores resultados en la predicción de HTA.
 
-%Si bien durante el proceso de instalación de TexMaker, o cualquier otro editor que se haya elegido, se instalarán en el sistema los paquetes básicos necesarios para trabajar con \LaTeX{}, la plantilla de los trabajos de Especialización y Maestría requieren de paquete adicionales.
+Si bien existe literatura académica que aborda el tema de la predicción de eventos cardiovasculares, 
+la mayoría de los trabajos se centran en investigaciones de carácter teórico y experimental. Sin embargo, este trabajo 
+se destaca por su enfoque práctico y su objetivo de desarrollar una herramienta concreta que pueda ser implementada 
+de manera efectiva en el Hospital Alemán. Mediante el uso de la presurometría  y la carga inmediata de datos, se espera 
+obtener una inferencia inmediata sobre el riesgo individual de MACE. Esta iniciativa brinda una solución real y 
+aplicable en el entorno clínico, mejorando así la atención y los resultados de los pacientes hipertensos.
 
-%Se indican a continuación los comandos que se deben introducir en la consola de Ubuntu (ctrl + alt + t) para instalarlos:
-
-%\begin{lstlisting}[language=bash]
-%  $ sudo apt install texlive-lang-spanish texlive-science 
-%  $ sudo apt install texlive-bibtex-extra biber
-%  $ sudo apt install texlive texlive-fonts-recommended
-%  $ sudo apt install texlive-latex-extra
-%\end{lstlisting}
-
-
-\subsection{Predicción del riesgo de padecer enfermedades cardiovasculares}
-%\label{subsec:configurando}
-
-%Una vez instalado el programa y los paquetes adicionales se debe abrir el archivo memoria.tex con el editor para ver una pantalla similar a la que se puede apreciar en la figura \ref{fig:texmaker}. 
-
-\vspace{1cm}
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=.5\textwidth]{./Figures/texmaker.png}
-	\caption{Entorno de trabajo de texMaker.}
-	\label{fig:texmaker}
-\end{figure}
-
-\vspace{1cm}
-
-Notar que existe una vista llamada Estructura a la izquierda de la interfaz que nos permite abrir desde dentro del programa los archivos individuales de los capítulos.  A la derecha se encuentra una vista con el archivo propiamente dicho para su edición. Hacia la parte inferior se encuentra una vista del log con información de los resultados de la compilación.  En esta última vista pueden aparecen advertencias o \textit{warning}, que normalmente pueden ser ignorados, y los errores que se indican en color rojo y deben resolverse para que se genere el PDF de salida.
-
-Recordar que el archivo que se debe compilar con PDFLaTeX es \file{memoria.tex}, si se tratara de compilar alguno de los capítulos saldría un error.  Para salvar la molestia de tener que cambiar de archivo para compilar cada vez que se realice una modificación en un capítulo, se puede definir el archivo \file{memoria.tex} como ``documento maestro'' yendo al menú opciones -> ``definir documento actual como documento maestro'', lo que permite compilar con PDFLaTeX memoria.tex directamente desde cualquier archivo que se esté modificando . Se muestra esta opción en la figura \ref{fig:docMaestro}.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth]{./Figures/docMaestro.png}
-	\caption{Definir memoria.tex como documento maestro.}
-	\label{fig:docMaestro}
-\end{figure}
-
-En el menú herramientas se encuentran las opciones de compilación.  Para producir un archivo PDF a partir de un archivo .tex se debe ejecutar PDFLaTeX (el shortcut es F6). Para incorporar nueva bibliografía se debe utilizar la opción BibTeX del mismo menú herramientas (el shortcut es F11).
-
-Notar que para actualizar las tablas de contenidos se debe ejecutar PDFLaTeX dos veces.  Esto se debe a que es necesario actualizar algunos archivos auxiliares antes de obtener el resultado final.  En forma similar, para actualizar las referencias bibliográficas se debe ejecutar primero PDFLaTeX, después BibTeX y finalmente PDFLaTeX dos veces por idénticos motivos.
-
-\section{Personalizando la plantilla, el archivo \file{memoria.tex}}
-\label{sec:FillingFile}
-
-Para personalizar la plantilla se debe incorporar la información propia en los distintos archivos \file{.tex}. 
-
-Primero abrir \file{memoria.tex} con TexMaker (o el editor de su preferencia). Se debe ubicar dentro del archivo el bloque de código titulado \emph{INFORMACIÓN DE LA PORTADA} donde se deben incorporar los primeros datos personales con los que se construirá automáticamente la portada.
-
-
-%----------------------------------------------------------------------------------------
-
-\section{El código del archivo \file{memoria.tex} explicado}
-
-El archivo \file{memoria.tex} contiene la estructura del documento y es el archivo de mayor jerarquía de la memoria.  Podría ser equiparable a la función \emph{main()} de un programa en C, o mejor dicho al archivo fuente .c donde se encuentra definida la función main().
-
-La estructura básica de cualquier documento de \LaTeX{} comienza con la definición de clase del documento, es seguida por un preámbulo donde se pueden agregar funcionalidades con el uso de \texttt{paquetes} (equiparables a bibliotecas de C), y finalmente, termina con el cuerpo del documento, donde irá el contenido de la memoria.
-
-\lstset{%
-  basicstyle=\small\ttfamily,
-  language=[LaTeX]{TeX}
-}
-
-\begin{lstlisting}
-\documentclass{article}  <- Definicion de clase
-\usepackage{listings}	 <- Preambulo
-
-\begin{document}	 <- Comienzo del contenido propio 
-	Hello world!
-\end{document}
-\end{lstlisting}
-
-
-El archivo \file{memoria.tex} se encuentra densamente comentado para explicar qué páginas, secciones y elementos de formato está creando el código \LaTeX{} en cada línea. El código está dividido en bloques con nombres en mayúsculas para que resulte evidente qué es lo que hace esa porción de código en particular. Inicialmente puede parecer que hay mucho código \LaTeX{}, pero es principalmente código para dar formato a la memoria por lo que no requiere intervención del usuario de la plantilla.  Sí se deben personalizar con su información los bloques indicados como:
-
-\begin{itemize}
-	\item Informacion de la memoria
-	\item Resumen
-	\item Agradecimientos
-	\item Dedicatoria
-\end{itemize}
-
-El índice de contenidos, las listas de figura de tablas se generan en forma automática y no requieren intervención ni edición manual por parte del usuario de la plantilla. 
-
-En la parte final del documento se encuentran los capítulos y los apéndices.  Por defecto se incluyen los 5 capítulos propuestos que se encuentran en la carpeta /Chapters. Cada capítulo se debe escribir en un archivo .tex separado y se debe poner en la carpeta \emph{Chapters} con el nombre \file{Chapter1}, \file{Chapter2}, etc\ldots El código para incluir capítulos desde archivos externos se muestra a continuación.
-
-\begin{verbatim}
-	\include{Chapters/Chapter1}
-	\include{Chapters/Chapter2} 
-	\include{Chapters/Chapter3}
-	\include{Chapters/Chapter4} 
-	\include{Chapters/Chapter5} 
-\end{verbatim}
-
-Los apéndices también deben escribirse en archivos .tex separados, que se deben ubicar dentro de la carpeta \emph{Appendices}. Los apéndices vienen comentados por defecto con el caracter \code{\%} y para incluirlos simplemente se debe eliminar dicho caracter.
-
-Finalmente, se encuentra el código para incluir la bibliografía en el documento final.  Este código tampoco debe modificarse. La metodología para trabajar las referencias bibliográficas se desarrolla en la sección \ref{sec:biblio}.
-%----------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------------
 
 \section{Bibliografía}
 \label{sec:biblio}
