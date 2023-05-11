@@ -35,15 +35,11 @@ bombea la sangre de forma pulsátil. Por este motivo, la PA alterna entre una pr
 y una presión arterial diastólica (PAD). En la figura \ref{fig:aorticPulse} se expone un registro típico de las pulsaciones 
 de la presión en la raíz de la arteria aorta. 
 
-\begin{figure}[b!]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{./Figures/aortic-pulse-pressure.png}
-  \caption{Representación esquemática del pulso de presión registrado en la aorta ascendente.}
-  \label{fig:aorticPulse}
+  \caption{Representación esquemática del pulso de presión registrado en la aorta ascendente.}\label{fig:aorticPulse}
 \end{figure}
-
-Ennnn la figura \autoref{fig:aorticPulse} se expone un registro típico de las pulsaciones 
-de la presión en la raíz de la arteria aorta.
 
 En un adulto joven sano, la presión máxima o PAS es de 
 120 mmHg y la presión mínima o PAD en cada pulso es de 80 mmHg. La diferencia entre estas dos presiones 
@@ -60,18 +56,79 @@ a la PAM es la siguiente:
 La PA alta o hipertensión arterial (HTA) es uno de los principales factores de riesgo para las enfermedades 
 cardiovasculares, tales cómo la enfermedad cerebrovascular, insuficiencia cardíaca, cardiopatía isquémica, 
 enfermedad renal terminal, arteriopatía periférica y retinopatía [7]. Actualmente, se utiliza cómo guía 
-la clasificación de HTA de la tabla 1 [2].
+la clasificación de HTA de la tabla \ref{tab:TablaHTA} [2].
+
+\begin{table}[h]
+	\centering
+	\caption[Tabla HTA]{Clasificación de la presión arterial por niveles.}
+	\begin{tabular}{l c c c}    
+		\toprule
+		\textbf{Grado} 	      & \textbf{PAS} 	& \textbf{}	& \textbf{PAD}  \\
+		\midrule
+		Óptima                & <\ 120 mmHg   & 				  & <\ 80 mmHg \\		
+    Normal                & 120-129 mmHg  & 	y/o			& 80-84 mmHg \\	
+    Normal-alta           & 130-139 mmHg  & 	y/o			& 85-89 mmHg \\	
+    HTA de grado I        & 140-159 mmHg  & 	y/o			& 90-99 mmHg \\
+    HTA de grado II       & 160-170 mmHg  & 	y/o			& 100-109 mmHg \\		
+    HTA de grado III      & <\ 180 mmHg   & 	y/o			& <\ 110 mmHg \\	
+    HTA sistólica aislada & >\ 139 mmHg 	& 	        & <\ 89 mmHg \\	
+		\bottomrule
+		\hline
+	\end{tabular}
+	\label{tab:TablaHTA}
+\end{table}
 
 
-\subsection{Introducción a presiones arteriales. Que es la hipertensión. Figura de presiones durante el día-noche-24hs}
+\subsection{Presurometrías}
 
-%Acá tiene un ejemplo de una ``subsubsección'' que es el cuarto nivel de ordenamiento del texto, después de capítulo, sección y subsección.  Como se puede ver, las subsubsecciones no van numeradas en el cuerpo del documento ni en el índice.  El formato está definido por la plantilla y no debe ser modificado.
+Las mediciones de PA en el consultorio médico son necesarias pero insuficientes para un adecuado diagnóstico, 
+tratamiento y seguimiento de la HTA. El monitoreo ambulatorio de presión arterial (MAPA), también conocido 
+como presurometría, es un examen complementario que permite evaluar la PA en el contexto de la vida cotidiana 
+del paciente. A diferencia de las mediciones de PA en el consultorio, que se realizan en condiciones 
+estandarizadas, el MAPA obtiene un gran número de mediciones a lo largo de un día habitual del paciente. 
+Esto proporciona la capacidad de medir la tensión arterial durante el reposo, sueño, actividad física y mental, 
+trabajo y período postprandial. Conocer la PA ambulatoria permite identificar diferentes patrones de HTA, tales 
+como: HTA diurna, HTA nocturna, HTA durante todo el día, HTA durante el sueño e HTA de guardapolvo blanco 
+(solo presente en el consultorio médico). Por lo tanto, este estudio puede ser un predictor más efectivo de 
+la mortalidad y eventos cardiovasculares que simplemente basarse en la medición de la presión arterial en el 
+consultorio médico [5, 7].
 
-Escribir aca sobre la hipertensión
+Actualmente, el MAPA es el único método disponible para medir la PA durante la noche, y diversos estudios 
+demuestran que la PA nocturna tiene un mayor valor pronóstico que la PA diurna. Por esta razón, se recomienda 
+incluir el MAPA cómo parte del diagnóstico de la HTA. Es especialmente útil cuando los valores de PA en el 
+consultorio se encuentran en un rango limítrofe (grado normal-alta según la tabla \ref{tab:TablaHTA}) en 
+varias consultas consecutivas. Las indicaciones actuales para definir la HTA mediante el MAPA se detallan 
+en la tabla \ref{tab:HTA-MAPA}.
 
-%\subsection{Guía matemática rápida para \LaTeX{}}
+\begin{table}[h]
+	\centering
+	\caption[Tabla HTA-MAPA]{Valores de referencia para definir HTA por MAPA.}
+	\begin{tabular}{l c c c}    
+		\toprule
+		\textbf{} 	      & \textbf{PAS} 	& \textbf{}	& \textbf{PAD}  \\
+		\midrule
+    PA de 24 horas     &  $\geq$ 130 mmHg   & 	y/o			&  $\geq$ 80 mmHg \\	
+    PA diurna          &  $\geq$ 135 mmHg   & 	y/o			&  $\geq$ 85 mmHg \\	
+    PA nocturna        &  $\geq$ 120 mmHg   & 	y/o			&  $\geq$ 70 mmHg \\	
+		\bottomrule
+		\hline
+	\end{tabular}
+	\label{tab:HTA-MAPA}
+\end{table}
 
-%Si estás escribiendo un documento con mucho contenido matemático, entonces es posible que desees leer el documento de la AMS (American Mathematical Society) llamado, \enquote{A Short Math Guide for \LaTeX{}}. Se puede encontrar en línea en el siguiente link: \url{http://www.ams.org/tex/amslatex.html} en la sección \enquote{Additional Documentation} hacia la parte inferior de la página.
+El MAPA se lleva a cabo mediante dispositivos conocidos como presurómetros o \textit{holters} de presión arterial. 
+Un técnico en cardiología coloca el presurómetro en el brazo del paciente, y se retira al día siguiente. 
+El instrumento consiste en un manguito de presión arterial conectado a una grabadora, como se muestra en 
+la figura \ref{fig:holter}. Esta realiza un inflado periódico cada 20 a 30 minutos, y los datos se almacenan en una memoria 
+de estado sólido, generalmente en una tarjeta SD. Luego, los datos son analizados mediante el software del 
+dispositivo.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.7\textwidth]{./Figures/presurometro.png}
+  \caption{Esquema de un \textit{holter} de presión arterial.}
+  \label{fig:holter}
+\end{figure}
 
 
 %----------------------------------------------------------------------------------------
