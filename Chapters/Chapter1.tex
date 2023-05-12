@@ -52,13 +52,13 @@ a la PAM es la siguiente:
 
 \begin{equation}
 	\label{eq:PAM}
-	PAM = \frac{(2*PAD + PAS)}{3}
+	PAM = \frac{(2 \cdot PAD + PAS)}{3}
 \end{equation}
 
 La PA alta o hipertensión arterial (HTA) es uno de los principales factores de riesgo para las enfermedades 
-cardiovasculares, tales cómo la enfermedad cerebrovascular, insuficiencia cardíaca, cardiopatía isquémica, 
-enfermedad renal terminal, arteriopatía periférica y retinopatía \citep{CITE:6} \citep{CITE:7}. Actualmente, se utiliza cómo guía 
-la clasificación de HTA de la tabla \ref{tab:TablaHTA}.
+cardiovasculares, como la enfermedad cerebrovascular, insuficiencia cardíaca, cardiopatía isquémica, 
+enfermedad renal terminal, arteriopatía periférica y retinopatía \citep{CITE:6} \citep{CITE:7}. Actualmente, 
+se utiliza cómo guía la clasificación de HTA de la tabla \ref{tab:TablaHTA}.
 
 \begin{table}[h]
 	\centering
@@ -230,8 +230,8 @@ tienen el mismo objetivo que este, proporcionan una perspectiva útil y algunas 
  para el desarrollo.
 
 En primer lugar, se encontraron trabajos que buscan predecir MACE a partir de otras fuentes, como historias clínicas 
-o resultados de pruebas de laboratorio. Tal es el caso de Huang \emph{et al.} (2017), Zhang \emph{et al.} (2020) y 
-Wang \emph{et al.} (2022), quienes utilizan información proveniente de historiales médicos para predecir eventos 
+o resultados de pruebas de laboratorio. Tal es el caso de Huang \emph{et al.} \citep{CITE:11}, Zhang \emph{et al.} \citep{CITE:12} y 
+Wang \emph{et al.} \citep{CITE:13}, quienes utilizan información proveniente de historiales médicos para predecir eventos 
 cardíacos mayores. Estos trabajos desarrollan modelos de aprendizaje de máquina con resultados aceptables. 
 Sin embargo, es importante tener en cuenta que 
 al emplear información de historiales clínicos se requiere recopilar datos durante un período prolongado. 
@@ -240,9 +240,9 @@ permitiendo realizar inferencias más eficientes.
 
 En segundo lugar, existen numerosos estudios que en lugar de centrarse en la predicción de MACE, se enfocan en 
 predecir el riesgo de algunas enfermedades en particular. Se tuvieron en cuenta un total de 17 artículos científicos 
-relevantes: (\cite{Mortazavi2016}, \cite{Voors2017}, \cite{Samuel2017}, \cite{Weng2017}, \cite{Bowen2017}, 
-\cite{Lorenzoni2019}, \cite{Kwon20191}, \cite{Kwon20192}, \cite{Kwon20193}, \cite{Lim2019}, \cite{Chen2019}, 
-\cite{Awan2019}, \cite{Chicco2020}, \cite{Adler2020}, \cite{Javeed2020}, \cite{Cohen2021}, \cite{Rao2021}).  
+relevantes \citep{CITE:14} \citep{CITE:15} \citep{CITE:16} \citep{CITE:17} \citep{CITE:18}
+\citep{CITE:19} \citep{CITE:20} \citep{CITE:21} \citep{CITE:22} \citep{CITE:23} \citep{CITE:24}
+\citep{CITE:25} \citep{CITE:26} \citep{CITE:27} \citep{CITE:28} \citep{CITE:29} \citep{CITE:30} \citep{CITE:31}.  
 Si bien los objetivos de estos estudios varían en cada caso, las técnicas de IA utilizadas son similares. 
 Se puede destacar que los modelos de aprendizaje profundo demostraron el mejor rendimiento en la predicción de 
 insuficiencia cardíaca y diabetes. Por otro lado, los modelos de aprendizaje de máquina clásicos obtuvieron 
@@ -254,82 +254,3 @@ se destaca por su enfoque práctico y su objetivo de desarrollar una herramienta
 de manera efectiva en el Hospital Alemán. Mediante el uso de la presurometría  y la carga inmediata de datos, se espera 
 obtener una inferencia inmediata sobre el riesgo individual de MACE. Esta iniciativa brinda una solución real y 
 aplicable en el entorno clínico, mejorando así la atención y los resultados de los pacientes hipertensos.
-
-%-----------------------------------------------------------------------------------------------
-
-\section{Bibliografía}
-\label{sec:biblio}
-
-Las opciones de formato de la bibliografía se controlan a través del paquete de latex \option{biblatex} que se incluye en la memoria en el archivo memoria.tex.  Estas opciones determinan cómo se generan las citas bibliográficas en el cuerpo del documento y cómo se genera la bibliografía al final de la memoria.
-
-En el preámbulo se puede encontrar el código que incluye el paquete biblatex, que no requiere ninguna modificación del usuario de la plantilla, y que contiene las siguientes opciones:
-
-\begin{lstlisting}
-\usepackage[backend=bibtex,
-	natbib=true, 
-	style=numeric, 
-	sorting=none]
-{biblatex}
-\end{lstlisting}
-
-En el archivo \file{reference.bib} se encuentran las referencias bibliográficas que se pueden citar en el documento.  Para incorporar una nueva cita al documento lo primero es agregarla en este archivo con todos los campos necesario.  Todas las entradas bibliográficas comienzan con $@$ y una palabra que define el formato de la entrada.  Para cada formato existen campos obligatorios que deben completarse. No importa el orden en que las entradas estén definidas en el archivo .bib.  Tampoco es importante el orden en que estén definidos los campos de una entrada bibliográfica. A continuación se muestran algunos ejemplos:
-
-\begin{lstlisting}
-@ARTICLE{ARTICLE:1,
-    AUTHOR="John Doe",
-    TITLE="Title",
-    JOURNAL="Journal",
-    YEAR="2017",
-}
-\end{lstlisting}
-
-
-\begin{lstlisting}
-@BOOK{BOOK:1,
-    AUTHOR="John Doe",
-    TITLE="The Book without Title",
-    PUBLISHER="Dummy Publisher",
-    YEAR="2100",
-}
-\end{lstlisting}
-
-
-\begin{lstlisting}
-@INBOOK{BOOK:2,
-    AUTHOR="John Doe",
-    TITLE="The Book without Title",
-    PUBLISHER="Dummy Publisher",
-    YEAR="2100",
-    PAGES="100-200",
-}
-\end{lstlisting}
-
-
-\begin{lstlisting}
-@MISC{WEBSITE:1,
-    HOWPUBLISHED = "\url{http://example.com}",
-    AUTHOR = "Intel",
-    TITLE = "Example Website",
-    MONTH = "12",
-    YEAR = "1988",
-    URLDATE = {2012-11-26}
-}
-\end{lstlisting}
-
-Se debe notar que los nombres \emph{ARTICLE:1}, \emph{BOOK:1}, \emph{BOOK:2} y \emph{WEBSITE:1} 
-son nombres de fantasía que le sirve al autor del documento para identificar la entrada. 
-En este sentido, se podrían reemplazar por cualquier otro nombre.  Tampoco es necesario poner : seguido de un número, en los ejemplos sólo se incluye como un posible estilo para identificar las entradas.
-
-La entradas se citan en el documento con el comando: 
-
-\begin{verbatim}
-\citep{nombre_de_la_entrada}
-\end{verbatim}
-
-
-Y cuando se usan, se muestran así: 
-\citep{CITE:1}, \citep{CITE:2}, \citep{CITE:3}, \citep{CITE:4},
-\citep{CITE:5}, \citep{CITE:6}, \citep{CITE:7}, \citep{CITE:8}, 
-\citep{CITE:9}, \citep{CITE:10}.  Notar cómo se conforma la sección Bibliografía al final del documento.
-
-Finalmente y como se mencionó en la subsección \ref{subsec:configurando}, para actualizar las referencias bibliográficas tanto en la sección bibliografía como las citas en el cuerpo del documento, se deben ejecutar las herramientas de compilación PDFLaTeX, BibTeX, PDFLaTeX, PDFLaTeX, en ese orden.  Este procedimiento debería resolver cualquier mensaje "Citation xxxxx on page x undefined".
