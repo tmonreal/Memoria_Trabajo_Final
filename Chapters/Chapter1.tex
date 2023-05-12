@@ -30,10 +30,10 @@ así como el uso de las presurometrías como herramienta complementaria en su di
 \subsection{Presión arterial normal e hipertensión arterial}
 
 La presión arterial (PA) es la fuerza por unidad de superficie ejercida por la sangre contra las paredes 
-de las arterias [1]. Sin profundizar en los principios físicos, parece relevante destacar que el corazón 
+de las arterias \citep{CITE:1}. Sin profundizar en los principios físicos, parece relevante destacar que el corazón 
 bombea la sangre de forma pulsátil. Por este motivo, la PA alterna entre una presión arterial sistólica (PAS) 
 y una presión arterial diastólica (PAD). En la figura \ref{fig:aorticPulse} se expone un registro típico de las pulsaciones 
-de la presión en la raíz de la arteria aorta. 
+de la presión en la raíz de la arteria aorta \citep{CITE:2} \citep{CITE:3}. 
 
 \begin{figure}[h]
   \centering
@@ -45,7 +45,7 @@ En un adulto joven sano, la presión máxima o PAS es de
 120 mmHg y la presión mínima o PAD en cada pulso es de 80 mmHg. La diferencia entre estas dos presiones 
 se conoce cómo la presión de pulso (PP) y ronda unos 40 mmHg. Por otro lado, la presión arterial media (PAM) 
 está determinada en un 60\% por la PAD y en un 40\% por la PAS, dado que se invierte una mayor fracción 
-del ciclo cardíaco en la diástole que en la sístole (2, 3). Así, la expresión matemática que describe 
+del ciclo cardíaco en la diástole que en la sístole \citep{CITE:2} \citep{CITE:3}. Así, la expresión matemática que describe 
 a la PAM es la siguiente: 
 
 \begin{equation}
@@ -55,8 +55,8 @@ a la PAM es la siguiente:
 
 La PA alta o hipertensión arterial (HTA) es uno de los principales factores de riesgo para las enfermedades 
 cardiovasculares, tales cómo la enfermedad cerebrovascular, insuficiencia cardíaca, cardiopatía isquémica, 
-enfermedad renal terminal, arteriopatía periférica y retinopatía [7]. Actualmente, se utiliza cómo guía 
-la clasificación de HTA de la tabla \ref{tab:TablaHTA} [2].
+enfermedad renal terminal, arteriopatía periférica y retinopatía \citep{CITE:6} \citep{CITE:7}. Actualmente, se utiliza cómo guía 
+la clasificación de HTA de la tabla \ref{tab:TablaHTA} \citep{CITE:2}.
 
 \begin{table}[h]
 	\centering
@@ -90,14 +90,14 @@ trabajo y período postprandial. Conocer la PA ambulatoria permite identificar d
 como: HTA diurna, HTA nocturna, HTA durante todo el día, HTA durante el sueño e HTA de guardapolvo blanco 
 (solo presente en el consultorio médico). Por lo tanto, este estudio puede ser un predictor más efectivo de 
 la mortalidad y eventos cardiovasculares que simplemente basarse en la medición de la presión arterial en el 
-consultorio médico [5, 7].
+consultorio médico \citep{CITE:7} \citep{CITE:5}.
 
 Actualmente, el MAPA es el único método disponible para medir la PA durante la noche, y diversos estudios 
 demuestran que la PA nocturna tiene un mayor valor pronóstico que la PA diurna. Por esta razón, se recomienda 
 incluir el MAPA cómo parte del diagnóstico de la HTA. Es especialmente útil cuando los valores de PA en el 
 consultorio se encuentran en un rango limítrofe (grado normal-alta según la tabla \ref{tab:TablaHTA}) en 
 varias consultas consecutivas. Las indicaciones actuales para definir la HTA mediante el MAPA se detallan 
-en la tabla \ref{tab:HTA-MAPA}.
+en la tabla \ref{tab:HTA-MAPA} \citep{CITE:7}.
 
 \begin{table}[h]
 	\centering
@@ -120,7 +120,7 @@ Un técnico en cardiología coloca el presurómetro en el brazo del paciente, y 
 El instrumento consiste en un manguito de presión arterial conectado a una grabadora, como se muestra en 
 la figura \ref{fig:holter}. Esta realiza un inflado periódico cada 20 a 30 minutos, y los datos se almacenan en una memoria 
 de estado sólido, generalmente en una tarjeta SD. Luego, los datos son analizados mediante el software del 
-dispositivo.
+dispositivo \citep{CITE:3} \citep{CITE:7}.
 
 \begin{figure}[h]
   \centering
@@ -138,14 +138,14 @@ dispositivo.
 La incorporación de técnicas de inteligencia artificial (IA) en la medicina cardiovascular es una de las principales 
 motivaciones en la realización de este trabajo. A medida que la IA se desarrolla en distintos campos, su aplicación 
 en el ámbito de la salud experimenta un crecimiento significativo. Sin embargo, uno de los desafíos clave que la IA 
-enfrenta en la medicina es la limitación de datos disponibles para entrenar modelos de aprendizaje profundo [8].
+enfrenta en la medicina es la limitación de datos disponibles para entrenar modelos de aprendizaje profundo \citep{CITE:8}.
 
 En el caso particular del Hospital Alemán de Buenos Aires, el servicio de cardiología posee una gran cantidad de 
 datos de informes de presurometrías de pacientes hipertensos. Aunque el personal carece de experiencia en herramientas 
 de aprendizaje automático o aprendizaje profundo, los profesionales médicos comprenden el potencial de estos datos de 
 MAPA para facilitar la identificación de patrones, factores de riesgo y respuestas al tratamiento de HTA. Además, 
 es importante destacar que este trabajo se alinea con la misión del Hospital Alemán, que busca la actualización constante 
-de tecnologías para garantizar una mejor atención médica basada en la investigación [9]. 
+de tecnologías para garantizar una mejor atención médica basada en la investigación \citep{CITE:9}. 
 
 
 %----------------------------------------------------------------------------------------
@@ -159,7 +159,7 @@ El propósito de este trabajo fue el desarrollo de un software de IA que permite
 grave en pacientes hipertensos. En particular, se busca predecir la ocurrencia de eventos cardiovasculares adversos 
 mayores (MACE, por sus siglas en inglés). Este es un criterio de valoración compuesto que es empleado con frecuencia 
 en la investigación cardiovascular. A pesar del uso generalizado del término en ensayos clínicos, las definiciones de 
-MACE pueden diferir \cite{Kip2008}. Para este trabajo, se definió como la combinación de: accidente cerebrovascular no 
+MACE pueden diferir \citep{CITE:10}. Para este trabajo, se definió como la combinación de: accidente cerebrovascular no 
 fatal, infarto agudo de miocardio, insuficiencia cardíaca, insuficiencia renal crónica o muerte. De este modo, un valor 
 de MACE equivalente a la unidad indica la existencia de alguno de los eventos graves mencionados anteriormente, mientras 
 que un valor nulo se refiere la ausencia de estos. 
