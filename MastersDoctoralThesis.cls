@@ -375,7 +375,7 @@ KOMA-script documentation for details.}]{fancyhdr}
 	{\huge \bfseries \ttitle\par}\vspace{0.4cm} 
 	\vfill
 	
-	\vspace{2cm}
+	\vspace{1cm}
 	\LARGE\textbf{Autor:\\
 	\authorname}\\ % Author name
 	
