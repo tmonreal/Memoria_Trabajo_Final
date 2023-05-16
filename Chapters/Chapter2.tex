@@ -25,7 +25,7 @@ Esta etapa fue realizada en colaboración con el servicio de cardiología del Ho
 Para ello, se recopiló información proveniente de presurometrías realizadas a pacientes 
 hipertensos a partir del año 2013. Además, se efectuó un análisis exhaustivo de la historia 
 clínica de cada paciente con el objetivo de identificar la ocurrencia de eventos cardiovasculares 
-adversos mayores. De esta manera, se logró completar el dataset con la variable a predecir (MACE) 
+adversos mayores. De esta manera, se logró completar el \textit{dataset} con la variable a predecir (MACE) 
 para cada paciente. Asimismo, se enriqueció el conjunto de datos con información clínica adicional 
 con el fin de contar con variables explicativas más amplias para abordar el problema de investigación.
 
@@ -33,7 +33,7 @@ A continuación, se efectuó una etapa de preprocesamiento. En primer lugar, se 
 una limpieza de los datos con el propósito de seleccionar las variables más representativas del 
 problema. Este proceso de selección permitió eliminar datos redundantes, ruidosos o de poca 
 utilidad para el análisis posterior. También, se realizó un análisis exploratorio de datos 
-para comprender de manera más profunda las características y patrones presentes en el dataset. 
+para comprender de manera más profunda las características y patrones presentes en el \textit{dataset}. 
 Esto proporcionó una visión más completa y significativa del conjunto de datos, permitiendo 
 así una mejor comprensión de la naturaleza del problema y orientando la toma de decisiones 
 posteriores en el desarrollo de este trabajo.
@@ -50,9 +50,41 @@ clínicas relevantes para el seguimiento de los pacientes.
 %----------------------------------------------------------------------------------------
 %	2.2 ALGORITMOS DE CLASIFICACION
 %----------------------------------------------------------------------------------------
-
 \section{Algoritmos de clasificación}
 \label{sec:Algoritmos de clasificación}
+
+Un algoritmo de aprendizaje automático es una herramienta que permite resolver tareas complejas 
+que suelen ser difíciles de abordar para los seres humanos. La principal ventaja del \emph{machine 
+learning} (ML) es su capacidad de aprender de los datos y extraer información relevante de 
+estos. Las tareas de ML se describen en términos de cómo deben procesar un ejemplo, que se 
+compone de una colección de características cuantitativas o \emph{features} que se miden de un objeto 
+o evento que se desea procesar. En general, se representa un ejemplo como un vector $ x\in\mathbb{R}^n $,
+donde cada entrada $x_{i}$ del vector corresponde a una característica del objeto 
+o evento en cuestión. De esta manera, el algoritmo de aprendizaje de máquina es capaz de 
+analizar los datos y extraer patrones que permiten tomar decisiones o realizar predicciones 
+precisas \citep{CITE:35}.
+
+En el campo del aprendizaje automático, los modelos de clasificación desempeñan un papel fundamental 
+\citep{CITE:32}. Estos modelos se encargan de asignar etiquetas discretas o categorías a ejemplos 
+específicos según sus características \citep{CITE:33}. Dependiendo del enfoque utilizado durante el 
+entrenamiento, los modelos pueden ser de dos tipos: supervisados o no supervisados \citep{CITE:35}.
+
+En un modelo de clasificación no supervisado, las etiquetas no se proporcionan en el conjunto de 
+datos de entrenamiento \citep{CITE:34}. En lugar de ello, el algoritmo busca patrones y estructuras 
+en los datos sin la guía explícita de las etiquetas. Como resultado, el objetivo es agrupar las instancias en 
+clases basadas en similitudes \citep{CITE:33}.
+
+Por otro lado, en un modelo de clasificación supervisado se proporciona al algoritmo un \emph{dataset} de 
+entrenamiento que incluye tanto las características de las instancias como las etiquetas correspondientes 
+\citep{CITE:33}. El modelo utiliza esta información para aprender a asociar las \emph{features} con las 
+etiquetas, lo que le permite clasificar nuevas instancias de manera precisa. Algunos ejemplos de algoritmos 
+supervisados ampliamente utilizados son los árboles de decisión, las máquinas de vectores de soporte y 
+las redes neuronales \citep{CITE:34}. En este trabajo en particular, se empleó un modelo de clasificación 
+supervisado basado en redes neuronales con el propósito de predecir MACE.
+
+
+
+
 
 \subsection{Fundamentos y aplicaciones de los modelos de clasificación}
 
