@@ -113,13 +113,25 @@ la clase minoritaria. Se expone una representación gráfica del algoritmo en la
 En primer lugar, el método escoge un ejemplo de la clase minoritaria al azar y encuentra a sus $k$ vecinos 
 más cercanos. Luego, se selecciona uno de los $k$ vecinos más cercanos y se crea una conexión mediante 
 un segmento de línea en el espacio de características con la muestra elegida al azar. Finalmente, se crea 
-una instancia sintética en un punto aleatorio entre los dos ejemplos \citep{CITE:38}. 
+una instancia sintética en un punto aleatorio entre los dos ejemplos. Este procedimiento se repite para
+todas las muestras minoritarias \citep{CITE:38}. 
 
-\begin{figure}[ht]
+\begin{figure}[!htpb]
 	\centering
-	\includegraphics[width=\textwidth]{./Figures/SMOTE.jpg}
-	\caption{Representación esquematica del algoritmo SMOTE.}\label{fig:SMOTE}
+	\subcaptionbox{SMOTE comienza con un conjunto de ejemplos positivos (puntos verdes) y negativos (puntos azules).}%
+  	[0.3\linewidth]{\includegraphics[height=5cm]{./Figures/SMOTE_a.jpg}}\label{fig:SMOTEa}
+	\hspace{1em}
+	\subcaptionbox{Se selecciona un ejemplo positivo (punto con borde negro) y sus $k$ vecinos más cercanos entre los positivos (puntos amarillos, con $k = 3$).}
+	[0.3\linewidth]{\includegraphics[height=5cm]{./Figures/SMOTE_b.jpg}}\label{fig:SMOTEb}
+	\hspace{1em}
+	\subcaptionbox{Para cada $k$ vecino más cercano se agrega un nuevo ejemplo sintético (puntos rojos) a lo largo de la línea recta que los conecta con el ejemplo positivo.}
+	[0.3\linewidth]{\includegraphics[height=5cm]{./Figures/SMOTE_c.jpg}}
+	\caption{Representación esquematica del algoritmo SMOTE\protect\footnotemark.}\label{fig:SMOTEc}
+	   \label{fig:SMOTE}
 \end{figure}
+
+\footnotetext{Imagen adaptada de Schubach, Max; Re, Matteo; Robinson, Peter y Valentini, Giorgio. (2017). Imbalance-Aware Machine Learning for Predicting Rare and Common Disease-Associated Non-Coding Variants. Scientific Reports. 7. 10.1038/s41598-017-03011-5.}
+
 
 En suma, SMOTE permite generar ejemplos sintéticos que sean relativamente cercanos en el espacio de 
 características con respecto a las muestras existentes de la clase minoritaria. Además, las muestras 
