@@ -53,8 +53,11 @@ clínicas relevantes para el seguimiento de los pacientes.
 \section{Algoritmos de clasificación}
 \label{sec:Algoritmos de clasificación}
 
-Un algoritmo de aprendizaje automático es una herramienta que permite resolver tareas complejas 
-que suelen ser difíciles de abordar para los seres humanos. La principal ventaja del \emph{machine 
+ESCRIBIR PARRAFO INTRODUCTORIO
+
+\subsection{Fundamentos de los modelos de clasificación}
+Un algoritmo de aprendizaje automático es una herramienta que permite resolver tareas  
+que suelen ser complejas de abordar para los seres humanos. La principal ventaja del \emph{machine 
 learning} (ML) es su capacidad de aprender de los datos y extraer información relevante de 
 estos. Las tareas de ML se describen en términos de cómo deben procesar un ejemplo, que se 
 compone de una colección de características cuantitativas o \emph{features} que se miden de un objeto 
@@ -82,12 +85,48 @@ supervisados ampliamente utilizados son los árboles de decisión, las máquinas
 las redes neuronales \citep{CITE:34}. En este trabajo en particular, se empleó un modelo de clasificación 
 supervisado basado en redes neuronales con el propósito de predecir MACE.
 
-
-
-
-
-\subsection{Fundamentos y aplicaciones de los modelos de clasificación}
-
 \subsection{Estrategias para tratar el desbalance de clases}
+
+Un conjunto de datos se considera desbalanceado cuando presenta una proporción significativamente mayor 
+de observaciones pertenecientes a una clase en comparación con la otra. Este desequilibrio puede tener 
+un impacto considerable en el rendimiento de los modelos de aprendizaje automático. En el caso específico 
+de una red neuronal entrenada con un \emph{dataset} desbalanceado, es probable que encuentre dificultades 
+para discriminar de manera adecuada entre las diferentes clases. En otras palabras, el desequilibrio de 
+clases crea un sesgo en el cual el modelo tiende a predecir la clase mayoritaria, lo que dificulta la 
+correcta clasificación de los ejemplos pertenecientes a la clase minoritaria \citep{CITE:36} \citep{CITE:37}. 
+
+Abordar el desequilibrio se convierte en un desafío crucial en la tarea de modelado y actualmente existen 
+dos enfoques principales. El primero consiste en asignar diferentes pesos a los ejemplos de entrenamiento, 
+mientras que el segundo implica realizar un remuestreo del conjunto de datos original. Es posible crear 
+un nuevo muestreo del \emph{dataset} efectuando un sobremuestreo de la clase minoritaria y/o un submuestreo 
+de la clase mayoritaria. El submuestreo implica una reducción del número de instancias de la clase mayoritaria, 
+lo cual puede resultar en la pérdida de información valiosa que sea representativa de la distribución de los 
+datos. Por otra parte, el sobremuestreo suele implicar réplicas de ejemplos de la clase minoritaria, lo cual 
+puede generar un sobreajuste. En concreto, el modelo concede predicciones muy precisas para el conjunto de 
+entrenamiento pero no logra generalizar adecuadamente cuando se presentan nuevos datos \citep{CITE:37}. 
+
+Para mitigar las desventajas mencionadas anteriormente, Nitesh Chawla \emph{et al.} \citep{CITE:37} 
+introducen una nueva técnica que implica una forma especial 
+de sobremuestrear la clase minoritaria. El algoritmo 
+\emph{Synthetic Minority Over-sampling Technique} (SMOTE) implica la creación de muestras sintéticas de 
+la clase minoritaria. Se expone una representación gráfica del algoritmo en la figura \ref{fig:SMOTE}. 
+En primer lugar, el método escoge un ejemplo de la clase minoritaria al azar y encuentra a sus $k$ vecinos 
+más cercanos. Luego, se selecciona uno de los $k$ vecinos más cercanos y se crea una conexión mediante 
+un segmento de línea en el espacio de características con la muestra elegida al azar. Finalmente, se crea 
+una instancia sintética en un punto aleatorio entre los dos ejemplos \citep{CITE:38}. 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/SMOTE.jpg}
+	\caption{Representación esquematica del algoritmo SMOTE.}\label{fig:SMOTE}
+\end{figure}
+
+En suma, SMOTE permite generar ejemplos sintéticos que sean relativamente cercanos en el espacio de 
+características con respecto a las muestras existentes de la clase minoritaria. Además, las muestras 
+pueden crearse en la cantidad que sea requerida. Por lo tanto, en escenarios donde el conjunto de 
+datos no solo está desbalanceado sino que también presenta una escasez de muestras, la aplicación 
+de SMOTE resulta particularmente efectiva \citep{CITE:37} \citep{CITE:38}.
+
+
 
 \subsection{Métricas de evaluación en modelos de clasificación}
