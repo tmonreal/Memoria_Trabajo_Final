@@ -55,6 +55,9 @@ clínicas relevantes para el seguimiento de los pacientes.
 
 ESCRIBIR PARRAFO INTRODUCTORIO
 
+%----------------------------------------------------------------------------------------
+% 2.2.1 Fundamentos de los modelos de clasificación
+
 \subsection{Fundamentos de los modelos de clasificación}
 Un algoritmo de aprendizaje automático es una herramienta que permite resolver tareas  
 que suelen ser complejas de abordar para los seres humanos. La principal ventaja del \emph{machine 
@@ -83,8 +86,12 @@ entrenamiento que incluye tanto las características de las instancias como las 
 etiquetas, lo que le permite clasificar nuevas instancias de manera precisa. Algunos ejemplos de algoritmos 
 supervisados ampliamente utilizados son los árboles de decisión, las máquinas de vectores de soporte y 
 las redes neuronales \citep{CITE:34}. En este trabajo en particular, se empleó un modelo de clasificación 
-supervisado basado en redes neuronales con el propósito de predecir MACE.
+supervisado basado en redes neuronales con el propósito de predecir MACE. Es importante señalar que se trata
+de una clasificación binaria puesto que la variable \emph{target} tiene dos posibles valores: ausencia ("0") o 
+presencia ("1") de eventos cardiovasculares adversos mayores.
 
+%----------------------------------------------------------------------------------------
+% 2.2.2 Estrategias para tratar el desbalance de clases
 \subsection{Estrategias para tratar el desbalance de clases}
 
 Un conjunto de datos se considera desbalanceado cuando presenta una proporción significativamente mayor 
@@ -132,13 +139,97 @@ todas las muestras minoritarias \citep{CITE:38}.
 
 \footnotetext{Imagen adaptada de Schubach, Max; Re, Matteo; Robinson, Peter y Valentini, Giorgio. (2017). Imbalance-Aware Machine Learning for Predicting Rare and Common Disease-Associated Non-Coding Variants. Scientific Reports. 7. 10.1038/s41598-017-03011-5.}
 
-
 En suma, SMOTE permite generar ejemplos sintéticos que sean relativamente cercanos en el espacio de 
 características con respecto a las muestras existentes de la clase minoritaria. Además, las muestras 
 pueden crearse en la cantidad que sea requerida. Por lo tanto, en escenarios donde el conjunto de 
 datos no solo está desbalanceado sino que también presenta una escasez de muestras, la aplicación 
 de SMOTE resulta particularmente efectiva \citep{CITE:37} \citep{CITE:38}.
 
+%----------------------------------------------------------------------------------------
+% 2.2.3 Métricas de evaluación en modelos de clasificación
+\subsection{Evaluación de modelos de clasificación}
+Para evaluar el desempeño de un modelo de clasificación binaria se suele emplear una matriz de confusión. 
+Esta matriz se ilustra en la figura \ref{fig:MatrizConfusion}, donde las columnas representan la clase 
+predicha y las filas corresponden a las clases reales. 
+A partir de esta tabla, se definen cuatro indicadores:
+
+\begin{itemize}
+	\item Verdaderos positivos (TP, por sus siglas en inglés): asignaciones positivas correctas.
+	\item Verdaderos negativos (TN, por sus siglas en inglés): asignaciones negativas correctas.
+\item Falsos positivos (FP, por sus siglas en inglés): asignaciones positivas incorrectas. 
+En otras palabras, indica la presencia de una condición cuando la misma no está presente en realidad.
+\item Falsos negativos (FN, por sus siglas en inglés): asignaciones negativas incorrectas. 
+En otras palabras, indica la ausencia de una condición cuando en realidad sí esta presente.
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{./Figures/MatrizConfusion.jpg}
+	\caption{Matriz de confusión.}\label{fig:MatrizConfusion}
+\end{figure}
+
+En el ámbito médico, el falso negativo puede ocasionar las consecuencias más graves para la salud del 
+paciente. En este trabajo en particular, implica el riesgo de no tomar las medidas necesarias para un 
+tratamiento adecuado, lo cual puede incurrir en que el paciente experimente un evento cardiovascular 
+adverso mayor. En consecuencia, es de gran importancia minimizar la tasa de falsos negativos al máximo, 
+aún si esto implica un aumento de falsos positivos. Si bien este aumento puede implicar la necesidad de 
+destinar más recursos médicos para realizar pruebas adicionales o tratamientos innecesarios, se garantiza 
+que menos casos sean pasados por alto \citep{CITE:40}.
+
+A partir de los valores de TP, TN, FP y FN se definen diferentes métricas para evaluar el desempeño de 
+un modelo de clasificación. A continuación, se explican algunas en detalle.
+
+\subsubsection{\emph{Precision}}
+La presición o \emph{precision} es una métrica que permite conocer la proporción de ejemplos clasificados 
+correctamente como positivos sobre el total de ejemplos clasificados como positivos. Una alta precisión 
+indica que el modelo tiene una baja tasa de falsos positivos y clasifica correctamente la mayoría de las 
+instancias positivas. La expresión matemática que describe este comportamiento es la siguiente:
+
+\begin{equation}
+	\label{eq:precision}
+	Precision = \frac{TP}{TP + FP}
+\end{equation}
 
 
-\subsection{Métricas de evaluación en modelos de clasificación}
+\subsubsection{\emph{Recall}}
+La sensibilidad, \emph{recall} o tasa positiva real (TPR) es una métrica que mide la proporción de ejemplos 
+clasificados correctamente como positivos en relación con el total de ejemplos positivos. Por lo tanto, se 
+mide la capacidad de identificar la mayoría de las muestras positivas presentes. La expresión matemática 
+que describe este comportamiento es la siguiente:
+
+\begin{equation}
+	\label{eq:recall}
+	Recall = \frac{TP}{TP + FN}
+\end{equation}
+
+
+\subsubsection{\emph{F1-Score}}
+La métrica \emph{F1-Score} es la media armónica entre \emph{precision} y \emph{recall}. Dado que tiene 
+en cuenta tanto a los FP cómo los FN, se emplea para evaluar un modelo cuando el conjunto de datos es 
+desequilibrado. La expresión matemática que describe este comportamiento es la siguiente:
+
+\begin{equation}
+	\label{eq:f1score}
+	F1\,score = \frac{2}{\nicefrac{1}{Precision} + \nicefrac{1}{Recall}} = 2\cdot\frac{Recall \cdot Precision}{Recall + Precision}
+\end{equation}
+
+\subsubsection{\emph{Accuracy}}
+La exactitud o \emph{accuracy} es una métrica que mide la proporción de muestras clasificadas correctamente 
+sobre el total de muestras evaluadas y se describe matemáticamente como:
+
+\begin{equation}
+	\label{eq:accuracy}
+	Accuracy = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+\subsubsection{\emph{Specificity}}
+La especificidad, \emph{specificity} o tasa negativa real (TNR) se define como la proporción de falsos positivos 
+sobre el total de negativos reales y es una métrica exactamente opuesta a la sensibilidad. Esta dada por:
+
+\begin{equation}
+	\label{eq:specificity}
+	Specificity = \frac{TN}{TN + FP}
+\end{equation}
+
+
+\subsubsection{Curva ROC y AUC}
