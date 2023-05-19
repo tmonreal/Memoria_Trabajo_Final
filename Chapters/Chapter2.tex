@@ -252,13 +252,13 @@ común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicarí
 \begin{figure}[h!]
 	\centering
 	\subcaptionbox{Clasificador perfecto.\label{fig:ROC_a}}%
-  	[0.3\linewidth]{\includegraphics[height=10cm]{./Figures/ROC_a.jpg}}
+  	[0.3\linewidth]{\includegraphics[height=8cm]{./Figures/ROC_a.jpg}}
 	\hspace{1em}
 	\subcaptionbox{Clasificador con buen \\poder predictivo.\label{fig:ROC_b}}
-	[0.3\linewidth]{\includegraphics[height=10cm]{./Figures/ROC_b.jpg}}
+	[0.3\linewidth]{\includegraphics[height=8cm]{./Figures/ROC_b.jpg}}
 	\hspace{1em}
 	\subcaptionbox{Clasificador sin poder predictivo.\label{fig:ROC_c}}
-	[0.3\linewidth]{\includegraphics[height=10cm]{./Figures/ROC_c.jpg}}
+	[0.3\linewidth]{\includegraphics[height=8cm]{./Figures/ROC_c.jpg}}
 	\caption{Representación gráfica de la curva ROC y las distribuciones de TP y TN\protect\footnotemark.}
 \end{figure}
 \footnotetext{Imagen adaptada de Glen, S. (2019). ROC Curve Explained in One Picture. Data Science Central. https://www.datasciencecentral.com/roc-curve-explained-in-one-picture/}
@@ -279,9 +279,11 @@ y la minimización de falsas alarmas (alta especificidad).
 Las redes neuronales artificiales (RNA), propuestas inicialmente por McCulloch y Pitts en 1943 
 \citep{CITE:41}, son modelos computacionales que se inspiran en el funcionamiento del cerebro 
 humano. Si bien existen diversos tipos de RNA, esta sección se centra en los perceptrones 
-multicapa, puesto que es la red empleada en este trabajo. En particular, se se abordan diversos 
-aspectos teóricos clave, como la arquitectura, el algoritmo de entrenamiento, la validación del 
-modelo, los hiperparámetros y los optimizadores. 
+multicapa, puesto que es la red empleada en este trabajo. En particular, se abordan varios 
+aspectos teóricos clave relacionados con los perceptrones multicapa, incluyendo los bloques 
+fundamentales que componen esta red, el algoritmo de entrenamiento, la validación del modelo, 
+los hiperparámetros y los optimizadores.
+
 %----------------------------------------------------------------------------------------
 % 2.3.1 Perceptrón
 \subsection{Perceptrón}
@@ -291,8 +293,8 @@ cómo un perceptrón recibe $n$ señales de entrada $X = (x_1, x_2, …, x_n)$, 
 por un peso $W = (w_1, w_2, …, w_n)$. Este comportamiento es análogo a la manera en que los 
 pesos sinápticos influyen en las neuronas biológicas, ya que algunas entradas tienen mayor relevancia 
 que otras. Por este motivo, las entradas se combinan como una suma ponderada por sus pesos 
-($\sum_{i=1}^{n} W_i \cdot X_i$) y se suma un término independiente conocido como \emph{bias} o 
-sesgo, que le otorga flexibilidad al perceptrón en la modelización de patrones complejos. 
+($\sum_{i=1}^{n} W_i^T \cdot X_i$) y se añade un término independiente conocido como \emph{bias} o 
+sesgo, con el fin de otorgar flexibilidad en la modelización de patrones complejos. 
 Posteriormente, se aplica una transformación no lineal mediante una función de activación $g$, 
 la cual determina la salida $\hat{y} $ del perceptrón \citep{CITE:35} \citep{CITE:42}. 
 La descripción matemática de este comportamiento se expresa de la siguiente manera: 
@@ -332,25 +334,97 @@ profunda o \emph{deep neural network} (DNN) \citep{CITE:35} \citep{CITE:44}.
 	\label{fig:MLP}
 \end{figure}
 
-Como se aprecia en la figura \ref{fig:MLP}, todos los nodos de una capa se encuentran conectados con todos los nodos de las 
-capas adyacentes. El número de neuronas en la capa de entrada está definido por la cantidad de variables independientes 
+Por otro lado, el número de neuronas en la capa de entrada está definido por la cantidad de variables independientes 
 del modelo, mientras que el número de nodos de la salida es la cantidad de variables dependientes. Además, el número de 
 capas ocultas y su cantidad de neuronas dependen de la complejidad del modelo en cuestión, y son parámetros importantes 
-a tener en cuenta durante el desarrollo del mismo \citep{CITE:42}.
+a tener en cuenta durante el desarrollo de la red\citep{CITE:42}.
 
 La configuración del perceptrón multicapa de la figura \ref{fig:MLP} se conoce como \emph{fully connected}, ya que todos 
 los nodos de una capa están conectados con todos los nodos de las capas adyacentes. Sin embargo, existen otros tipos de 
-capas que poseen diferentes estructuras de conexión. Por ejemplo, las capas de abandono o \emph{dropout} introducen la omisión de 
+capas que poseen diferentes estructuras de conexión. Por ejemplo, las de abandono o \emph{dropout} introducen la omisión de 
 algunos nodos durante el entrenamiento de forma aleatoria para reducir el sobreajuste \citep{CITE:44} \citep{CITE:45}.
 
+En general, la función de activación comúnmente empleada en las capas ocultas es la unidad lineal rectificada (ReLU, 
+por sus siglas en inglés). La elección de ReLU se basa en dos ventajas principales: su implementación es rápida y no 
+tiene un valor máximo de salida. En consecuencia, se evitan ciertos problemas durante el descenso del gradiente. En la 
+ecuación \ref{eq:relu}, se observa que si el valor de entrada $z$ es negativo, la función retorna un 0; de lo contrario, 
+devuelve el valor de $z$ \citep{CITE:44}. 
+
+\begin{equation}
+	\label{eq:relu}
+	ReLU(z) = max(0, z)
+\end{equation}
+
+Por otro lado, en la capa de salida de un modelo de clasificación binaria, es común utilizar la función sigmoide o 
+\emph{sigmoid}. Esta función, definida en la ecuación \ref{eq:sigmoid}, toma valores reales como entrada y genera 
+valores de salida en el rango de 0 a 1. Así, la función sigmoide es útil para predecir la probabilidad de una 
+variable binaria \citep{CITE:44}. 
+
+\begin{equation}
+	\label{eq:sigmoid}
+	\sigma(z) = \frac{1} {1 + e^{-z}}
+\end{equation}
 
 
 %----------------------------------------------------------------------------------------
 % 2.3.3 Algoritmo de entrenamiento
 \subsection{Algoritmo de entrenamiento}
+El perceptrón multicapa se entrena con el fin de minimizar el error entre la salida deseada $y$ y 
+la salida computada por el modelo $\hat{y}$ empleando una función de pérdida o \emph{loss function}. 
+En el caso de problemas de clasificación binaria, se utiliza una función llamada 
+\emph{binary cross entropy} (BCE), que se define como:
 
-\subsubsection{Forward propagation}
-\subsubsection{Backpropagation}
+\begin{equation}
+	\label{eq:BCE}
+	\mathcal{L} = -\frac{1}{N} \sum_{i=1}^Ny_{i}\cdot\log(\hat{y_{i}}) + (1 - y_{i})\cdot\log(1 - \hat{y_{i}})
+\end{equation}
+
+Como resultado, cuando la salida verdadera es $y_{i} = 1$, la probabilidad de clasificarlo como 
+1 es  $\hat{y_{i}}$, lo que hace que el segundo término se anule. Por el contrario, cuando la 
+salida verdadera es $y_{i} = 0$, la probabilidad de clasificarlo como 1 es  $1 - \hat{y_{i}}$, 
+lo que hace que se cancele el primer término. De esta forma, al aplicar el logaritmo, la BCE 
+penaliza en mayor medida cuando el modelo clasifica incorrectamente con alta confianza \citep{CITE:46}. 
+En consecuencia, si la red produce una respuesta equivocada, los pesos se actualizan para minimizar el error. 
+Esto conduce a una reducción de los errores y aumenta la probabilidad de que las salidas futuras de la red 
+sean correctas. En la práctica, el algoritmo de aprendizaje de un MLP involucra una etapa de propagación 
+hacia adelante (\emph{forward propagation}) seguida de una etapa de propagación hacia atrás (\emph{backward propagation} 
+o \emph{backpropagation}) \citep{CITE:35}. A continuación, se describen brevemente estas etapas.
+
+\subsubsection{Propagación hacia adelante}
+La fase de propagación hacia adelante implica el flujo de información desde la capa de entrada hacia la de 
+salida de la red neuronal, con el objetivo de realizar una predicción. La salida de la n-ésima capa se 
+define en la ecuación \ref{eq:forward}, donde $h^{(n)}$ es la salida, $g^{(n)}$ es la función de activación, $W^{(n)}$ 
+es la matriz de pesos y $b^{(n)}$ es el vector de sesgos.
+
+\begin{equation}
+	\label{eq:forward}
+	h^{(n)} = g^{(n)} (W^{(n)T} \cdot h^{(n-1)} + b^{(n)})
+\end{equation}
+
+El algoritmo~\ref{alg:forward} describe el proceso de \emph{forward propagation} en una red neuronal de profundidad $n$. 
+Luego de calcular la predicción $\hat{y}$, se calcula la función de costo total $J$ durante la fase de entrenamiento. 
+Esta se define como la suma de la función de pérdida $\mathcal{L}$ y un término de regularización $\lambda \Omega(w)$.
+
+\floatname{algorithm}{Algoritmo}
+\begin{algorithm}
+	\caption{Propagación hacia adelante de una RNA con $n$ capas.}
+	\label{alg:forward}
+	\begin{algorithmic}
+		\Require $W^{(i)}, i \in 1, \ldots, n$ 
+		\Require $b^{(i)}, i \in 1, \ldots, n$ 
+		\Require $x$ 
+		\Require $y$ 
+		\State $h^{(1)} \gets x$
+		\For{$m \gets 1, \ldots, n$}
+		\State $a^{(m)} \gets W^{(m)}h^{(m-1)} + b^{(m)} $
+		\State $h^{(m)} \gets g(a^{(m)})$
+		\EndFor
+		\State $\hat{y} \gets h^{(n)}$
+		\State $J \gets \mathcal{L}(\hat{y}, y) + \lambda \Omega(w)$ 
+	\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Retropropagación}
 
 %----------------------------------------------------------------------------------------
 % 2.3.4 Validación del modelo
