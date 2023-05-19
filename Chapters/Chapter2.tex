@@ -53,7 +53,9 @@ clínicas relevantes para el seguimiento de los pacientes.
 \section{Algoritmos de clasificación}
 \label{sec:Algoritmos de clasificación}
 
-ESCRIBIR PARRAFO INTRODUCTORIO
+En esta sección se presentan los fundamentos de los modelos de clasificación, junto con las 
+estrategias utilizadas para abordar el desbalance de clases, con especial énfasis en la técnica SMOTE. 
+Además, se exploran las métricas utilizadas para evaluar el desempeño de los modelos desarrollados.
 
 %----------------------------------------------------------------------------------------
 % 2.2.1 Fundamentos de los modelos de clasificación
@@ -123,7 +125,7 @@ un segmento de línea en el espacio de características con la muestra elegida a
 una instancia sintética en un punto aleatorio entre los dos ejemplos. Este procedimiento se repite para
 todas las muestras minoritarias \citep{CITE:38}. 
 
-\begin{figure}[!htpb]
+\begin{figure}[h!]
 	\centering
 	\subcaptionbox{SMOTE comienza con un conjunto de ejemplos positivos (puntos verdes) y negativos (puntos azules).}%
   	[0.3\linewidth]{\includegraphics[height=5cm]{./Figures/SMOTE_a.jpg}}\label{fig:SMOTEa}
@@ -156,13 +158,13 @@ A partir de esta tabla, se definen cuatro indicadores:
 \begin{itemize}
 	\item Verdaderos positivos (TP, por sus siglas en inglés): asignaciones positivas correctas.
 	\item Verdaderos negativos (TN, por sus siglas en inglés): asignaciones negativas correctas.
-\item Falsos positivos (FP, por sus siglas en inglés): asignaciones positivas incorrectas. 
-En otras palabras, indica la presencia de una condición cuando la misma no está presente en realidad.
-\item Falsos negativos (FN, por sus siglas en inglés): asignaciones negativas incorrectas. 
-En otras palabras, indica la ausencia de una condición cuando en realidad sí esta presente.
+\item Falsos positivos (FP, por sus siglas en inglés): asignaciones positivas incorrectas, es decir que
+indican la presencia de una condición cuando la misma en realidad no está presente.
+\item Falsos negativos (FN, por sus siglas en inglés): asignaciones negativas incorrectas, lo que significa
+que indican la ausencia de una condición cuando en realidad está presente.
 \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{./Figures/MatrizConfusion.jpg}
 	\caption{Matriz de confusión.}\label{fig:MatrizConfusion}
@@ -172,7 +174,7 @@ En el ámbito médico, el falso negativo puede ocasionar las consecuencias más 
 paciente. En este trabajo en particular, implica el riesgo de no tomar las medidas necesarias para un 
 tratamiento adecuado, lo cual puede incurrir en que el paciente experimente un evento cardiovascular 
 adverso mayor. En consecuencia, es de gran importancia minimizar la tasa de falsos negativos al máximo, 
-aún si esto implica un aumento de falsos positivos. Si bien este aumento puede implicar la necesidad de 
+aún si esto implica un aumento de falsos positivos. Si bien este incremento puede implicar la necesidad de 
 destinar más recursos médicos para realizar pruebas adicionales o tratamientos innecesarios, se garantiza 
 que menos casos sean pasados por alto \citep{CITE:40}.
 
@@ -194,8 +196,8 @@ instancias positivas. La expresión matemática que describe este comportamiento
 \subsubsection{\emph{Recall}}
 La sensibilidad, \emph{recall} o tasa positiva real (TPR) es una métrica que mide la proporción de ejemplos 
 clasificados correctamente como positivos en relación con el total de ejemplos positivos. Por lo tanto, se 
-mide la capacidad de identificar la mayoría de las muestras positivas presentes. La expresión matemática 
-que describe este comportamiento es la siguiente:
+mide la capacidad de identificar la mayoría de las muestras positivas presentes. La siguiente ecuación 
+matemática describe este comportamiento:
 
 \begin{equation}
 	\label{eq:recall}
@@ -206,7 +208,7 @@ que describe este comportamiento es la siguiente:
 \subsubsection{\emph{F1-Score}}
 La métrica \emph{F1-Score} es la media armónica entre \emph{precision} y \emph{recall}. Dado que tiene 
 en cuenta tanto a los FP cómo los FN, se emplea para evaluar un modelo cuando el conjunto de datos es 
-desequilibrado. La expresión matemática que describe este comportamiento es la siguiente:
+desequilibrado. La fórmula matemática que describe este comportamiento es la siguiente:
 
 \begin{equation}
 	\label{eq:f1score}
@@ -224,7 +226,7 @@ sobre el total de muestras evaluadas y se describe matemáticamente como:
 
 \subsubsection{\emph{Specificity}}
 La especificidad, \emph{specificity} o tasa negativa real (TNR) se define como la proporción de falsos positivos 
-sobre el total de negativos reales y es una métrica exactamente opuesta a la sensibilidad. Esta dada por:
+sobre el total de negativos reales. Es una métrica exactamente opuesta a la sensibilidad y esta dada por:
 
 \begin{equation}
 	\label{eq:specificity}
@@ -233,3 +235,132 @@ sobre el total de negativos reales y es una métrica exactamente opuesta a la se
 
 
 \subsubsection{Curva ROC y AUC}
+La curva ROC es una representación gráfica que muestra la tasa de verdaderos positivos (sensibilidad)
+en función de la tasa de falsos positivos (1 - especificidad) a medida que se varía el umbral de 
+clasificación. Si bien puede ser de utilidad visualizar la curva ROC, en muchas casos la información 
+puede resumirse en la métrica AUC (acrónimo de \emph{Area Under the Curve}), que mide el área bajo la curva 
+ROC. En general, cuanto más alto sea el AUC, mejor es el desempeño del clasificador. 
+
+En la figura \ref{fig:ROC_a}, se puede observar un clasificador ideal en el cual las curvas de TP y TN no se 
+superponen en absoluto, lo que resulta en un AUC igual a 1. Por el contrario, en la figura \ref{fig:ROC_c}, 
+se muestra un clasificador de predicción aleatoria, donde la curva ROC es una línea recta con una pendiente unitaria. 
+En este caso, las curvas de TP y TN se superponen por completo, lo que da como resultado un AUC de 0.5. 
+En la figura \ref{fig:ROC_b}, se observa un caso intermedio en el que hay cierta superposición entre las curvas 
+de TP y TN. En general, la mayoría de los modelos de clasificación binaria tienen un AUC entre 0.5 y 1. Es poco 
+común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicaría que las predicciones están invertidas.
+
+\begin{figure}[h!]
+	\centering
+	\subcaptionbox{Clasificador perfecto.\label{fig:ROC_a}}%
+  	[0.3\linewidth]{\includegraphics[height=10cm]{./Figures/ROC_a.jpg}}
+	\hspace{1em}
+	\subcaptionbox{Clasificador con buen \\poder predictivo.\label{fig:ROC_b}}
+	[0.3\linewidth]{\includegraphics[height=10cm]{./Figures/ROC_b.jpg}}
+	\hspace{1em}
+	\subcaptionbox{Clasificador sin poder predictivo.\label{fig:ROC_c}}
+	[0.3\linewidth]{\includegraphics[height=10cm]{./Figures/ROC_c.jpg}}
+	\caption{Representación gráfica de la curva ROC y las distribuciones de TP y TN\protect\footnotemark.}
+\end{figure}
+\footnotetext{Imagen adaptada de Glen, S. (2019). ROC Curve Explained in One Picture. Data Science Central. https://www.datasciencecentral.com/roc-curve-explained-in-one-picture/}
+
+Para el presente trabajo, se evaluaron todas las métricas mencionadas anteriormente. Sin embargo, se seleccionó 
+el AUC como la métrica principal para medir el desempeño de los modelos. Esto se debe a que en el ámbito clínico 
+resulta de gran relevancia analizar la relación de compromiso entre la sensibilidad y especificidad. En definitiva, 
+se buscó encontrar un equilibrio óptimo entre la detección temprana de casos de MACE positivos (alta sensibilidad) 
+y la minimización de falsas alarmas (alta especificidad). 
+
+
+%----------------------------------------------------------------------------------------
+%	2.3 PERCEPTRÓN MULTICAPA
+%----------------------------------------------------------------------------------------
+\section{Perceptrón multicapa}
+\label{sec:Perceptrón multicapa}
+
+Las redes neuronales artificiales (RNA), propuestas inicialmente por McCulloch y Pitts en 1943 
+\citep{CITE:41}, son modelos computacionales que se inspiran en el funcionamiento del cerebro 
+humano. Si bien existen diversos tipos de RNA, esta sección se centra en los perceptrones 
+multicapa, puesto que es la red empleada en este trabajo. En particular, se se abordan diversos 
+aspectos teóricos clave, como la arquitectura, el algoritmo de entrenamiento, la validación del 
+modelo, los hiperparámetros y los optimizadores. 
+%----------------------------------------------------------------------------------------
+% 2.3.1 Perceptrón
+\subsection{Perceptrón}
+Un perceptrón, también conocido como neurona artificial o nodo, es el bloque fundamental de las 
+RNA y fue propuesto por Frank Rosenblatt en 1957 \citep{CITE:43}. En la figura \ref{fig:Perceptron} se puede observar 
+cómo un perceptrón recibe $n$ señales de entrada $X = (x_1, x_2, …, x_n)$, las cuales se multiplican 
+por un peso $W = (w_1, w_2, …, w_n)$. Este comportamiento es análogo a la manera en que los 
+pesos sinápticos influyen en las neuronas biológicas, ya que algunas entradas tienen mayor relevancia 
+que otras. Por este motivo, las entradas se combinan como una suma ponderada por sus pesos 
+($\sum_{i=1}^{n} W_i \cdot X_i$) y se suma un término independiente conocido como \emph{bias} o 
+sesgo, que le otorga flexibilidad al perceptrón en la modelización de patrones complejos. 
+Posteriormente, se aplica una transformación no lineal mediante una función de activación $g$, 
+la cual determina la salida $\hat{y} $ del perceptrón \citep{CITE:35} \citep{CITE:42}. 
+La descripción matemática de este comportamiento se expresa de la siguiente manera: 
+
+\begin{equation}\label{eq:perceptron}
+\begin{split}
+	&\hat{y} = g(z) = g( \sum_{i=1}^{n} W^T \cdot X + b) \\
+				&\hat{y} = g(x_1 \cdot w_1 + x_1 \cdot w_1 + … + x_n \cdot w_n + b)
+\end{split}
+\end{equation}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/Perceptron.jpg}
+	\caption{Representación de un perceptrón.}
+	\label{fig:Perceptron}
+\end{figure}
+
+
+%----------------------------------------------------------------------------------------
+% 2.3.2 Arquitectura del perceptrón multicapa
+\subsection{Arquitectura del perceptrón multicapa}
+
+Un perceptrón multicapa (MLP, por sus siglas en inglés), también conocido como \emph{feedforward neural network} es 
+una arquitectura de RNA ampliamente utilizada en el campo del aprendizaje profundo. Como se aprecia en la figura \ref{fig:MLP}, 
+un MLP está compuesto por tres capas: capa de entrada o \emph{input layer}, capa oculta 
+o \emph{hidden layer} y capa de salida o \emph{output layer}. 
+A su vez, cada capa está formada por neuronas artificiales. La arquitectura del MLP es conocida como \emph{feedforward} 
+puesto que la información siempre fluye desde la capa de entrada hacia la capa de salida a través de las capas ocultas, 
+sin conexiones de retroalimentación. Cuando una RNA tiene dos o más capas ocultas, se lo conoce como una red neuronal 
+profunda o \emph{deep neural network} (DNN) \citep{CITE:35} \citep{CITE:44}. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/MLP.jpg}
+	\caption{Representación de un perceptrón multicapa \\ \emph{fully connected}.}
+	\label{fig:MLP}
+\end{figure}
+
+Como se aprecia en la figura \ref{fig:MLP}, todos los nodos de una capa se encuentran conectados con todos los nodos de las 
+capas adyacentes. El número de neuronas en la capa de entrada está definido por la cantidad de variables independientes 
+del modelo, mientras que el número de nodos de la salida es la cantidad de variables dependientes. Además, el número de 
+capas ocultas y su cantidad de neuronas dependen de la complejidad del modelo en cuestión, y son parámetros importantes 
+a tener en cuenta durante el desarrollo del mismo \citep{CITE:42}.
+
+La configuración del perceptrón multicapa de la figura \ref{fig:MLP} se conoce como \emph{fully connected}, ya que todos 
+los nodos de una capa están conectados con todos los nodos de las capas adyacentes. Sin embargo, existen otros tipos de 
+capas con diferentes estructuras de conexión. Por ejemplo, las capas de abandono o \emph{dropout} introducen la omisión de 
+algunos nodos durante el entrenamiento de forma aleatoria para reducir el sobreajuste.
+
+
+
+%----------------------------------------------------------------------------------------
+% 2.3.3 Algoritmo de entrenamiento
+\subsection{Algoritmo de entrenamiento}
+
+\subsubsection{Forward propagation}
+\subsubsection{Backpropagation}
+
+%----------------------------------------------------------------------------------------
+% 2.3.4 Validación del modelo
+\subsection{Validación del modelo}
+
+%----------------------------------------------------------------------------------------
+% 2.3.5 Optimización del modelo
+\subsection{Optimización del modelo}
+
+%----------------------------------------------------------------------------------------
+% 2.3.6 Hiperparámetros del modelo
+\subsection{Hiperparámetros del modelo}
+
