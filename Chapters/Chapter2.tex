@@ -416,11 +416,11 @@ Esta se define como la suma de la función de pérdida $\mathcal{L}$ y un térmi
 		\Require $y$ 
 		\State $h^{(1)} \gets x$
 		\For{$m \gets 1, \ldots, n$}
-		\State $a^{(m)} \gets W^{(m)}h^{(m-1)} + b^{(m)} $
+		\State $a^{(m)} \gets W^{(m)T}h^{(m-1)} + b^{(m)} $
 		\State $h^{(m)} \gets g(a^{(m)})$
 		\EndFor
 		\State $\hat{y} \gets h^{(n)}$
-		\State $J \gets \mathcal{L}(\hat{y}, y) + \lambda \Omega(w)$ 
+		\State $J \gets \mathcal{L}(\hat{y}, y) + \lambda \Omega(w)$ \Comment{\small Si es fase de entrenamiento.}
 	\end{algorithmic}
 \end{algorithm}
 
@@ -432,7 +432,7 @@ Rumelhart \emph{et al.} publicaron un artículo revolucionario que introdujo el 
 de \emph{backpropagation} \citep{CITE:47}. La fase de retropropagación se describe en el 
 algoritmo~\ref{alg:backpropagation}. Esta implica el cálculo del gradiente de la función de 
 costo respecto a todos los parámetros entrenables empleando la regla de la cadena. 
-Luego, este gradiente se propaga desde la salida hacia la entrada de la red neuronal.
+Luego, este gradiente se propaga desde la salida hacia la entrada de la red neuronal \citep{CITE:35} \citep{CITE:42} \citep{CITE:44}.
 
 \begin{algorithm}[H]
 	\caption{Propagación hacia atrás de una RNA con $n$ capas.}
@@ -450,6 +450,31 @@ Luego, este gradiente se propaga desde la salida hacia la entrada de la red neur
 %----------------------------------------------------------------------------------------
 % 2.3.4 Validación del modelo
 \subsection{Validación del modelo}
+Para el desarrollo de una RNA, es necesario dividir al conjunto de datos en dos subconjuntos: uno para el 
+entrenamiento y otro para la validación o prueba. El conjunto de entrenamiento se emplea para entrenar a 
+la red, mientras que el conjunto de prueba se utiliza para evaluar su desempeño. Es crucial asegurarse de 
+que el conjunto de entrenamiento sea lo suficientemente grande y representativo del problema, mientras 
+que el de prueba sea lo suficientemente grande para facilitar una correcta validación de la red. En casos 
+donde el número de ejemplos disponible no es suficiente para realizar la división representativa, se 
+pueden utilizar otras estrategias \citep{CITE:42}. 
+El procedimiento mayormente empleado es la validación cruzada de $k$ 
+iteraciones, también conocida como \emph{k-fold cross validation}, que se ilustra en la figura \ref{fig:crossval}. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/cross_validation.jpg}
+	\caption{Representación esquemática de \emph{k-fold cross validation} con $k=5$\protect\footnotemark.}
+	\label{fig:crossval}
+\end{figure}
+
+\footnotetext{Imagen adaptada de Ashfaque Maat, Johar y Iqbal, Amer. (2019). Introduction to Support Vector Machines and Kernel Methods.}
+
+La validación cruzada de $k$ iteraciones consiste en dividir el conjunto de datos en $k$ subconjuntos. Durante 
+el proceso de entrenamiento, se toma cada $k$ subconjunto como el conjunto de prueba, mientras que los 
+restantes ($k-1$) se utilizan como conjunto de entrenamiento. Este proceso se repetie $k$ veces, donde 
+en cada iteración se toma un conjunto de prueba diferente y los datos remanentes forman el conjunto 
+de entrenamiento. Al finalizar las $k$ iteraciones, se calcula el promedio de las métricas y error 
+obtenidos para cada subconjunto de prueba \citep{CITE:48}.
 
 %----------------------------------------------------------------------------------------
 % 2.3.5 Optimización del modelo
