@@ -479,8 +479,43 @@ obtenidos para cada subconjunto de prueba \citep{CITE:48}.
 %----------------------------------------------------------------------------------------
 % 2.3.5 Optimización del modelo
 \subsection{Optimización del modelo}
+Es fundamental comprender el papel de los optimizadores y su impacto en el entrenamiento de una red neuronal. 
+Los optimizadores son un algoritmos empleados para ajustar los parámetros de la red, con el fin de minimizar 
+la función de pérdida. Como resultado, logran mejorar la capacidad de aprendizaje y rendimiento del modelo. 
+Algunos optimizadores comúnmente utilizados incluyen: descenso de gradiente estocástico, AdaGrad, Adam y RMSprop. 
+Cada uno de ellos posee sus propias características y métodos de actualización de parámetros. Por lo tanto, 
+la elección del optimizador es un paso importante en el desarrollo de un modelo, ya que puede influir 
+significativamente en la velocidad y calidad de convergencia durante el entrenamiento \citep{CITE:44}.
+
+En particular, el algoritmo de optimización empleado en este trabajo fue propuesto por 
+Diederik Kingma y Jimmy Ba en su artículo ``\emph{Adam: A Method for Stochastic Optimization}'' \citep{CITE:49}. Si bien 
+la elección del optimizador depende de diversos factores, Adam se destaca por múltiples ventajas, que incluyen:
+
+\begin{itemize}
+	\item Implementación sencilla.
+	\item Eficiencia computacional.
+	\item Requisitos de memoria reducidos.
+	\item Invarianza a la reescala diagonal de los gradientes.
+	\item Adecuación para problemas con muchos datos y/o parámetros.
+	\item Idoneidad para problemas con gradientes muy ruidosos o dispersos.
+	\item Hiperparámetros con interpretación intuitiva que generalmente requieren poco ajuste.
+\end{itemize}
+
 
 %----------------------------------------------------------------------------------------
 % 2.3.6 Hiperparámetros del modelo
 \subsection{Hiperparámetros del modelo}
+En los modelos de aprendizaje automático, los parámetros son las variables que se estiman durante el 
+proceso de entrenamiento con el conjunto de datos. Por otro lado, los hiperparámetros del modelo 
+corresponden a los valores de configuración que se emplean durante dicho proceso. A diferencia de 
+los parámetros, los hiperparámetros no son afectados por el algoritmo de aprendizaje. Por lo tanto, 
+deben ser establecidos antes del entrenamiento y se mantienen constantes durante el mismo \citep{CITE:44}.
+
+Usualmente, gran parte del diseño de una RNA implica la selección y ajuste de los hiperparámetros. 
+Una elección adecuada puede tener un impacto significativo en el desempeño del modelo, ya que estos 
+determinan el comportamiento y la capacidad de aprendizaje de la red. Algunos hiperparámetros 
+que pueden ser ajustados incluyen: cantidad y tipo de capas ocultas, cantidad de neuronas en cada capa,
+función de activación, función de pérdida, optimizador, tasa de aprendizaje, tamaño del lote y
+número de épocas de entrenamiento \citep{CITE:35} \citep{CITE:42} \citep{CITE:44}.
+
 
