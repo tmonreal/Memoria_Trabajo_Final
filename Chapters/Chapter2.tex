@@ -394,7 +394,7 @@ o \emph{backpropagation}) \citep{CITE:35}. A continuación, se describen breveme
 La fase de propagación hacia adelante implica el flujo de información desde la capa de entrada hacia la de 
 salida de la red neuronal, con el objetivo de realizar una predicción. La salida de la n-ésima capa se 
 define en la ecuación \ref{eq:forward}, donde $h^{(n)}$ es la salida, $g^{(n)}$ es la función de activación, $W^{(n)}$ 
-es la matriz de pesos y $b^{(n)}$ es el vector de sesgos.
+es la matriz de pesos y $b^{(n)}$ es el vector de sesgos \citep{CITE:35} \citep{CITE:44}.
 
 \begin{equation}
 	\label{eq:forward}
@@ -426,6 +426,27 @@ Esta se define como la suma de la función de pérdida $\mathcal{L}$ y un térmi
 
 \subsubsection{Retropropagación}
 
+Durante muchos años, los investigadores se enfrentaron al desafío de encontrar una forma 
+efectiva de entrenar a los perceptrones multicapa sin éxito. Sin embargo, en 1986, D. E. 
+Rumelhart \emph{et al.} publicaron un artículo revolucionario que introdujo el método 
+de \emph{backpropagation} \citep{CITE:47}. La fase de retropropagación se describe en el 
+algoritmo~\ref{alg:backpropagation}. Esta implica el cálculo del gradiente de la función de 
+costo respecto a todos los parámetros entrenables empleando la regla de la cadena. 
+Luego, este gradiente se propaga desde la salida hacia la entrada de la red neuronal.
+
+\begin{algorithm}[H]
+	\caption{Propagación hacia atrás de una RNA con $n$ capas.}
+	\label{alg:backpropagation}
+		\begin{algorithmic}
+		\State $g \gets \nabla_{\hat{y}} J = \nabla_{\hat{y}} \mathcal{L}(\hat{y}, y)$ \Comment{\small Cálculo del gradiente en la capa de salida.}
+		\For{$m \gets n, n-1, \ldots, 1$}
+		\State $g \gets \nabla_{a^{(m)}} J = g \odot f'(a^{(m)})$ \Comment{Actualiza el gradiente $g$.}
+		\State $\nabla_{b^{(m)}} J = g + \lambda \nabla_{b^{(m)}} \Omega(w)$ \Comment{\small Cálculo del gradiente respecto a $b^{(m)}$.}
+		\State $\nabla_{W^{(m)}} J = g h^{(m-1)} + \lambda \nabla_{W^{(m)}} \Omega(w)$ \Comment{\small Cálculo del gradiente respecto a $W^{(m)}$.}
+		\State $g \gets \nabla_{h^{(m-1)}} J = W^{(m)T}g$ \Comment{\small Propagación del gradiente.}
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
 %----------------------------------------------------------------------------------------
 % 2.3.4 Validación del modelo
 \subsection{Validación del modelo}
