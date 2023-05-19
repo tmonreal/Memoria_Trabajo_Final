@@ -5,7 +5,10 @@
 %----------------------------------------------------------------------------------------
 %	2.1 ENFOQUE DEL PROBLEMA
 %----------------------------------------------------------------------------------------
-ESCRIBIR PARRAFO INTRODUCTORIO
+El objetivo de este capítulo es proporcionar una una base teórica sólida sobre las herramientas y 
+métodos utilizados en el desarrollo de este trabajo. En particular,  se presentan las principales 
+etapas de trabajo, se explican los conceptos elementales de los algoritmos de clasificación binaria 
+y se exploran los fundamentos del perceptrón multicapa.
 
 \section{Enfoque del problema}
 \label{sec:Enfoque del problema}
@@ -40,11 +43,11 @@ posteriores en el desarrollo de este trabajo.
 
 Por último, se procedió al diseñó y entrenamiento de dos modelos de clasificación utilizando 
 redes neuronales. El primer modelo se construyó exclusivamente con los datos de presurometrías, 
-mientras que el segundo modelo se enriqueció al incluir también los datos clínicos. El propósito 
+mientras que el segundo también incluyó los datos clínicos. El propósito 
 de esta estrategia fue analizar y comparar el rendimiento de los dos modelos y evaluar si los 
 datos de MAPA tienen un sustento suficiente para predecir la variable objetivo MACE. De esta 
 manera, se buscó determinar si la inclusión de información clínica adicional contribuyó a 
-mejorar las métricas de desempeño en la predicción de MACE, y si podría tener implicancias 
+mejorar las métricas de desempeño, y si podría tener implicancias 
 clínicas relevantes para el seguimiento de los pacientes.
 
 %----------------------------------------------------------------------------------------
@@ -110,9 +113,10 @@ mientras que el segundo implica realizar un remuestreo del conjunto de datos ori
 un nuevo muestreo del \emph{dataset} efectuando un sobremuestreo de la clase minoritaria y/o un submuestreo 
 de la clase mayoritaria. El submuestreo implica una reducción del número de instancias de la clase mayoritaria, 
 lo cual puede resultar en la pérdida de información valiosa que sea representativa de la distribución de los 
-datos. Por otra parte, el sobremuestreo suele implicar réplicas de ejemplos de la clase minoritaria, lo cual 
-puede generar un sobreajuste. En concreto, el modelo concede predicciones muy precisas para el conjunto de 
-entrenamiento pero no logra generalizar adecuadamente cuando se presentan nuevos datos \citep{CITE:37}. 
+datos. Por otra parte, el sobremuestreo suele incluir réplicas de ejemplos de la clase minoritaria, lo cual 
+puede generar un sobreajuste. Cabe señalar que un modelo sobreajustado concede predicciones 
+muy precisas para el conjunto de entrenamiento pero no logra generalizar adecuadamente cuando se presentan 
+nuevos datos \citep{CITE:37}. 
 
 Para mitigar las desventajas mencionadas anteriormente, Nitesh Chawla \emph{et al.} \citep{CITE:37} 
 introducen una nueva técnica que implica una forma especial 
@@ -139,7 +143,6 @@ todas las muestras minoritarias \citep{CITE:38}.
 	   \label{fig:SMOTE}
 \end{figure}
 
-\footnotetext{Imagen adaptada de Schubach, Max; Re, Matteo; Robinson, Peter y Valentini, Giorgio. (2017). Imbalance-Aware Machine Learning for Predicting Rare and Common Disease-Associated Non-Coding Variants. Scientific Reports. 7. 10.1038/s41598-017-03011-5.}
 
 En suma, SMOTE permite generar ejemplos sintéticos que sean relativamente cercanos en el espacio de 
 características con respecto a las muestras existentes de la clase minoritaria. Además, las muestras 
@@ -147,12 +150,17 @@ pueden crearse en la cantidad que sea requerida. Por lo tanto, en escenarios don
 datos no solo está desbalanceado sino que también presenta una escasez de muestras, la aplicación 
 de SMOTE resulta particularmente efectiva \citep{CITE:37} \citep{CITE:38}.
 
+
 %----------------------------------------------------------------------------------------
 % 2.2.3 Métricas de evaluación en modelos de clasificación
 \subsection{Evaluación de modelos de clasificación}
+
+% el footnote text es de la imagen de smote, pero si lo ponia mas arriba lo corria en la pagina anterior
+\footnotetext{Imagen adaptada de Schubach, Max; Re, Matteo; Robinson, Peter y Valentini, Giorgio. (2017). Imbalance-Aware Machine Learning for Predicting Rare and Common Disease-Associated Non-Coding Variants. Scientific Reports. 7. 10.1038/s41598-017-03011-5.}
+
 Para evaluar el desempeño de un modelo de clasificación binaria se suele emplear una matriz de confusión. 
 Esta matriz se ilustra en la figura \ref{fig:MatrizConfusion}, donde las columnas representan la clase 
-predicha y las filas corresponden a las clases reales. 
+predicha y las filas corresponden a las clases reales \citep{CITE:44}. 
 A partir de esta tabla, se definen cuatro indicadores:
 
 \begin{itemize}
@@ -167,8 +175,9 @@ que indican la ausencia de una condición cuando en realidad está presente.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{./Figures/MatrizConfusion.jpg}
-	\caption{Matriz de confusión.}\label{fig:MatrizConfusion}
+	\caption{Matriz de confusión\protect\footnotemark.}\label{fig:MatrizConfusion}
 \end{figure}
+
 
 En el ámbito médico, el falso negativo puede ocasionar las consecuencias más graves para la salud del 
 paciente. En este trabajo en particular, implica el riesgo de no tomar las medidas necesarias para un 
@@ -177,6 +186,11 @@ adverso mayor. En consecuencia, es de gran importancia minimizar la tasa de fals
 aún si esto implica un aumento de falsos positivos. Si bien este incremento puede implicar la necesidad de 
 destinar más recursos médicos para realizar pruebas adicionales o tratamientos innecesarios, se garantiza 
 que menos casos sean pasados por alto \citep{CITE:40}.
+
+\filbreak
+
+% el footnote text es de la imagen de MatrizConfusion, pero si lo ponia mas arriba lo corria en la pagina anterior
+\footnotetext{Imagen adaptada de Portilla, Jose. 2018. Data Science and Machine Learning Bootcamp with R. https://www.udemy.com/data-science-and-machine-learning-bootcamp-with-r/.}
 
 A partir de los valores de TP, TN, FP y FN se definen diferentes métricas para evaluar el desempeño de 
 un modelo de clasificación. A continuación, se explican algunas en detalle.
@@ -196,8 +210,8 @@ instancias positivas. La expresión matemática que describe este comportamiento
 \subsubsection{\emph{Recall}}
 La sensibilidad, \emph{recall} o tasa positiva real (TPR) es una métrica que mide la proporción de ejemplos 
 clasificados correctamente como positivos en relación con el total de ejemplos positivos. Por lo tanto, se 
-mide la capacidad de identificar la mayoría de las muestras positivas presentes. La siguiente ecuación 
-matemática describe este comportamiento:
+mide la capacidad de identificar la mayoría de las muestras positivas presentes. La ecuación que describe 
+a la sensibilidad es:
 
 \begin{equation}
 	\label{eq:recall}
@@ -205,8 +219,8 @@ matemática describe este comportamiento:
 \end{equation}
 
 
-\subsubsection{\emph{F1-Score}}
-La métrica \emph{F1-Score} es la media armónica entre \emph{precision} y \emph{recall}. Dado que tiene 
+\subsubsection{\emph{F1 score}}
+La métrica \emph{F1 score} es la media armónica entre \emph{precision} y \emph{recall}. Dado que tiene 
 en cuenta tanto a los FP cómo los FN, se emplea para evaluar un modelo cuando el conjunto de datos es 
 desequilibrado. La fórmula matemática que describe este comportamiento es la siguiente:
 
@@ -239,7 +253,7 @@ La curva ROC es una representación gráfica que muestra la tasa de verdaderos p
 en función de la tasa de falsos positivos (1 - especificidad) a medida que se varía el umbral de 
 clasificación. Si bien puede ser de utilidad visualizar la curva ROC, en muchas casos la información 
 puede resumirse en la métrica AUC (acrónimo de \emph{Area Under the Curve}), que mide el área bajo la curva 
-ROC. En general, cuanto más alto sea el AUC, mejor es el desempeño del clasificador. 
+ROC. En general, cuanto más alto sea el AUC, mejor es el desempeño del clasificador \citep{CITE:37} \citep{CITE:44}. 
 
 En la figura \ref{fig:ROC_a}, se puede observar un clasificador ideal en el cual las curvas de TP y TN no se 
 superponen en absoluto, lo que resulta en un AUC igual a 1. Por el contrario, en la figura \ref{fig:ROC_c}, 
@@ -247,7 +261,7 @@ se muestra un clasificador de predicción aleatoria, donde la curva ROC es una l
 En este caso, las curvas de TP y TN se superponen por completo, lo que da como resultado un AUC de 0.5. 
 En la figura \ref{fig:ROC_b}, se observa un caso intermedio en el que hay cierta superposición entre las curvas 
 de TP y TN. En general, la mayoría de los modelos de clasificación binaria tienen un AUC entre 0.5 y 1. Es poco 
-común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicaría que las predicciones están invertidas.
+común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicaría que las predicciones están invertidas \citep{CITE:44}.
 
 \begin{figure}[h!]
 	\centering
@@ -261,7 +275,6 @@ común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicarí
 	[0.3\linewidth]{\includegraphics[height=8cm]{./Figures/ROC_c.jpg}}
 	\caption{Representación gráfica de la curva ROC y las distribuciones de TP y TN\protect\footnotemark.}
 \end{figure}
-\footnotetext{Imagen adaptada de Glen, S. (2019). ROC Curve Explained in One Picture. Data Science Central. https://www.datasciencecentral.com/roc-curve-explained-in-one-picture/}
 
 Para el presente trabajo, se evaluaron todas las métricas mencionadas anteriormente. Sin embargo, se seleccionó 
 el AUC como la métrica principal para medir el desempeño de los modelos. Esto se debe a que en el ámbito clínico 
@@ -273,8 +286,12 @@ y la minimización de falsas alarmas (alta especificidad).
 %----------------------------------------------------------------------------------------
 %	2.3 PERCEPTRÓN MULTICAPA
 %----------------------------------------------------------------------------------------
+\filbreak
 \section{Perceptrón multicapa}
 \label{sec:Perceptrón multicapa}
+
+% el footnote text es de la imagen de ROC, pero si lo ponia mas arriba lo corria en la pagina anterior
+\footnotetext{Imagen adaptada de Glen, S. (2019). ROC Curve Explained in One Picture. Data Science Central. https://www.datasciencecentral.com/roc-curve-explained-in-one-picture/.}
 
 Las redes neuronales artificiales (RNA), propuestas inicialmente por McCulloch y Pitts en 1943 
 \citep{CITE:41}, son modelos computacionales que se inspiran en el funcionamiento del cerebro 
@@ -289,19 +306,19 @@ los hiperparámetros y los optimizadores.
 \subsection{Perceptrón}
 Un perceptrón, también conocido como neurona artificial o nodo, es el bloque fundamental de las 
 RNA y fue propuesto por Frank Rosenblatt en 1957 \citep{CITE:43}. En la figura \ref{fig:Perceptron} se puede observar 
-cómo un perceptrón recibe $n$ señales de entrada $X = (x_1, x_2, …, x_n)$, las cuales se multiplican 
+cómo un perceptrón recibe $n$ señales de entrada $x = (x_1, x_2, …, x_n)$, las cuales se multiplican 
 por un peso $W = (w_1, w_2, …, w_n)$. Este comportamiento es análogo a la manera en que los 
 pesos sinápticos influyen en las neuronas biológicas, ya que algunas entradas tienen mayor relevancia 
 que otras. Por este motivo, las entradas se combinan como una suma ponderada por sus pesos 
-($\sum_{i=1}^{n} W_i^T \cdot X_i$) y se añade un término independiente conocido como \emph{bias} o 
+($\sum_{i=1}^{n} W_i^T \cdot x_i$) y se añade un término independiente conocido como \emph{bias} o 
 sesgo, con el fin de otorgar flexibilidad en la modelización de patrones complejos. 
 Posteriormente, se aplica una transformación no lineal mediante una función de activación $g$, 
-la cual determina la salida $\hat{y} $ del perceptrón \citep{CITE:35} \citep{CITE:42}. 
+la cual determina la salida $\hat{y}$ del perceptrón \citep{CITE:35} \citep{CITE:42}. 
 La descripción matemática de este comportamiento se expresa de la siguiente manera: 
 
 \begin{equation}\label{eq:perceptron}
 \begin{split}
-	&\hat{y} = g(z) = g( \sum_{i=1}^{n} W^T \cdot X + b) \\
+	&\hat{y} = g(z) = g( \sum_{i=1}^{n} W^T \cdot x + b) \\
 				&\hat{y} = g(x_1 \cdot w_1 + x_1 \cdot w_1 + … + x_n \cdot w_n + b)
 \end{split}
 \end{equation}
@@ -309,10 +326,12 @@ La descripción matemática de este comportamiento se expresa de la siguiente ma
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{./Figures/Perceptron.jpg}
-	\caption{Representación de un perceptrón.}
+	\caption{Representación de un perceptrón\protect\footnotemark.}
 	\label{fig:Perceptron}
 \end{figure}
 
+
+\footnotetext{Imagen adaptada de Hange, A. (2021). Target Prediction using Single-layer Perceptron and Multilayer Perceptron. Nerd For Tech. https://medium.com/nerd-for-tech/flux-prediction-using-single-layer-perceptron-and-multilayer-perceptron-cf82c1341c33/.}
 
 %----------------------------------------------------------------------------------------
 % 2.3.2 Arquitectura del perceptrón multicapa
@@ -330,7 +349,7 @@ profunda o \emph{deep neural network} (DNN) \citep{CITE:35} \citep{CITE:44}.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\textwidth]{./Figures/MLP.jpg}
-	\caption{Representación de un perceptrón multicapa \\ \emph{fully connected}.}
+	\caption{Representación de un perceptrón multicapa \\ \emph{fully connected}\protect\footnotemark.}
 	\label{fig:MLP}
 \end{figure}
 
@@ -349,6 +368,8 @@ por sus siglas en inglés). La elección de ReLU se basa en dos ventajas princip
 tiene un valor máximo de salida. En consecuencia, se evitan ciertos problemas durante el descenso del gradiente. En la 
 ecuación \ref{eq:relu}, se observa que si el valor de entrada $z$ es negativo, la función retorna un 0; de lo contrario, 
 devuelve el valor de $z$ \citep{CITE:44}. 
+
+\footnotetext{Imagen adaptada de Hange, A. (2021). Target Prediction using Single-layer Perceptron and Multilayer Perceptron. Nerd For Tech. https://medium.com/nerd-for-tech/flux-prediction-using-single-layer-perceptron-and-multilayer-perceptron-cf82c1341c33/.}
 
 \begin{equation}
 	\label{eq:relu}
@@ -467,7 +488,6 @@ iteraciones, también conocida como \emph{k-fold cross validation}, que se ilust
 	\label{fig:crossval}
 \end{figure}
 
-\footnotetext{Imagen adaptada de Ashfaque Maat, Johar y Iqbal, Amer. (2019). Introduction to Support Vector Machines and Kernel Methods.}
 
 La validación cruzada de $k$ iteraciones consiste en dividir el conjunto de datos en $k$ subconjuntos. Durante 
 el proceso de entrenamiento, se toma cada $k$ subconjunto como el conjunto de prueba, mientras que los 
@@ -478,6 +498,7 @@ obtenidos para cada subconjunto de prueba \citep{CITE:48}.
 
 %----------------------------------------------------------------------------------------
 % 2.3.5 Optimización del modelo
+\filbreak
 \subsection{Optimización del modelo}
 Es fundamental comprender el papel de los optimizadores y su impacto en el entrenamiento de una red neuronal. 
 Los optimizadores son un algoritmos empleados para ajustar los parámetros de la red, con el fin de minimizar 
@@ -486,6 +507,8 @@ Algunos optimizadores comúnmente utilizados incluyen: descenso de gradiente est
 Cada uno de ellos posee sus propias características y métodos de actualización de parámetros. Por lo tanto, 
 la elección del optimizador es un paso importante en el desarrollo de un modelo, ya que puede influir 
 significativamente en la velocidad y calidad de convergencia durante el entrenamiento \citep{CITE:44}.
+
+\footnotetext{Imagen adaptada de Ashfaque Maat, Johar y Iqbal, Amer. (2019). Introduction to Support Vector Machines and Kernel Methods.}
 
 En particular, el algoritmo de optimización empleado en este trabajo fue propuesto por 
 Diederik Kingma y Jimmy Ba en su artículo ``\emph{Adam: A Method for Stochastic Optimization}'' \citep{CITE:49}. Si bien 
