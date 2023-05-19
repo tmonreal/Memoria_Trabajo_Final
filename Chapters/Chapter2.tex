@@ -46,8 +46,8 @@ redes neuronales. El primer modelo se construyó exclusivamente con los datos de
 mientras que el segundo también incluyó los datos clínicos. El propósito 
 de esta estrategia fue analizar y comparar el rendimiento de los dos modelos y evaluar si los 
 datos de MAPA tienen un sustento suficiente para predecir la variable objetivo MACE. De esta 
-manera, se buscó determinar si la inclusión de información clínica adicional contribuyó a 
-mejorar las métricas de desempeño, y si podría tener implicancias 
+manera, se buscó determinar si la inclusión de información clínica adicional contribuye a 
+mejorar las métricas de desempeño, y si tiene implicancias 
 clínicas relevantes para el seguimiento de los pacientes.
 
 %----------------------------------------------------------------------------------------
@@ -193,7 +193,7 @@ que menos casos sean pasados por alto \citep{CITE:40}.
 \footnotetext{Imagen adaptada de Portilla, Jose. 2018. Data Science and Machine Learning Bootcamp with R. https://www.udemy.com/data-science-and-machine-learning-bootcamp-with-r/.}
 
 A partir de los valores de TP, TN, FP y FN se definen diferentes métricas para evaluar el desempeño de 
-un modelo de clasificación. A continuación, se explican algunas en detalle.
+un modelo de clasificación. A continuación, se presentan las que fueron utilizadas en este trabajo.
 
 \subsubsection{\emph{Precision}}
 La presición o \emph{precision} es una métrica que permite conocer la proporción de ejemplos clasificados 
@@ -220,7 +220,7 @@ a la sensibilidad es:
 
 
 \subsubsection{\emph{F1 score}}
-La métrica \emph{F1 score} es la media armónica entre \emph{precision} y \emph{recall}. Dado que tiene 
+El \emph{f1 score} representa la media armónica entre \emph{precision} y \emph{recall}. Dado que tiene 
 en cuenta tanto a los FP cómo los FN, se emplea para evaluar un modelo cuando el conjunto de datos es 
 desequilibrado. La fórmula matemática que describe este comportamiento es la siguiente:
 
@@ -256,10 +256,10 @@ puede resumirse en la métrica AUC (acrónimo de \emph{Area Under the Curve}), q
 ROC. En general, cuanto más alto sea el AUC, mejor es el desempeño del clasificador \citep{CITE:37} \citep{CITE:44}. 
 
 En la figura \ref{fig:ROC_a}, se puede observar un clasificador ideal en el cual las curvas de TP y TN no se 
-superponen en absoluto, lo que resulta en un AUC igual a 1. Por el contrario, en la figura \ref{fig:ROC_c}, 
+superponen en absoluto, lo que resulta en un AUC igual a 1. Por el contrario, en la figura \ref{fig:ROC_c} 
 se muestra un clasificador de predicción aleatoria, donde la curva ROC es una línea recta con una pendiente unitaria. 
 En este caso, las curvas de TP y TN se superponen por completo, lo que da como resultado un AUC de 0.5. 
-En la figura \ref{fig:ROC_b}, se observa un caso intermedio en el que hay cierta superposición entre las curvas 
+En la figura \ref{fig:ROC_b} se observa un caso intermedio en el que hay cierta superposición entre las curvas 
 de TP y TN. En general, la mayoría de los modelos de clasificación binaria tienen un AUC entre 0.5 y 1. Es poco 
 común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicaría que las predicciones están invertidas \citep{CITE:44}.
 
@@ -310,7 +310,7 @@ cómo un perceptrón recibe $n$ señales de entrada $x = (x_1, x_2, …, x_n)$, 
 por un peso $W = (w_1, w_2, …, w_n)$. Este comportamiento es análogo a la manera en que los 
 pesos sinápticos influyen en las neuronas biológicas, ya que algunas entradas tienen mayor relevancia 
 que otras. Por este motivo, las entradas se combinan como una suma ponderada por sus pesos 
-($\sum_{i=1}^{n} W_i^T \cdot x_i$) y se añade un término independiente conocido como \emph{bias} o 
+($\sum_{i=1}^{n} W_i \cdot x_i$) y se añade un término independiente conocido como \emph{bias} o 
 sesgo, con el fin de otorgar flexibilidad en la modelización de patrones complejos. 
 Posteriormente, se aplica una transformación no lineal mediante una función de activación $g$, 
 la cual determina la salida $\hat{y}$ del perceptrón \citep{CITE:35} \citep{CITE:42}. 
@@ -318,7 +318,7 @@ La descripción matemática de este comportamiento se expresa de la siguiente ma
 
 \begin{equation}\label{eq:perceptron}
 \begin{split}
-	&\hat{y} = g(z) = g( \sum_{i=1}^{n} W^T \cdot x + b) \\
+	&\hat{y} = g(z) = g( \sum_{i=1}^{n} W_{i} \cdot x_{i} + b) \\
 				&\hat{y} = g(x_1 \cdot w_1 + x_1 \cdot w_1 + … + x_n \cdot w_n + b)
 \end{split}
 \end{equation}
@@ -353,6 +353,7 @@ profunda o \emph{deep neural network} (DNN) \citep{CITE:35} \citep{CITE:44}.
 	\label{fig:MLP}
 \end{figure}
 
+\filbreak
 Por otro lado, el número de neuronas en la capa de entrada está definido por la cantidad de variables independientes 
 del modelo, mientras que el número de nodos de la salida es la cantidad de variables dependientes. Además, el número de 
 capas ocultas y su cantidad de neuronas dependen de la complejidad del modelo en cuestión, y son parámetros importantes 
@@ -426,6 +427,16 @@ El algoritmo~\ref{alg:forward} describe el proceso de \emph{forward propagation}
 Luego de calcular la predicción $\hat{y}$, se calcula la función de costo total $J$ durante la fase de entrenamiento. 
 Esta se define como la suma de la función de pérdida $\mathcal{L}$ y un término de regularización $\lambda \Omega(w)$.
 
+\subsubsection{Retropropagación}
+
+Durante muchos años, los investigadores se enfrentaron al desafío de encontrar una forma 
+efectiva de entrenar a los perceptrones multicapa sin éxito. Sin embargo, en 1986, D. E. 
+Rumelhart \emph{et al.} publicaron un artículo revolucionario que introdujo el método 
+de \emph{backpropagation} \citep{CITE:47}. La fase de retropropagación se describe en el 
+algoritmo~\ref{alg:backpropagation}. Esta implica el cálculo del gradiente de la función de 
+costo respecto a todos los parámetros entrenables empleando la regla de la cadena. 
+Luego, este gradiente se propaga desde la salida hacia la entrada de la red neuronal \citep{CITE:35} \citep{CITE:42} \citep{CITE:44}.
+
 \floatname{algorithm}{Algoritmo}
 \begin{algorithm}
 	\caption{Propagación hacia adelante de una RNA con $n$ capas.}
@@ -445,15 +456,6 @@ Esta se define como la suma de la función de pérdida $\mathcal{L}$ y un térmi
 	\end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Retropropagación}
-
-Durante muchos años, los investigadores se enfrentaron al desafío de encontrar una forma 
-efectiva de entrenar a los perceptrones multicapa sin éxito. Sin embargo, en 1986, D. E. 
-Rumelhart \emph{et al.} publicaron un artículo revolucionario que introdujo el método 
-de \emph{backpropagation} \citep{CITE:47}. La fase de retropropagación se describe en el 
-algoritmo~\ref{alg:backpropagation}. Esta implica el cálculo del gradiente de la función de 
-costo respecto a todos los parámetros entrenables empleando la regla de la cadena. 
-Luego, este gradiente se propaga desde la salida hacia la entrada de la red neuronal \citep{CITE:35} \citep{CITE:42} \citep{CITE:44}.
 
 \begin{algorithm}[H]
 	\caption{Propagación hacia atrás de una RNA con $n$ capas.}
@@ -474,7 +476,7 @@ Luego, este gradiente se propaga desde la salida hacia la entrada de la red neur
 Para el desarrollo de una RNA, es necesario dividir al conjunto de datos en dos subconjuntos: uno para el 
 entrenamiento y otro para la validación o prueba. El conjunto de entrenamiento se emplea para entrenar a 
 la red, mientras que el conjunto de prueba se utiliza para evaluar su desempeño. Es crucial asegurarse de 
-que el conjunto de entrenamiento sea lo suficientemente grande y representativo del problema, mientras 
+que el conjunto de entrenamiento sea lo suficientemente grande para ser representativo del problema, mientras 
 que el de prueba sea lo suficientemente grande para facilitar una correcta validación de la red. En casos 
 donde el número de ejemplos disponible no es suficiente para realizar la división representativa, se 
 pueden utilizar otras estrategias \citep{CITE:42}. 
@@ -493,7 +495,7 @@ La validación cruzada de $k$ iteraciones consiste en dividir el conjunto de dat
 el proceso de entrenamiento, se toma cada $k$ subconjunto como el conjunto de prueba, mientras que los 
 restantes ($k-1$) se utilizan como conjunto de entrenamiento. Este proceso se repetie $k$ veces, donde 
 en cada iteración se toma un conjunto de prueba diferente y los datos remanentes forman el conjunto 
-de entrenamiento. Al finalizar las $k$ iteraciones, se calcula el promedio de las métricas y error 
+de entrenamiento. Al finalizar las $k$ iteraciones, se calcula el promedio de las métricas y errores 
 obtenidos para cada subconjunto de prueba \citep{CITE:48}.
 
 %----------------------------------------------------------------------------------------
