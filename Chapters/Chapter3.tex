@@ -1,92 +1,50 @@
 \chapter{Diseño e implementación} % Main chapter title
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-
-\definecolor{mygreen}{rgb}{0,0.6,0}
-\definecolor{mygray}{rgb}{0.5,0.5,0.5}
-\definecolor{mymauve}{rgb}{0.58,0,0.82}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% parámetros para configurar el formato del código en los entornos lstlisting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\lstset{ %
-  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
-  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
-  breaklines=true,                 % sets automatic line breaking
-  captionpos=b,                    % sets the caption-position to bottom
-  commentstyle=\color{mygreen},    % comment style
-  deletekeywords={...},            % if you want to delete keywords from the given language
-  %escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
-  %extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-  %frame=single,	                % adds a frame around the code
-  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-  keywordstyle=\color{blue},       % keyword style
-  language=[ANSI]C,                % the language of the code
-  %otherkeywords={*,...},           % if you want to add more keywords to the set
-  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
-  numbersep=5pt,                   % how far the line-numbers are from the code
-  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-  showstringspaces=false,          % underline spaces within strings only
-  showtabs=false,                  % show tabs within strings adding particular underscores
-  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mymauve},     % string literal style
-  tabsize=2,	                   % sets default tabsize to 2 spaces
-  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
-  morecomment=[s]{/*}{*/}
-}
-
-
 %----------------------------------------------------------------------------------------
-%	SECTION 1
+%	ADQUISICION DE DATOS
 %----------------------------------------------------------------------------------------
-\section{Análisis del software}
+\section{Adquisición de datos}
  
-La idea de esta sección es resaltar los problemas encontrados, los criterios utilizados y la justificación de las decisiones que se hayan tomado.
+\newcommand{\myhash}{\raisebox{\depth}{\#}}
 
-Se puede agregar código o pseudocódigo dentro de un entorno lstlisting con el siguiente código:
+Para llevar a cabo el presente trabajo, se emplearon datos proporcionados por el servicio 
+de cardiología e hipertensión del Hospital Alemán. La figura \ref{fig:adquisicion_datos} 
+exhibe un diagrama en bloques que ilustra la etapa de adquisición de datos utilizada. 
+Es importante destacar que se utilizaron dos conjuntos de datos diferentes. 
 
-\begin{verbatim}
-\begin{lstlisting}[caption= "un epígrafe descriptivo"]
-	las líneas de código irían aquí...
-\end{lstlisting}
-\end{verbatim}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/adquisicion_datos2.jpg}
+	\caption{Representación esquemática de las etapa de adquisición de datos.}\label{fig:adquisicion_datos}
+\end{figure}
 
-A modo de ejemplo:
+El primer \emph{dataset} se compone exclusivamente de información recopilada de las 
+presurometrías realizadas a los pacientes hipertensos a partir del año 2013. Luego 
+de realizar un MAPA, los datos se almacenan en un \emph{software} especializado de 
+los presurómetros. Posteriormente, se extraen utilizando un programa desarrollado 
+en C\myhash, para ser registrados en una planilla de cálculo. Sumado a esto, se incluyó 
+la variable a predecir (MACE) para cada paciente mediante un análisis exhaustivo 
+de su historial clínico. Especificamente, se registró si el paciente experimentó 
+un accidente cerebrovascular no fatal, infarto agudo de miocardio, insuficiencia 
+cardíaca, insuficiencia renal crónica o muerte.
 
-\begin{lstlisting}[label=cod:vControl,caption=Pseudocódigo del lazo principal de control.]  % Start your code-block
+Por otro lado, el segundo conjunto de datos contiene información adicional obtenida 
+del historial clínico de cada paciente. Estos datos clínicos se agregan a la misma 
+hoja de cálculo mencionada anteriormente, complementando así la información proveniente 
+de las presurometrías.
 
-#define MAX_SENSOR_NUMBER 3
-#define MAX_ALARM_NUMBER  6
-#define MAX_ACTUATOR_NUMBER 6
-
-uint32_t sensorValue[MAX_SENSOR_NUMBER];		
-FunctionalState alarmControl[MAX_ALARM_NUMBER];	//ENABLE or DISABLE
-state_t alarmState[MAX_ALARM_NUMBER];						//ON or OFF
-state_t actuatorState[MAX_ACTUATOR_NUMBER];			//ON or OFF
-
-void vControl() {
-
-	initGlobalVariables();
-	
-	period = 500 ms;
-		
-	while(1) {
-
-		ticks = xTaskGetTickCount();
-		
-		updateSensors();
-		
-		updateAlarms();
-		
-		controlActuators();
-		
-		vTaskDelayUntil(&ticks, period);
-	}
-}
-\end{lstlisting}
+El objetivo de utilizar dos \emph{datasets} es evaluar la calidad de los datos de 
+las presurometrías para generar inferencias de manera independiente. En otras palabras, 
+se buscó determinar en qué medida los datos del MAPA pueden ser utilizados por sí solos 
+para obtener predicciones significativas y precisas de MACE. Al mismo tiempo, se procuró 
+evaluar si la incorporación de información clínica contribuye a un mejor desempeño del 
+modelo en términos de tasa de falsos negativos, AUC y otras métricas relevantes.
 
 
 
+%----------------------------------------------------------------------------------------
+%	ANALISIS EXPLORATORIO DE DATOS
+%----------------------------------------------------------------------------------------
+\section{Análisis exploratorio de datos}
+ 
