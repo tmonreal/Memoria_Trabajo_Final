@@ -2,7 +2,9 @@
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-ESCRIBIR INTRODUCCION AL CAPITULO 3
+En este capítulo, se presentan de manera concisa las decisiones de diseño del sistema. 
+Se abordan aspectos clave como la adquisición de datos, las técnicas de preprocesamiento 
+utilizadas y la selección y diseño del modelo de aprendizaje profundo. 
 
 %----------------------------------------------------------------------------------------
 %	ADQUISICION DE DATOS
@@ -233,6 +235,7 @@ se puede visualizar claramente en la figura \ref{fig:pamypp}.
 	\caption{Combinaciones lineales de la presión arterial media y presión de pulso con las presiones sistólicas y diastólicas.}\label{fig:pamypp}
 \end{figure}
 
+\filbreak
 Teniendo en consideración esta información, se tomó la decisión de no incluir estas variables en 
 la red neuronal por diversos motivos. En primer lugar, se buscó evitar la redundancia de información. 
 Si una variable es una combinación lineal de otras, significa que la información contenida en 
@@ -369,8 +372,7 @@ SMOTE para abordar el desbalance de clases y mejorar la representación de la cl
 
 Para asegurar que todas las características tengan una escala uniforme, se llevó a cabo un proceso de normalización 
 de los datos. Al igual que en la subsección \ref{sec:Conjunto1}, se utilizó el método \emph{StandardScaler}. La 
-figura \ref{fig:normalizacion2} presenta las distribuciones antes y después de la normalización de las variables
- talla, peso, IMC y edad. Este procedimiento garantiza que todas las variables estén en una escala comparable, 
+figura \ref{fig:normalizacion2} presenta las distribuciones antes y después de la normalización de las variables talla, peso, IMC y edad. Este procedimiento garantiza que todas las variables estén en una escala comparable, 
 lo que facilita la interpretación y el análisis de los datos para la red neuronal.
 
 \begin{figure}[h!]
