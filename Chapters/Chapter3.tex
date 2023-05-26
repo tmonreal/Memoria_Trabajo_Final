@@ -103,7 +103,198 @@ El segundo conjunto de datos, por su parte, incluye todas las variables menciona
 \end{itemize}
 
 %------------------------------------------------------------------------
-%	ANALISIS EXPLORATORIO DE DATOS
+%	PREPROCESAMIENTO DE DATOS
 %----------------------------------------------------------------------------------------
-\section{Análisis exploratorio de datos}
- 
+\section{Preprocesamiento de datos}
+En la siguiente sección, se proporciona una descripción detallada del preprocesamiento de datos 
+realizado en este trabajo. El objetivo principal de esta etapa fue la obtención de un conjunto de 
+datos final de alta calidad y utilidad para su posterior análisis y modelado. En la subsección 
+\ref{sec:Conjunto1} se describe el procesamiento realizado al conjunto de datos de presurometrías. 
+Posteriormente, en la subsección \ref{sec:Conjunto2} se aborda el procesamiento 
+llevado a cabo en el conjunto de datos que combina los datos de MAPA y los datos clínicos.
+
+%------------------------------------------------------------------------
+%	datos presurometrias
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Conjunto de datos de presurometrías}
+\label{sec:Conjunto1}
+
+El conjunto de datos utilizado consta de 491 informes de MAPA y se caracteriza por no tener datos faltantes. 
+Este \emph{dataset} incluye: 3 variables categóricas (HTA durante el día, HTA durante la noche y \emph{non-dipper}), 
+1 variable de fecha (fecha del estudio) y 25 variables numéricas continuas.
+
+
+\subsubsection{Distribuciones de las variables numéricas}
+Se realizó un análisis de las distribuciones de los datos con el objetivo de determinar si siguen una distribución 
+normal y si existen valores extremos. En primer lugar, se llevaron a cabo pruebas visuales utilizando gráficos Q-Q 
+(cuantil-cuantil) e histogramas. El gráfico Q-Q es una herramienta utilizada para comparar dos distribuciones de 
+probabilidad trazando sus cuantiles uno contra el otro. Aunque no es una prueba estadística formal, proporciona 
+una forma sencilla e intuitiva de verificar qué distribución sigue un conjunto de datos. Por otro lado, el 
+histograma permite visualizar la distribución de frecuencias de los datos de una variable. En la figura \ref{fig:qqplots} 
+se presentan los gráficos Q-Q y los histogramas de las presiones y la frecuencia cardíaca media durante 24 horas, 
+así como de las cargas hipertensivas sistólicas y diastólicas durante el día y la noche. Se observa que las PAD y 
+PAM, así como la frecuencia cardíaca (FC), siguen una distribución normal. Sin embargo, la PAS y PP muestran una 
+ligera sesgadura hacia la derecha. Aunque no se exhiben en la figura \ref{fig:qqplots}, estas variables también presentan la misma 
+distribución durante el día y la noche. Por otro lado, las cargas hipertensivas sistólicas muestran un sesgo hacia 
+la izquierda, mientras que las cargas hipertensivas diastólicas presentan una distribución casi uniforme.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{./Figures/qqplots.jpg}
+	\caption{Gráficos Q-Q e histogramas de la PAS, PAD, FC, PAM y PP durante 24 h; y cargas hipertensivas sistólicas y diastólicas durante el día y la noche.}\label{fig:qqplots}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Tratamiento de clases desbalanceadas }
+En el contexto de este trabajo, se identificó un desbalance de clases, lo cual significa que una de las clases 
+está representada por una fracción muy pequeña de las muestras totales. En la figura \ref{fig:desbalance_a} se puede 
+observar que solamente un 7.54\% de las muestras pertenecen a la clase positiva, lo que equivale a 37 pacientes con MACE = 1. 
+Este desequilibrio en las clases es un fenómeno intrínseco y esperable, ya que refleja la naturaleza del proceso 
+que genera los datos. Sin embargo, el desbalance de clases puede crear un sesgo en el modelo de aprendizaje 
+automático, ya que tiende a favorecer la predicción de la clase mayoritaria en lugar de capturar adecuadamente 
+las instancias de la clase minoritaria. 
+
+Para mitigar este problema, existen diversas técnicas que permiten equilibrar las clases en el conjunto de datos. 
+En particular, para este trabajo se empleó la técnica SMOTE, la cual consiste en generar de forma sintética nuevos 
+ejemplos de la clase minoritaria. De esta forma, se logró abordar de manera más precisa y equitativa el desafío 
+de la predicción en un escenario desbalanceado. El nuevo conjunto de datos balanceado se exhibe en la figura \ref{fig:desbalance_b}.
+
+
+\begin{figure}[h!]
+	\centering
+	\hspace{1em}
+	\subcaptionbox{Conjunto de datos desbalanceado.\label{fig:desbalance_a}}
+	[0.45\linewidth]{\includegraphics[height=6cm]{./Figures/desbalance_pie.png}}
+	\hspace{1em}
+	\subcaptionbox{Conjunto de datos después de emplear SMOTE.\label{fig:desbalance_b}}
+	[0.45\linewidth]{\includegraphics[height=5.5cm]{./Figures/desbalance_smote_pie.png}}
+	\caption{Conjunto de datos antes y después de aplicar SMOTE.}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Normalización de características}
+La normalización de los datos es un paso crucial antes de entrenar una red neuronal, y tiene como 
+objetivo principal igualar la escala de las características de entrada. Esto es importante puesto 
+que las redes neuronales son sensibles a las diferencias de escala entre las variables. En otras 
+palabras, cuando los datos presentan diferentes escalas, algunas características con valores numéricos 
+más altos pueden tener un impacto desproporcionado en el proceso de entrenamiento. De esta forma, 
+esto puede ocasionar una mayor influencia en los pesos de la red y distorsionar el modelo resultante. 
+Además, las funciones de activación utilizadas en las neuronas pueden funcionar de manera óptima 
+cuando los datos están normalizados en un rango adecuado.
+
+En este trabajo, se decidió utilizar el método \emph{StandardScaler} de \emph{scikit-learn} para 
+normalizar las características de entrada. Este método aplica una transformación que ajusta la 
+media de cada característica a 0 y la desviación estándar a 1. La definición de la transformación 
+se muestra en la ecuación \ref{eq:normalizacion}, donde $X$ es la matriz de características de 
+entrada, $\mu$ es la media y $\sigma$ es el desvío estándar. 
+
+\begin{equation}
+	\label{eq:normalizacion}
+	X_{\text{normalizado}} = \frac{X - \mu}{\sigma}
+\end{equation}
+
+Al normalizar los datos de esta manera, se garantiza que todas las características tengan la 
+misma escala, lo que facilita el proceso de aprendizaje de la red neuronal y mejora la convergencia 
+del modelo. En la figura \ref{fig:normalizacion} se muestran a modo de ejemplo las distribuciones de 
+la PAS, PAD y FC medias durante 24 horas antes y después de ser normalizadas. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Figures/normalizacion.png}
+	\caption{Distribuciones de la PAS, PAD y FC durante 24 h antes y después de la normalización.}\label{fig:normalizacion}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Selección de características}
+
+La selección de variables para un modelo de red neuronal es un proceso crítico que tiene como objetivo 
+elegir las variables más relevantes y evitar la inclusión de aquellas que sean redundantes o 
+problemáticas. Durante el desarrollo de este trabajo, se identificaron dos variables que son 
+combinaciones lineales de otras. Específicamente, se encontró que la presión arterial media y 
+la presión de pulso dependen linealmente de la presión arterial sistólica y la presión arterial 
+diastólica. Esta relación se definió matemáticamente en la subsección \ref{IntroPresiones} y 
+se puede visualizar claramente en la figura \ref{fig:pamypp}. 
+
+\begin{figure}[h!]
+	\centering
+	\hspace{1em}
+	\subcaptionbox{Relación lineal de PAM con PAS y PAD.\label{fig:pam}}
+	[0.45\linewidth]{\includegraphics[height=6cm]{./Figures/PAM.jpg}}
+	\hspace{1em}
+	\subcaptionbox{Relación lineal de PP con PAS y PAD.\label{fig:pp}}
+	[0.45\linewidth]{\includegraphics[height=6cm]{./Figures/PP.jpg}}
+	\caption{Combinaciones lineales de la presión arterial media y presión de pulso con las presiones sistólicas y diastólicas.}\label{fig:pamypp}
+\end{figure}
+
+Teniendo en consideración esta información, se tomó la decisión de no incluir estas variables en 
+la red neuronal por diversos motivos. En primer lugar, se buscó evitar la redundancia de información. 
+Si una variable es una combinación lineal de otras, significa que la información contenida en 
+dicha variable ya está presente en las demás. Por lo tanto, su inclusión solo duplicaría la 
+información en la red neuronal, lo cual genera una sobrecarga y ralentiza el proceso de 
+entrenamiento. Además, puede generar problemas de inestabilidad numérica puesto que incluso 
+pequeñas variaciones en los valores de entrada pueden dar lugar a variaciones significativas 
+en las salidas. Esto puede comprometer la estabilidad y precisión de la red neuronal, afectando 
+negativamente su rendimiento y capacidad de generar resultados confiables. Otro motivo para 
+excluir estas variables es evitar que el modelo se ajuste en exceso a los datos de entrenamiento. 
+Esto podría resultar en una pérdida de generalización, lo que significa que la red tendría 
+dificultades para adaptarse a nuevos datos no vistos anteriormente y su rendimiento se vería 
+comprometido.
+
+En consecuencia, para abordar estos problemas, se decidió eliminar los valores medios y desviaciones 
+estándar de PAM y PP, preservando únicamente los valores medidos por el presurómetro: la PAS y PAD. 
+De este modo, se asegura que la red neuronal se enfoque en las variables fundamentales y se evitan 
+los problemas mencionados anteriormente.
+
+Por otro lado, las variables que incluyen fechas son útiles para brindar credibilidad a 
+la base de datos, ya que proporcionan información sobre el momento en el que se realizó el MAPA y, en caso 
+de que hubiese ocurrido, el momento en el que se produjo un evento.
+Sin embargo, en el contexto de predecir MACE, estas variables puede considerarse irrelevantes ya 
+que no aporta información sustancial para predecir el resultado deseado. En otras palabras, 
+la fecha en sí misma no contiene información directa sobre los atributos fisiológicos, clínicos 
+o de laboratorio que están más relacionados con la ocurrencia de MACE. Además de su falta de 
+relevancia, mantener la variable de fecha agregaría una complejidad adicional al modelo 
+de red neuronal. La representación y codificación de la fecha como una característica en el 
+modelo requiere un procesamiento adicional. Su transformación en valores numéricos o la 
+creación de variables categóricas adicionales aumentaría la dimensionalidad de los datos 
+y podría dificultar la interpretación de la red neuronal. Por lo tanto, se decidió eliminar 
+esta variable para simplificar el análisis y el entrenamiento de la red neuronal. 
+
+Después de realizar el preprocesamiento a la información proveniente del MAPA, el conjunto 
+de datos final utilizado para el desarrollo del modelo incluye las siguientes variables de entrada:
+
+\begin{itemize}
+	\item PASm24	
+  \item PADm24
+  \item FCm24
+  \item PASsd24 
+  \item PADsd24
+  \item FCsd24
+  \item PASmDIA
+  \item PADmDIA
+  \item FCmDIA
+  \item htaloadsbpDIA 
+  \item htaloaddbpDIA   
+  \item HTAdia01	
+  \item PASmNOCHE
+  \item PADmNOCHE
+  \item FCmNOCHE
+  \item htaloadsbpNOCHE
+  \item htaloaddbpNOCHE
+  \item HTAnoche01
+\end{itemize}
+
+
+
+%------------------------------------------------------------------------
+%	datos presurometrias + datos clinicos
+\subsection{Conjunto de datos de presurometrías y datos clínicos}
+\label{sec:Conjunto2}
+
+\subsubsection{Distribuciones de las variables numéricas}
+\subsubsection{Imputación de valores faltantes}
+\subsubsection{Tratamiento de clases desbalanceadas}
+\subsubsection{Normalización de características}
