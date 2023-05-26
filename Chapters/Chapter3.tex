@@ -26,7 +26,7 @@ El primer \emph{dataset} se compone exclusivamente de información recopilada de
 presurometrías realizadas a los pacientes hipertensos a partir del año 2013. Luego 
 de realizar un MAPA, los datos se almacenan en un \emph{software} especializado de 
 los presurómetros. Posteriormente, se extraen utilizando un programa desarrollado 
-en C\myhash para ser registrados en una planilla de cálculo. Sumado a esto, se incluyó 
+en C\# para ser registrados en una planilla de cálculo. Sumado a esto, se incluyó 
 la variable a predecir (MACE) para cada paciente mediante un análisis exhaustivo 
 de su historial clínico. Especificamente, se registró la ocurrencia de 
 un accidente cerebrovascular no fatal, infarto agudo de miocardio, insuficiencia 
@@ -83,7 +83,7 @@ descripción detallada de las variables provenientes de las presurometrías:
   \item htaloadsbpNOCHE: representa el porcentaje de lecturas de la presión arterial sistólica que exceden el valor de referencia de 125 mmHg durante la noche.
   \item htaloaddbpNOCHE: se refiere al porcentaje de lecturas de la presión arterial diastólica que exceden el valor de referencia de 70 mmHg durante la noche.
   \item HTAnoche01: se define como hipertensión nocturna (HTAnoche01 = 1) cuando la presión arterial sistólica es superior a 120 mmHg y la presión arterial diastólica es superior a 70 mmHg durante la noche. En caso contrario, se considera normotensión nocturna (HTAnoche01 = 0).
-  \item Nondipper01: se utiliza para clasificar a los pacientes en función de la disminución de la presión arterial durante la noche. Cuando la presión arterial no disminuye en un 10\% durante la noche, se considera un indicador de alto riesgo cardiovascular y se denominan \emph{non-dippers} (Nondipper01 = 1). Por otro lado, aquellos pacientes cuya presión arterial disminuye en un 10\% durante la noche se denominan \emph{dippers} (Nondipper01 = 0).
+  \item Nondipper01: se utiliza para clasificar a los pacientes en función de la disminución de la presión arterial nocturna. Cuando la presión arterial no disminuye en un 10\% durante la noche, se considera un indicador de alto riesgo cardiovascular y se denominan \emph{non-dippers} (Nondipper01 = 1). Por otro lado, aquellos pacientes cuya presión arterial disminuye en un 10\% durante la noche se denominan \emph{dippers} (Nondipper01 = 0).
 \end{itemize}
 
 
@@ -121,21 +121,24 @@ llevado a cabo en el conjunto de datos que combina los datos de MAPA y los datos
 
 El conjunto de datos utilizado consta de 491 informes de MAPA y se caracteriza por no tener datos faltantes. 
 Este \emph{dataset} incluye: 3 variables categóricas (HTA durante el día, HTA durante la noche y \emph{non-dipper}), 
-1 variable de fecha (fecha del estudio) y 25 variables numéricas continuas.
+2 variables de fecha (fecha del estudio y fecha de MACE) y 25 variables numéricas continuas.
 
 
 \subsubsection{Distribuciones de las variables numéricas}
 Se realizó un análisis de las distribuciones de los datos con el objetivo de determinar si siguen una distribución 
-normal y si existen valores extremos. En primer lugar, se llevaron a cabo pruebas visuales utilizando gráficos Q-Q 
+normal y si existen valores extremos. 
+
+En primer lugar, se llevaron a cabo pruebas visuales utilizando gráficos Q-Q 
 (cuantil-cuantil) e histogramas. El gráfico Q-Q es una herramienta utilizada para comparar dos distribuciones de 
 probabilidad trazando sus cuantiles uno contra el otro. Aunque no es una prueba estadística formal, proporciona 
 una forma sencilla e intuitiva de verificar qué distribución sigue un conjunto de datos. Por otro lado, el 
 histograma permite visualizar la distribución de frecuencias de los datos de una variable. En la figura \ref{fig:qqplots} 
 se presentan los gráficos Q-Q y los histogramas de las presiones y la frecuencia cardíaca media durante 24 horas, 
-así como de las cargas hipertensivas sistólicas y diastólicas durante el día y la noche. Se observa que las PAD y 
-PAM, así como la frecuencia cardíaca (FC), siguen una distribución normal. Sin embargo, la PAS y PP muestran una 
-ligera sesgadura hacia la derecha. Aunque no se exhiben en la figura \ref{fig:qqplots}, estas variables también presentan la misma 
-distribución durante el día y la noche. Por otro lado, las cargas hipertensivas sistólicas muestran un sesgo hacia 
+así como de las cargas hipertensivas sistólicas y diastólicas durante el día y la noche. Se observa que la PAD, 
+PAM y frecuencia cardíaca (FC) siguen una distribución normal. Sin embargo, la PAS y PP muestran una 
+ligera sesgadura hacia la derecha. Aunque no se exhiben en la figura \ref{fig:qqplots}, las presiones y FC 
+mencionadas anteriormente presentan la misma distribución durante el día y la noche. 
+Por otro lado, las cargas hipertensivas sistólicas muestran un sesgo hacia 
 la izquierda, mientras que las cargas hipertensivas diastólicas presentan una distribución casi uniforme.
 
 \begin{figure}[ht]
@@ -215,8 +218,8 @@ La selección de variables para un modelo de red neuronal es un proceso crítico
 elegir las variables más relevantes y evitar la inclusión de aquellas que sean redundantes o 
 problemáticas. Durante el desarrollo de este trabajo, se identificaron dos variables que son 
 combinaciones lineales de otras. Específicamente, se encontró que la presión arterial media y 
-la presión de pulso dependen linealmente de la presión arterial sistólica y la presión arterial 
-diastólica. Esta relación se definió matemáticamente en la subsección \ref{IntroPresiones} y 
+la presión de pulso dependen linealmente de la presión arterial sistólica y diastólica. 
+Esta relación se definió matemáticamente en la subsección \ref{IntroPresiones} y 
 se puede visualizar claramente en la figura \ref{fig:pamypp}. 
 
 \begin{figure}[h!]
@@ -235,27 +238,26 @@ la red neuronal por diversos motivos. En primer lugar, se buscó evitar la redun
 Si una variable es una combinación lineal de otras, significa que la información contenida en 
 dicha variable ya está presente en las demás. Por lo tanto, su inclusión solo duplicaría la 
 información en la red neuronal, lo cual genera una sobrecarga y ralentiza el proceso de 
-entrenamiento. Además, puede generar problemas de inestabilidad numérica puesto que incluso 
+entrenamiento. Además, es posible que se generen problemas de inestabilidad numérica puesto que incluso 
 pequeñas variaciones en los valores de entrada pueden dar lugar a variaciones significativas 
-en las salidas. Esto puede comprometer la estabilidad y precisión de la red neuronal, afectando 
+en las salidas. Esto podría comprometer la estabilidad y precisión de la red neuronal, afectando 
 negativamente su rendimiento y capacidad de generar resultados confiables. Otro motivo para 
 excluir estas variables es evitar que el modelo se ajuste en exceso a los datos de entrenamiento. 
-Esto podría resultar en una pérdida de generalización, lo que significa que la red tendría 
-dificultades para adaptarse a nuevos datos no vistos anteriormente y su rendimiento se vería 
-comprometido.
+Es posible que esto resulte en una pérdida de generalización, lo que significa que la red tendría 
+dificultades para adaptarse a nuevos datos no vistos anteriormente.
 
 En consecuencia, para abordar estos problemas, se decidió eliminar los valores medios y desviaciones 
-estándar de PAM y PP, preservando únicamente los valores medidos por el presurómetro: la PAS y PAD. 
+estándar de PAM y PP. Así, se preservaron únicamente los valores medidos por el presurómetro: la PAS y PAD. 
 De este modo, se asegura que la red neuronal se enfoque en las variables fundamentales y se evitan 
 los problemas mencionados anteriormente.
 
 Por otro lado, las variables que incluyen fechas son útiles para brindar credibilidad a 
 la base de datos, ya que proporcionan información sobre el momento en el que se realizó el MAPA y, en caso 
 de que hubiese ocurrido, el momento en el que se produjo un evento.
-Sin embargo, en el contexto de predecir MACE, estas variables puede considerarse irrelevantes ya 
-que no aporta información sustancial para predecir el resultado deseado. En otras palabras, 
-la fecha en sí misma no contiene información directa sobre los atributos fisiológicos, clínicos 
-o de laboratorio que están más relacionados con la ocurrencia de MACE. Además de su falta de 
+Sin embargo, en el contexto de predecir MACE, estas variables pueden considerarse irrelevantes ya 
+que no aportan información sustancial para predecir el resultado deseado. En otras palabras, 
+la fecha en sí misma no contiene información directa sobre los atributos fisiológicos o clínicos 
+que están más relacionados con la ocurrencia de MACE. Además de su falta de 
 relevancia, mantener la variable de fecha agregaría una complejidad adicional al modelo 
 de red neuronal. La representación y codificación de la fecha como una característica en el 
 modelo requiere un procesamiento adicional. Su transformación en valores numéricos o la 
@@ -288,13 +290,126 @@ de datos final utilizado para el desarrollo del modelo incluye las siguientes va
 \end{itemize}
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %------------------------------------------------------------------------
 %	datos presurometrias + datos clinicos
 \subsection{Conjunto de datos de presurometrías y datos clínicos}
 \label{sec:Conjunto2}
 
+El segundo conjunto de datos utilizado incorpora los datos clínicos adicionales de los 491 pacientes que 
+se realizaron el MAPA, complementando así la información del conjunto de datos anterior. Dado que muchas 
+de las variables son las mismas, esta subsección se enfoca exclusivamente en el preprocesamiento aplicado 
+a las nuevas variables clínicas. Estas incluyen 4 variables numéricas (talla, peso, IMC y edad) y 5 variables 
+categóricas (sexo, diabetes, tabaquismo, dislipemia e hipertrofia ventricular izquierda).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Distribuciones de las variables numéricas}
+Para analizar las variables clínicas numéricas del conjunto de datos, se llevaron a cabo pruebas visuales y 
+estadísticas. En la figura \ref{fig:qqplots2} se exhiben los gráficos Q-Q e histogramas para las variables 
+de interés. En cuanto a la talla, se observó que los datos siguen una distribución aproximadamente normal. 
+Tanto el gráfico Q-Q plot como el histograma mostraron una forma de campana característica de esta distribución. 
+En el caso del peso y el IMC, se encontró una distribución asimétrica positiva. Esto indica que hay una mayor 
+concentración de valores más bajos y una dispersión hacia valores más altos. Esto se debe a que la media y la 
+mediana del peso fueron de 76 kg, mientras que la moda se situó en 85 kg. Dado que el IMC se calcula a partir 
+del peso y la talla, su distribución sigue una tendencia similar a la del peso. Por otro lado, en cuanto a 
+la variable de edad, se identificó una distribución asimétrica negativa. Esto sugiere que existe una mayor 
+cantidad de personas mayores en el conjunto de datos. La media de la edad fue de 65 años, con una edad mínima 
+de 19 años y una máxima de 98 años. La moda de la distribución se encontró en 72 años.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Figures/qqplots2.png}
+	\caption{Gráficos Q-Q e histogramas de la talla, peso, IMC y edad.}\label{fig:qqplots2}
+\end{figure}
+
+Además de los análisis visuales, se realizaron pruebas estadísticas, incluyendo los tests de Shapiro-Wilk 
+y Kolmogorov-Smirnov. Los resultados de ambas pruebas indicaron que la talla, el peso y el IMC siguen una 
+distribución normal, mientras que la edad no presenta una distribución normal.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\filbreak
 \subsubsection{Imputación de valores faltantes}
+En el segundo conjunto de datos utilizado, se identificaron diferentes variables con valores faltantes. 
+A continuación, se detalla la cantidad de pacientes que presentan datos faltantes en cada una de estas variables:
+
+\begin{itemize}
+  \item Sexo: 1 paciente sin información.
+  \item Talla, peso e IMC: 9 pacientes sin datos de talla ni peso, lo cual implica la ausencia del cálculo del IMC.
+  \item Dislipemia: 1 paciente sin información.
+  \item HVI (hipertrofia ventricular izquierda): 2 pacientes sin información.
+\end{itemize}
+
+Ante la presencia de estos valores faltantes, es necesario aplicar técnicas de imputación para completar 
+la información y garantizar la integridad de los datos. En este trabajo, se optó por utilizar el método 
+\emph{KNNImputer} para llevar a cabo la imputación. La elección del \emph{KNNImputer} se basa en su capacidad 
+para capturar la estructura de los datos y aprovechar la información de las instancias vecinas para la 
+imputación. Además, este método es adecuado para manejar variables numéricas y categóricas, lo cual es 
+relevante en el contexto de este trabajo.
+
+La imputación de datos faltantes utilizando técnicas como el \emph{KNNImputer} desempeña un papel fundamental 
+al preservar la integridad y minimizar la pérdida de información en conjuntos de datos relativamente pequeños, 
+como el presente. De esta manera, se maximiza la utilidad de los datos disponibles y se evita la exclusión 
+de observaciones valiosas debido a la falta de información.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Tratamiento de clases desbalanceadas}
+
+En relación al tratamiento de desbalances de clases, se aplicó el mismo enfoque que en la subsección 
+\ref{sec:Conjunto1} debido a que la variable de salida es la misma. Se utilizó la técnica de sobremuestreo 
+SMOTE para abordar el desbalance de clases y mejorar la representación de la clase minoritaria en el conjunto de datos. 
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Normalización de características}
+
+Para asegurar que todas las características tengan una escala uniforme, se llevó a cabo un proceso de normalización 
+de los datos. Al igual que en la subsección \ref{sec:Conjunto1}, se utilizó el método \emph{StandardScaler}. La 
+figura \ref{fig:normalizacion2} presenta las distribuciones antes y después de la normalización de las variables
+ talla, peso, IMC y edad. Este procedimiento garantiza que todas las variables estén en una escala comparable, 
+lo que facilita la interpretación y el análisis de los datos para la red neuronal.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Figures/normalizacion2.png}
+	\caption{Distribuciones de la talla, peso, IMC y edad antes y después de la normalización.}\label{fig:normalizacion2}
+\end{figure}
+
+
+\filbreak
+Después de realizar el preprocesamiento a la información proveniente del MAPA y los datos clínicos, el segundo conjunto de 
+datos utilizado para el desarrollo del modelo incluye las siguientes variables de entrada:
+
+\begin{itemize}
+  \item PASm24	
+  \item PADm24
+  \item FCm24
+  \item PASsd24 
+  \item PADsd24
+  \item FCsd24
+  \item PASmDIA
+  \item PADmDIA
+  \item FCmDIA
+  \item htaloadsbpDIA 
+  \item htaloaddbpDIA   
+  \item HTAdia01	
+  \item PASmNOCHE
+  \item PADmNOCHE
+  \item FCmNOCHE
+  \item htaloadsbpNOCHE
+  \item htaloaddbpNOCHE
+  \item HTAnoche01
+  \item Talla
+  \item Peso
+  \item IMC
+  \item Edad
+  \item Sexo
+  \item DBT
+  \item Tabaquismo
+  \item Dislipemia
+  \item HVI
+\end{itemize}
