@@ -4,7 +4,7 @@
 
 En este capítulo, se presentan de manera concisa las decisiones de diseño del sistema. 
 Se abordan aspectos clave como la adquisición de datos, las técnicas de preprocesamiento 
-utilizadas y la selección y diseño del modelo de aprendizaje profundo. 
+utilizadas y el diseño del modelo de aprendizaje profundo. 
 
 %----------------------------------------------------------------------------------------
 %	ADQUISICION DE DATOS
@@ -140,8 +140,8 @@ así como de las cargas hipertensivas sistólicas y diastólicas durante el día
 PAM y frecuencia cardíaca (FC) siguen una distribución normal. Sin embargo, la PAS y PP muestran una 
 ligera sesgadura hacia la derecha. Aunque no se exhiben en la figura \ref{fig:qqplots}, las presiones y FC 
 mencionadas anteriormente presentan la misma distribución durante el día y la noche. 
-Por otro lado, las cargas hipertensivas sistólicas muestran un sesgo hacia 
-la izquierda, mientras que las cargas hipertensivas diastólicas presentan una distribución casi uniforme.
+Por otro lado, las cargas hipertensivas sistólicas presentan una distribución asimétrica a la derecha, 
+mientras que las cargas hipertensivas diastólicas presentan una distribución casi uniforme.
 
 \begin{figure}[ht]
 	\centering
@@ -190,11 +190,11 @@ esto puede ocasionar una mayor influencia en los pesos de la red y distorsionar 
 Además, las funciones de activación utilizadas en las neuronas pueden funcionar de manera óptima 
 cuando los datos están normalizados en un rango adecuado.
 
-En este trabajo, se decidió utilizar el método \emph{StandardScaler} de \emph{scikit-learn} para 
+En este trabajo, se decidió utilizar el método \emph{StandardScaler} de \emph{scikit-learn} \citep{CITE:50} para 
 normalizar las características de entrada. Este método aplica una transformación que ajusta la 
 media de cada característica a 0 y la desviación estándar a 1. La definición de la transformación 
-se muestra en la ecuación \ref{eq:normalizacion}, donde $X$ es la matriz de características de 
-entrada, $\mu$ es la media y $\sigma$ es el desvío estándar. 
+se muestra en la ecuación \ref{eq:normalizacion}, donde $X$ representa la matriz de características de 
+entrada, $\mu$ a la media y $\sigma$ al desvío estándar. 
 
 \begin{equation}
 	\label{eq:normalizacion}
@@ -209,7 +209,7 @@ la PAS, PAD y FC medias durante 24 horas antes y después de ser normalizadas.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Figures/normalizacion.png}
-	\caption{Distribuciones de la PAS, PAD y FC durante 24 h antes y después de la normalización.}\label{fig:normalizacion}
+	\caption{Distribuciones de la PAS, PAD y FC durante 24 h \\antes y después de la normalización.}\label{fig:normalizacion}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -235,7 +235,7 @@ se puede visualizar claramente en la figura \ref{fig:pamypp}.
 	\caption{Combinaciones lineales de la presión arterial media y presión de pulso con las presiones sistólicas y diastólicas.}\label{fig:pamypp}
 \end{figure}
 
-\filbreak
+
 Teniendo en consideración esta información, se tomó la decisión de no incluir estas variables en 
 la red neuronal por diversos motivos. En primer lugar, se buscó evitar la redundancia de información. 
 Si una variable es una combinación lineal de otras, significa que la información contenida en 
@@ -254,7 +254,7 @@ estándar de PAM y PP. Así, se preservaron únicamente los valores medidos por 
 De este modo, se asegura que la red neuronal se enfoque en las variables fundamentales y se evitan 
 los problemas mencionados anteriormente.
 
-Por otro lado, las variables que incluyen fechas son útiles para brindar credibilidad a 
+Por otro lado, las variables que incluyen fechas son útiles para brindar fiabilidad a 
 la base de datos, ya que proporcionan información sobre el momento en el que se realizó el MAPA y, en caso 
 de que hubiese ocurrido, el momento en el que se produjo un evento.
 Sin embargo, en el contexto de predecir MACE, estas variables pueden considerarse irrelevantes ya 
@@ -266,7 +266,7 @@ de red neuronal. La representación y codificación de la fecha como una caracte
 modelo requiere un procesamiento adicional. Su transformación en valores numéricos o la 
 creación de variables categóricas adicionales aumentaría la dimensionalidad de los datos 
 y podría dificultar la interpretación de la red neuronal. Por lo tanto, se decidió eliminar 
-esta variable para simplificar el análisis y el entrenamiento de la red neuronal. 
+esta variable con el fin de agilizar el análisis y entrenamiento de la red neuronal. 
 
 Después de realizar el preprocesamiento a la información proveniente del MAPA, el conjunto 
 de datos final utilizado para el desarrollo del modelo incluye las siguientes variables de entrada:
@@ -313,7 +313,7 @@ categóricas (sexo, diabetes, tabaquismo, dislipemia e hipertrofia ventricular i
 Para analizar las variables clínicas numéricas del conjunto de datos, se llevaron a cabo pruebas visuales y 
 estadísticas. En la figura \ref{fig:qqplots2} se exhiben los gráficos Q-Q e histogramas para las variables 
 de interés. En cuanto a la talla, se observó que los datos siguen una distribución aproximadamente normal. 
-Tanto el gráfico Q-Q plot como el histograma mostraron una forma de campana característica de esta distribución. 
+Tanto el gráfico Q-Q como el histograma mostraron una forma de campana característica de esta distribución. 
 En el caso del peso y el IMC, se encontró una distribución asimétrica positiva. Esto indica que hay una mayor 
 concentración de valores más bajos y una dispersión hacia valores más altos. Esto se debe a que la media y la 
 mediana del peso fueron de 76 kg, mientras que la moda se situó en 85 kg. Dado que el IMC se calcula a partir 
@@ -334,10 +334,10 @@ distribución normal, mientras que la edad no presenta una distribución normal.
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
-\filbreak
+\pagebreak 
 \subsubsection{Imputación de valores faltantes}
 En el segundo conjunto de datos utilizado, se identificaron diferentes variables con valores faltantes. 
-A continuación, se detalla la cantidad de pacientes que presentan datos faltantes en cada una de estas variables:
+A continuación, se detalla la cantidad de valores ausentes en cada una de estas variables:
 
 \begin{itemize}
   \item Sexo: 1 paciente sin información.
@@ -348,30 +348,31 @@ A continuación, se detalla la cantidad de pacientes que presentan datos faltant
 
 Ante la presencia de estos valores faltantes, es necesario aplicar técnicas de imputación para completar 
 la información y garantizar la integridad de los datos. En este trabajo, se optó por utilizar el método 
-\emph{KNNImputer} para llevar a cabo la imputación. La elección del \emph{KNNImputer} se basa en su capacidad 
+\emph{KNNImputer} de \emph{scikit-learn} \citep{CITE:50}. Esta elección se basa en la capacidad del método
 para capturar la estructura de los datos y aprovechar la información de las instancias vecinas para la 
 imputación. Además, este método es adecuado para manejar variables numéricas y categóricas, lo cual es 
 relevante en el contexto de este trabajo.
 
 La imputación de datos faltantes utilizando técnicas como el \emph{KNNImputer} desempeña un papel fundamental 
-al preservar la integridad y minimizar la pérdida de información en conjuntos de datos relativamente pequeños, 
-como el presente. De esta manera, se maximiza la utilidad de los datos disponibles y se evita la exclusión 
+al minimizar la pérdida de información en conjuntos de datos relativamente pequeños, 
+como es el caso de este trabajo. De esta manera, se maximiza la utilidad de los datos disponibles y se evita la exclusión 
 de observaciones valiosas debido a la falta de información.
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
+
 \subsubsection{Tratamiento de clases desbalanceadas}
 
-En relación al tratamiento de desbalances de clases, se aplicó el mismo enfoque que en la subsección 
+En relación al tratamiento de desbalance de clases, se aplicó el mismo enfoque que en la subsección 
 \ref{sec:Conjunto1} debido a que la variable de salida es la misma. Se utilizó la técnica de sobremuestreo 
-SMOTE para abordar el desbalance de clases y mejorar la representación de la clase minoritaria en el conjunto de datos. 
+SMOTE para abordar el desequilibrio de clases y mejorar la representación de la clase minoritaria en el conjunto de datos. 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Normalización de características}
 
 Para asegurar que todas las características tengan una escala uniforme, se llevó a cabo un proceso de normalización 
-de los datos. Al igual que en la subsección \ref{sec:Conjunto1}, se utilizó el método \emph{StandardScaler}. La 
+de los datos. Al igual que en la subsección \ref{sec:Conjunto1}, se utilizó el método \emph{StandardScaler} \citep{CITE:50}. La 
 figura \ref{fig:normalizacion2} presenta las distribuciones antes y después de la normalización de las variables talla, peso, IMC y edad. Este procedimiento garantiza que todas las variables estén en una escala comparable, 
 lo que facilita la interpretación y el análisis de los datos para la red neuronal.
 
