@@ -5,7 +5,7 @@
 %----------------------------------------------------------------------------------------
 %	2.1 ENFOQUE DEL PROBLEMA
 %----------------------------------------------------------------------------------------
-El objetivo de este capítulo es proporcionar una una base teórica sólida sobre las herramientas y 
+El objetivo de este capítulo es proporcionar una base teórica sólida sobre las herramientas y 
 métodos utilizados en el desarrollo de este trabajo. En particular,  se presentan las principales 
 etapas de trabajo, se explican los conceptos elementales de los algoritmos de clasificación binaria 
 y se exploran los fundamentos del perceptrón multicapa.
@@ -108,7 +108,7 @@ clases crea un sesgo en el cual el modelo tiende a predecir la clase mayoritaria
 correcta clasificación de los ejemplos pertenecientes a la clase minoritaria \citep{CITE:36} \citep{CITE:37}. 
 
 Abordar el desequilibrio se convierte en un desafío crucial en la tarea de modelado y actualmente existen 
-dos enfoques principales. El primero consiste en asignar diferentes pesos a los ejemplos de entrenamiento, 
+dos enfoques principales con este fin. El primero consiste en asignar diferentes pesos a los ejemplos de entrenamiento, 
 mientras que el segundo implica realizar un remuestreo del conjunto de datos original. Es posible crear 
 un nuevo muestreo del \emph{dataset} efectuando un sobremuestreo de la clase minoritaria y/o un submuestreo 
 de la clase mayoritaria. El submuestreo implica una reducción del número de instancias de la clase mayoritaria, 
@@ -276,12 +276,10 @@ común encontrar un clasificador con un AUC menor que 0.5, ya que esto indicarí
 	\caption{Representación gráfica de la curva ROC y las distribuciones de TP y TN\protect\footnotemark.}
 \end{figure}
 
-Para el presente trabajo, se evaluaron todas las métricas mencionadas anteriormente. Sin embargo, se seleccionó 
-el AUC como la métrica principal para medir el desempeño de los modelos. Esto se debe a que en el ámbito clínico 
-resulta de gran relevancia analizar la relación de compromiso entre la sensibilidad y especificidad. En definitiva, 
-se buscó encontrar un equilibrio óptimo entre la detección temprana de casos de MACE positivos (alta sensibilidad) 
-y la minimización de falsas alarmas (alta especificidad). 
-
+La curva ROC y, en particular, el AUC son métricas ampliamente utilizadas en el ámbito clínico. 
+Esto se debe a su capacidad para evaluar la habilidad de un modelo en la discriminación entre clases 
+positivas y negativas. Esto resulta fundamental en la detección de enfermedades, diagnósticos médicos 
+y evaluación de la efectividad de tratamientos.
 
 %----------------------------------------------------------------------------------------
 %	2.3 PERCEPTRÓN MULTICAPA
@@ -357,7 +355,7 @@ profunda o \emph{deep neural network} (DNN) \citep{CITE:35} \citep{CITE:44}.
 Por otro lado, el número de neuronas en la capa de entrada está definido por la cantidad de variables independientes 
 del modelo, mientras que el número de nodos de la salida es la cantidad de variables dependientes. Además, el número de 
 capas ocultas y su cantidad de neuronas dependen de la complejidad del modelo en cuestión, y son parámetros importantes 
-a tener en cuenta durante el desarrollo de la red\citep{CITE:42}.
+a tener en cuenta durante el desarrollo de la red \citep{CITE:42}.
 
 La configuración del perceptrón multicapa de la figura \ref{fig:MLP} se conoce como \emph{fully connected}, ya que todos 
 los nodos de una capa están conectados con todos los nodos de las capas adyacentes. Sin embargo, existen otros tipos de 
@@ -495,7 +493,7 @@ La validación cruzada de $k$ iteraciones consiste en dividir el conjunto de dat
 el proceso de entrenamiento, se toma cada $k$ subconjunto como el conjunto de prueba, mientras que los 
 restantes ($k-1$) se utilizan como conjunto de entrenamiento. Este proceso se repetie $k$ veces, donde 
 en cada iteración se toma un conjunto de prueba diferente y los datos remanentes forman el conjunto 
-de entrenamiento. Al finalizar las $k$ iteraciones, se calcula el promedio de las métricas y errores 
+de entrenamiento. Al finalizar las $k$ iteraciones, se calcula el promedio de las métricas y los errores 
 obtenidos para cada subconjunto de prueba \citep{CITE:48}.
 
 %----------------------------------------------------------------------------------------
@@ -503,7 +501,7 @@ obtenidos para cada subconjunto de prueba \citep{CITE:48}.
 \filbreak
 \subsection{Optimización del modelo}
 Es fundamental comprender el papel de los optimizadores y su impacto en el entrenamiento de una red neuronal. 
-Los optimizadores son un algoritmos empleados para ajustar los parámetros de la red, con el fin de minimizar 
+Los optimizadores son algoritmos empleados para ajustar los parámetros de la red, con el fin de minimizar 
 la función de pérdida. Como resultado, logran mejorar la capacidad de aprendizaje y rendimiento del modelo. 
 Algunos optimizadores comúnmente utilizados incluyen: descenso de gradiente estocástico, AdaGrad, Adam y RMSprop. 
 Cada uno de ellos posee sus propias características y métodos de actualización de parámetros. Por lo tanto, 

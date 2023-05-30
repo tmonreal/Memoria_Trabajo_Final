@@ -18,7 +18,7 @@ de cardiología e hipertensión del Hospital Alemán. La figura \ref{fig:adquisi
 exhibe un diagrama en bloques que ilustra la etapa de adquisición de datos utilizada. 
 Es importante destacar que se utilizaron dos conjuntos de datos diferentes. 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{./Figures/adquisicion_datos2.jpg}
 	\caption{Representación esquemática de la etapa de adquisición de datos.}\label{fig:adquisicion_datos}
@@ -134,24 +134,46 @@ En primer lugar, se llevaron a cabo pruebas visuales utilizando gráficos Q-Q
 (cuantil-cuantil) e histogramas. El gráfico Q-Q es una herramienta utilizada para comparar dos distribuciones de 
 probabilidad trazando sus cuantiles uno contra el otro. Aunque no es una prueba estadística formal, proporciona 
 una forma sencilla e intuitiva de verificar qué distribución sigue un conjunto de datos. Por otro lado, el 
-histograma permite visualizar la distribución de frecuencias de los datos de una variable. En la figura \ref{fig:qqplots} 
-se presentan los gráficos Q-Q y los histogramas de las presiones y la frecuencia cardíaca media durante 24 horas, 
-así como de las cargas hipertensivas sistólicas y diastólicas durante el día y la noche. Se observa que la PAD, 
-PAM y frecuencia cardíaca (FC) siguen una distribución normal. Sin embargo, la PAS y PP muestran una 
-ligera sesgadura hacia la derecha. Aunque no se exhiben en la figura \ref{fig:qqplots}, las presiones y FC 
-mencionadas anteriormente presentan la misma distribución durante el día y la noche. 
-Por otro lado, las cargas hipertensivas sistólicas presentan una distribución asimétrica a la derecha, 
+histograma permite visualizar la distribución de frecuencias de los datos de una variable. 
+
+En la figura \ref{fig:qqplot_a} se representan los gráficos Q-Q de las presiones y la frecuencia cardíaca 
+media durante un período de 24 horas. Por su parte, en la figura \ref{fig:qqplot_b} se muestran los 
+gráficos Q-Q de las cargas hipertensivas sistólicas y diastólicas durante el día y la noche. Además, en 
+las figura \ref{fig:histogram_1} se presentan los histogramas correspondientes a las mismas variables.
+Al examinar los gráficos, se observa que las variables PAD, PAM y frecuencia cardíaca (FC) siguen una 
+distribución normal, mientras que las variables PAS y PP muestran una ligera sesgadura hacia la derecha. 
+Cabe mencionar que las presiones y la FC mantienen la misma distribución tanto durante el día como durante 
+la noche, aunque estos gráficos no se muestran en las figuras \ref{fig:qqplot_1} y \ref{fig:histogram_1}.
+En cuanto a las cargas hipertensivas sistólicas, se aprecia una distribución asimétrica hacia la derecha, 
 mientras que las cargas hipertensivas diastólicas presentan una distribución casi uniforme.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{./Figures/qqplots.jpg}
-	\caption{Gráficos Q-Q e histogramas de la PAS, PAD, FC, PAM y PP durante 24 h; y cargas hipertensivas sistólicas y diastólicas durante el día y la noche.}\label{fig:qqplots}
+	\hspace{1em}
+	\subcaptionbox{Gráficos Q-Q de la PAS, PAD, FC, PAM y PP durante 24 h.\label{fig:qqplot_a}}
+	[0.45\linewidth]{\includegraphics[height=20cm]{./Figures/qqplot_dataset1a.png}}
+	\hspace{1em}
+	\subcaptionbox{Gráficos Q-Q de las cargas hipertensivas sistólicas y diastólicas \\durante el día y la noche.\label{fig:qqplot_b}}
+	[0.45\linewidth]{\includegraphics[height=20cm]{./Figures/qqplot_dataset1b.png}}
+	\caption{Gráficos Q-Q de variables cuantitativas.}\label{fig:qqplot_1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\hspace{1em}
+	\subcaptionbox{Histogramas de la PAS, PAD, FC, PAM y PP durante 24 h.\label{fig:hist_a}}
+	[0.45\linewidth]{\includegraphics[height=20cm]{./Figures/histograma_dataset1a.png}}
+	\hspace{1em}
+	\subcaptionbox{Histogramas de las cargas hipertensivas sistólicas y diastólicas durante el día y la noche.\label{fig:hist_b}}
+	[0.45\linewidth]{\includegraphics[height=20cm]{./Figures/histograma_dataset1b.png}}
+	\caption{Histogramas de variables cuantitativas.}\label{fig:histogram_1}
 \end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
+%\pagebreak 
+%\filbreak 
 \subsubsection{Tratamiento de clases desbalanceadas }
 En el contexto de este trabajo, se identificó un desbalance de clases, lo cual significa que una de las clases 
 está representada por una fracción muy pequeña de las muestras totales. En la figura \ref{fig:desbalance_a} se puede 
@@ -167,7 +189,7 @@ ejemplos de la clase minoritaria. De esta forma, se logró abordar de manera má
 de la predicción en un escenario desbalanceado. El nuevo conjunto de datos balanceado se exhibe en la figura \ref{fig:desbalance_b}.
 
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
 	\hspace{1em}
 	\subcaptionbox{Conjunto de datos desbalanceado.\label{fig:desbalance_a}}
@@ -185,8 +207,8 @@ La normalización de los datos es un paso crucial antes de entrenar una red neur
 objetivo principal igualar la escala de las características de entrada. Esto es importante puesto 
 que las redes neuronales son sensibles a las diferencias de escala entre las variables. En otras 
 palabras, cuando los datos presentan diferentes escalas, algunas características con valores numéricos 
-más altos pueden tener un impacto desproporcionado en el proceso de entrenamiento. De esta forma, 
-esto puede ocasionar una mayor influencia en los pesos de la red y distorsionar el modelo resultante. 
+más altos pueden tener un impacto desproporcionado en el proceso de entrenamiento. Esto puede ocasionar 
+una mayor influencia en los pesos de la red y distorsionar el modelo resultante. 
 Además, las funciones de activación utilizadas en las neuronas pueden funcionar de manera óptima 
 cuando los datos están normalizados en un rango adecuado.
 
@@ -206,7 +228,7 @@ misma escala, lo que facilita el proceso de aprendizaje de la red neuronal y mej
 del modelo. En la figura \ref{fig:normalizacion} se muestran a modo de ejemplo las distribuciones de 
 la PAS, PAD y FC medias durante 24 horas antes y después de ser normalizadas. 
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Figures/normalizacion.png}
 	\caption{Distribuciones de la PAS, PAD y FC durante 24 h \\antes y después de la normalización.}\label{fig:normalizacion}
@@ -224,14 +246,14 @@ la presión de pulso dependen linealmente de la presión arterial sistólica y d
 Esta relación se definió matemáticamente en la subsección \ref{IntroPresiones} y 
 se puede visualizar claramente en la figura \ref{fig:pamypp}. 
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
 	\hspace{1em}
 	\subcaptionbox{Relación lineal de PAM con PAS y PAD.\label{fig:pam}}
-	[0.45\linewidth]{\includegraphics[height=6cm]{./Figures/PAM.jpg}}
+	[0.45\linewidth]{\includegraphics[height=6.5cm]{./Figures/PAM.jpg}}
 	\hspace{1em}
 	\subcaptionbox{Relación lineal de PP con PAS y PAD.\label{fig:pp}}
-	[0.45\linewidth]{\includegraphics[height=6cm]{./Figures/PP.jpg}}
+	[0.45\linewidth]{\includegraphics[height=6.5cm]{./Figures/PP.jpg}}
 	\caption{Combinaciones lineales de la presión arterial media y presión de pulso con las presiones sistólicas y diastólicas.}\label{fig:pamypp}
 \end{figure}
 
@@ -322,9 +344,9 @@ la variable de edad, se identificó una distribución asimétrica negativa. Esto
 cantidad de personas mayores en el conjunto de datos. La media de la edad fue de 65 años, con una edad mínima 
 de 19 años y una máxima de 98 años. La moda de la distribución se encontró en 72 años.
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Figures/qqplots2.png}
+	\includegraphics[width=0.8\textwidth]{./Figures/qqplots2.png}
 	\caption{Gráficos Q-Q e histogramas de la talla, peso, IMC y edad.}\label{fig:qqplots2}
 \end{figure}
 
@@ -334,7 +356,7 @@ distribución normal, mientras que la edad no presenta una distribución normal.
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak 
+%\pagebreak 
 \subsubsection{Imputación de valores faltantes}
 En el segundo conjunto de datos utilizado, se identificaron diferentes variables con valores faltantes. 
 A continuación, se detalla la cantidad de valores ausentes en cada una de estas variables:
@@ -376,14 +398,12 @@ de los datos. Al igual que en la subsección \ref{sec:Conjunto1}, se utilizó el
 figura \ref{fig:normalizacion2} presenta las distribuciones antes y después de la normalización de las variables talla, peso, IMC y edad. Este procedimiento garantiza que todas las variables estén en una escala comparable, 
 lo que facilita la interpretación y el análisis de los datos para la red neuronal.
 
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./Figures/normalizacion2.png}
 	\caption{Distribuciones de la talla, peso, IMC y edad antes y después de la normalización.}\label{fig:normalizacion2}
 \end{figure}
 
-
-\filbreak
 Después de realizar el preprocesamiento a la información proveniente del MAPA y los datos clínicos, el segundo conjunto de 
 datos utilizado para el desarrollo del modelo incluye las siguientes variables de entrada:
 
