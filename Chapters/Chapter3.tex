@@ -185,8 +185,11 @@ las instancias de la clase minoritaria.
 
 Para mitigar este problema, existen diversas técnicas que permiten equilibrar las clases en el conjunto de datos. 
 En particular, para este trabajo se empleó la técnica SMOTE, la cual consiste en generar de forma sintética nuevos 
-ejemplos de la clase minoritaria. De esta forma, se logró abordar de manera más precisa y equitativa el desafío 
-de la predicción en un escenario desbalanceado. El nuevo conjunto de datos balanceado se exhibe en la figura \ref{fig:desbalance_b}.
+ejemplos de la clase minoritaria. Para lograr un balance más preciso, se combinó el sobremuestreo de la clase 
+minoritaria utilizando SMOTE con el submuestreo de la clase mayoritaria mediante el uso de \emph{RandomUnderSampler} \citep{CITE:50}, 
+tal como recomienda la publicación científica \emph{"SMOTE: Synthetic Minority Over-sampling Technique"} \citep{CITE:37}.
+Esta combinación de técnicas permitió abordar de manera más precisa y equitativa el desafío de la predicción en un escenario 
+desbalanceado. El nuevo conjunto de datos balanceado se exhibe en la figura \ref{fig:desbalance_b}.
 
 
 \begin{figure}[H]
@@ -196,8 +199,8 @@ de la predicción en un escenario desbalanceado. El nuevo conjunto de datos bala
 	[0.45\linewidth]{\includegraphics[height=6cm]{./Figures/desbalance_pie.png}}
 	\hspace{1em}
 	\subcaptionbox{Conjunto de datos después de emplear SMOTE.\label{fig:desbalance_b}}
-	[0.45\linewidth]{\includegraphics[height=5.5cm]{./Figures/desbalance_smote_pie.png}}
-	\caption{Conjunto de datos antes y después de aplicar SMOTE.}
+	[0.45\linewidth]{\includegraphics[height=5.5cm]{./Figures/desbalance_smote_under_pie.png}}
+	\caption{Conjunto de datos antes y después de aplicar SMOTE y \emph{RandomUnderSampler}.}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -472,6 +475,7 @@ para obtener una visión más completa de los resultados del modelo.
 %------------------------------------------------------------------------
 %	Arquitectura de los modelos
 \subsection{Arquitectura de los modelos}
+\label{sec:arquitectura}
 Una vez definido el objetivo del modelo y preprocesados los datos, se seleccionó la arquitectura básica del modelo. 
 Se decidió emplear un perceptron multicapa puesto que permite capturar relaciones y patrones no lineales en los 
 datos. Además, los MLP tienen gran flexibilidad en la representación de características y enorme capacidad para 
@@ -568,11 +572,11 @@ con la mitad de las neuronas de la primera capa, es decir, de 10 a 25 nodos, tam
 de uno. Los resultados obtenidos para cada configuración se registraron en la tabla \ref{tab:tablamodelos_2layers}. 
 Por otro lado, para el conjunto de datos que incluía variables clínicas adicionales, se realizó una 
 búsqueda de la cantidad de nodos óptima para la capa oculta, dentro de un rango de 30 a 55, con un 
-incremento de un nodo. Los resultados de esta exploración se presentan en la tabla \ref{tab:tablamodelos_2layers}.
+incremento de un nodo. Los resultados de esta exploración se presentan en la tabla \ref{tab:tablamodelos_1layers}.
 
 \begin{table}[H]
 	\centering
-	\caption[Configuraciones de modelos explorados]{Configuraciones de modelos explorados con la cantidad de neuronas por capa oculta.}
+	\caption[Configuraciones de modelos explorados para el conjunto de datos de MAPA.]{Configuraciones de modelos explorados con la cantidad de neuronas por capa oculta para el conjunto de datos de MAPA.}
 	\begin{tabular}{l c c c c c c}    
 		\toprule
 		\textbf{Modelo} & \textbf{Capa 1} & \textbf{Capa 2} & \textbf{\emph{Accuracy}} & \textbf{\emph{Precision}} & \textbf{\emph{Recall}}  & \textbf{AUC}\\
@@ -614,6 +618,43 @@ incremento de un nodo. Los resultados de esta exploración se presentan en la ta
 		\hline
 	\end{tabular}
 	\label{tab:tablamodelos_2layers}
+\end{table}
+
+
+\begin{table}[H]
+	\centering
+	\caption[Configuraciones de modelos explorados para el conjunto de datos de MAPA y datos clínicos.]{Configuraciones de modelos explorados con la cantidad de neuronas en la capa oculta para el conjunto de datos de MAPA y datos clínicos.}
+	\begin{tabular}{l c c c c c c}    
+		\toprule
+		\textbf{Modelo} & \textbf{Nodos} & \textbf{\emph{Accuracy}} & \textbf{\emph{Precision}} & \textbf{\emph{Recall}}  & \textbf{AUC}\\
+		\midrule
+    
+      1 & 50 & 0.896 $\pm$ 0.029 & 0.851 $\pm$ 0.032	& 0.931 $\pm$ 0.048 & 0.960  $\pm$ 0.016\\
+      2 & 49 & 0.909 $\pm$ 0.045 & 0.864 $\pm$ 0.052	& 0.947 $\pm$ 0.050 & 0.963  $\pm$ 0.021\\
+      3 & 48 & 0.868 $\pm$ 0.014 & 0.839 $\pm$ 0.031	& 0.874 $\pm$ 0.028 & 0.942  $\pm$ 0.023\\
+      4 & 47 & 0.913 $\pm$ 0.025 & 0.877 $\pm$ 0.026	& 0.937 $\pm$ 0.048 & 0.963  $\pm$ 0.020\\
+      5 & 46 & 0.878 $\pm$ 0.036 & 0.836 $\pm$ 0.047	& 0.905 $\pm$ 0.045 & 0.953  $\pm$ 0.020\\
+      6 & 45 & 0.921 $\pm$ 0.028 & 0.879 $\pm$ 0.032	& 0.956 $\pm$ 0.036 & 0.968  $\pm$ 0.007\\
+      7 & 44 & 0.952 $\pm$ 0.013 & 0.911 $\pm$ 0.024	& 0.991 $\pm$ 0.012 & 0.977  $\pm$ 0.014\\      
+      8 & 43 & 0.950 $\pm$ 0.019 & 0.899 $\pm$ 0.033	& 0.990 $\pm$ 0.016 & 0.985  $\pm$ 0.005\\
+      9 & 42 & 0.961 $\pm$ 0.023 & 0.924 $\pm$ 0.034	& 0.994 $\pm$ 0.013 & 0.982  $\pm$ 0.005\\
+      10 & 41 & 0.956 $\pm$ 0.026 & 0.915 $\pm$ 0.044	& 0.997 $\pm$ 0.023 & 0.985  $\pm$ 0.003\\
+      11 & 40 & 0.971 $\pm$ 0.016 & 0.939 $\pm$ 0.032	& 0.991 $\pm$ 0.004 & 0.990  $\pm$ 0.007\\
+      12 & 39 & 0.935 $\pm$ 0.039 & 0.897 $\pm$ 0.034	& 0.966 $\pm$ 0.061 & 0.974  $\pm$ 0.018\\
+      13 & 38 & 0.943 $\pm$ 0.012 & 0.897 $\pm$ 0.014	& 0.984 $\pm$ 0.031 & 0.979  $\pm$ 0.005\\
+      14 & 37 & 0.939 $\pm$ 0.036 & 0.900 $\pm$ 0.033	& 0.969 $\pm$ 0.062 & 0.974  $\pm$ 0.013\\
+      15 & 36 & 0.931 $\pm$ 0.037 & 0.887 $\pm$ 0.035	& 0.969 $\pm$ 0.055 & 0.973  $\pm$ 0.013\\
+      16 & 35 & 0.889 $\pm$ 0.039 & 0.846 $\pm$ 0.037	& 0.918 $\pm$ 0.062 & 0.952  $\pm$ 0.023\\
+      17 & 34 & 0.900 $\pm$ 0.031 & 0.847 $\pm$ 0.039	& 0.950 $\pm$ 0.033 & 0.953  $\pm$ 0.023\\
+      18 & 33 & 0.860 $\pm$ 0.042 & 0.821 $\pm$ 0.054	& 0.880 $\pm$ 0.068 & 0.945  $\pm$ 0.022\\
+      19 & 32 & 0.871 $\pm$ 0.034 & 0.824 $\pm$ 0.048	& 0.901 $\pm$ 0.076 & 0.944  $\pm$ 0.023\\
+      20 & 31 & 0.909 $\pm$ 0.048 & 0.869 $\pm$ 0.032	& 0.934 $\pm$ 0.087 & 0.958  $\pm$ 0.024\\
+      21 & 30 & 0.909 $\pm$ 0.048 & 0.869 $\pm$ 0.032	& 0.934 $\pm$ 0.087 & 0.958  $\pm$ 0.024\\
+
+		\bottomrule
+		\hline
+	\end{tabular}
+	\label{tab:tablamodelos_1layers}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -662,26 +703,58 @@ de salida, ya que el problema abordado se trata de una clasificación binaria. L
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
-%% AGREGAR!
-%AGREGAR ACA LA MODIFICACION A LA FUNCIÓN DE PERDIDA Y CURVAS DE PARETO?
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Selección de hiperparámetros}
+\subsubsection{Ajuste de hiperparámetros}
 
 Una vez definida la arquitectura inicial de la red neuronal, se realizó una búsqueda de hiperparámetros 
 adicionales utilizando el enfoque de búsqueda aleatoria, también conocido cómo \emph{RandomSearch} \citep{CITE:50}. 
 Esto se combinó con una validación cruzada de $k=5$ iteraciones para evaluar el rendimiento del modelo en diferentes 
 conjuntos de datos y asegurar que los hiperparámetros ajustados generalicen bien. Este ajuste tuvo como objetivo 
 encontrar el equilibrio adecuado entre el rendimiento del modelo y la capacidad de generalización. 
+La tabla \ref{tab:Tabla1} muestra los hiperparámetros que fueron ajustados y sus mejores valores 
+para cada conjuntos de datos.
 
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-%% AGREGAR!
-%La tabla \ref{} muestra los hiperparámetros ajustados, los rangos de búsqueda aleatoria y los mejores resultados 
-%obtenidos para el conjunto de datos de presurometrías. Por otro lado, la tabla \ref{X2} presenta la misma información 
-%para el conjunto de datos que incluye datos clínicos.
+\begin{table}[H]
+	\centering
+	\caption{Hiperparámetros elegidos para el \emph{dataset} 1 (datos MAPA) y \emph{dataset} 2 (datos MAPA y datos clinicos).}
+	\begin{tabular}{l c c}    
+		\toprule
+		\textbf{Hiperparámetros} 	      & \textbf{Valor elegido \emph{dataset} 1} 	& \textbf{Valor elegido \emph{dataset} 2}  \\
+		\midrule
+    Tasa de aprendizaje            & $1e-03$                   & $1e-2$\\		
+    Adam $\epsilon$                   & $1e-08$                 & $1e-7$\\	
+    Adam $\beta_1$                   & $0.9$                 & $0.9$\\	
+    Adam $\beta_2$                   & $0.999$                 & $0.999$\\		
+    Épocas                  & $300$                 & $250$\\	
+    Tamaño de lote                  & $32$                 & $32$\\		
+    Porcentaje de \emph{dropout}                 & $20\%$                 & $50\%$\\	
+
+		\bottomrule
+		\hline
+	\end{tabular}
+	\label{tab:Tabla1}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------------------------------
+%	Estrategias implementadas para evitar el \emph{overfitting}
+\subsection{Estrategias implementadas para evitar el \emph{overfitting}}
+El \emph{overfitting} es un fenómeno común que se refiere a la situación en la cual un modelo 
+se ajusta excesivamente a los datos de entrenamiento y pierde su capacidad de generalización 
+en datos no vistos. En el contexto de este trabajo, se adoptaron varias estrategias 
+con el objetivo de mitigar el \emph{overfitting} y garantizar la robustez de los modelos.
+
+En primer lugar, se buscó priorizar la selección 
+de modelos más simples, evitando la incorporación de una complejidad excesiva. Esto implicó 
+mantener reducido el número de capas y/o neuronas en cada capa del modelo, con el objetivo de 
+lograr un equilibrio entre la capacidad de aprendizaje y la generalización.
+Además, cómo se mencionó en la subsección \ref{sec:arquitectura}, se incorporaron capas 
+de \emph{dropout} en el modelo. Esta técnica consistió en apagar de forma aleatoria un 
+porcentaje de las neuronas durante el entrenamiento, para evitar que se ajusten excesivamente 
+a los datos de entrenamiento. Al no ser entrenadas, estas neuronas contribuyen a la 
+regularización del modelo y ayudan a prevenir el overfitting.
+Asimismo, otra estrategia empleada fue el uso de \emph{early stopping}. Esta técnica implica detener 
+el proceso de entrenamiento del modelo en el momento en que se observa un aumento en el valor 
+del error de validación. De este modo, se buscó evitar el ajuste excesivo y lograr un modelo 
+con una precisión óptima en datos no utilizados durante el entrenamiento.
