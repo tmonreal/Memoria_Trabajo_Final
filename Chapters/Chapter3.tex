@@ -436,3 +436,252 @@ datos utilizado para el desarrollo del modelo incluye las siguientes variables d
   \item Dislipemia
   \item HVI
 \end{itemize}
+
+%------------------------------------------------------------------------
+%	DISEÑO Y DESARROLLO DE MODELOS
+%----------------------------------------------------------------------------------------
+\section{Diseño y desarrollo de modelos}
+El proceso de diseño e implementación de los modelos se llevó a cabo de igual manera para ambos 
+conjuntos de datos. A continuación, se presentan en detalle las métricas utilizadas, la 
+arquitectura de los modelos y el proceso de entrenamiento.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------------------------------
+%	Definición de métricas
+\subsection{Definición de métricas}
+
+Para evaluar el desempeño de los modelos de forma objetiva, se empleó la métrica AUC. La curva ROC y, 
+en particular, el AUC son ampliamente utilizados en la evaluación de modelos de clasificación para 
+medir la capacidad de distinguir entre clases positivas y negativas. Para este trabajo en particular, 
+la elección se debe a la relevancia clínica de analizar la relación entre la sensibilidad y especificidad. 
+En otras palabras, se buscó un equilibrio óptimo entre la detección temprana de casos positivos de MACE 
+y la minimización de falsas alarmas. Además, la solicitud específica del cliente de lograr un AUC superior 
+al 85\% justificó el uso del AUC como métrica clave. 
+
+A su vez, el servicio de cardiología del Hospital Alemán enfatizó la importancia de evitar falsos negativos. 
+Esto implicó que se priorizara la correcta clasificación de casos positivos aunque esto signifique un aumento 
+en la tasa de falsos positivos y una posible reducción en otras métricas de evaluación. 
+
+Por otro lado, se calcularon otras métricas además del AUC como \emph{precision}, \emph{recall} y \emph{accuracy} 
+para obtener una visión más completa de los resultados del modelo.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------------------------------
+%	Arquitectura de los modelos
+\subsection{Arquitectura de los modelos}
+Una vez definido el objetivo del modelo y preprocesados los datos, se seleccionó la arquitectura básica del modelo. 
+Se decidió emplear un perceptron multicapa puesto que permite capturar relaciones y patrones no lineales en los 
+datos. Además, los MLP tienen gran flexibilidad en la representación de características y enorme capacidad para 
+aprender representaciones más abstractas y de mayor nivel. De este modo, esta arquitectura puede llevar a una 
+mejor habilidad de generalización \citep{CITE:35} \citep{CITE:44}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Definición de la estructura de capas}
+Se llevó a cabo una investigación exhaustiva para determinar la configuración óptima del modelo, incluyendo el 
+número de capas ocultas y la cantidad de neuronas en cada capa. Dado que no se disponía de conocimientos previos 
+sobre la arquitectura ideal, se realizó una búsqueda sistemática de hiperparámetros. Se consideraron diferentes 
+alternativas, como 1, 2, 3 o 4 capas ocultas, y se establecieron múltiples opciones para el número de neuronas 
+en la primera capa oculta, incluyendo 10, 20, 30, 40 o 50 nodos. En caso de tener múltiples capas ocultas, se 
+decidió que la cantidad de neuronas en las capas posteriores fuese la mitad de las de la capa anterior. 
+La tabla \ref{tab:tablamodelos} muestra las diferentes combinaciones de modelos que resultaron de esta exploración.
+
+
+\begin{table}[H]
+	\centering
+	\caption[Configuraciones de modelos explorados]{Configuraciones de modelos explorados con la cantidad de neuronas por capa oculta.}
+	\begin{tabular}{l c c c c}    
+		\toprule
+		\textbf{Modelo} & \textbf{Capa 1} & \textbf{Capa 2} & \textbf{Capa 3} & \textbf{Capa 4} \\
+		\midrule
+    \multicolumn{5}{c}{1 capa oculta} \\
+    \hline
+		1                & 50             & -			          & -               & -	\\
+    2                & 40             & -			          & -               & -	\\
+    3                & 30             & -			          & -               & -	\\
+    4                & 20             & -			          & -               & -	\\
+    5                & 10             & -			          & -               & -	\\
+
+    \hline
+    \multicolumn{5}{c}{2 capas ocultas} \\
+    \hline
+
+    6                & 50             & 25			        & -               & -	\\
+    7                & 40             & 20			        & -               & -	\\
+    8                & 30             & 15			        & -               & -	\\
+    9                & 20             & 10			        & -               & -	\\
+    10               & 10             & 5			          & -               & -	\\
+
+    \hline
+    \multicolumn{5}{c}{3 capas ocultas} \\
+    \hline
+
+    11               & 50             & 25			        & 12              & -	\\
+    12               & 40             & 20			        & 10              & -	\\
+    13               & 30             & 15			        & 7               & -	\\
+    14               & 20             & 10			        & 5               & -	\\
+    15               & 10             & 5			          & 2               & -	\\
+
+    \hline
+    \multicolumn{5}{c}{4 capas ocultas} \\
+    \hline
+
+    16               & 50             & 25			        & 12              & 6	\\
+    17               & 40             & 20			        & 10              & 5	\\
+    18               & 30             & 15			        & 7               & 3	\\
+    19               & 20             & 10			        & 5               & 2	\\
+    20               & 10             & 5			          & 2               & 1	\\
+
+		\bottomrule
+		\hline
+	\end{tabular}
+	\label{tab:tablamodelos}
+\end{table}
+
+La figura \ref{fig:AUC_exploracion_dataset} muestra los valores promedio de AUC obtenidos 
+mediante $k=5$ iteraciones de validación cruzada para los modelos presentados en la tabla \ref{tab:tablamodelos}. 
+Se observa que, en el caso del conjunto de datos de presurometrías, los tres modelos con el mejor rendimiento 
+en términos de AUC presentan una arquitectura de dos capas ocultas, donde la primera capa cuenta con 30 o más 
+nodos (modelos 6, 7 y 8 de la tabla \ref{tab:tablamodelos}). En contraste, para el conjunto de datos que incluye 
+información clínica, se encontró que el mejor desempeño en términos de AUC se logró con un modelo de una sola 
+capa oculta, con 30 o más nodos en la primera capa (modelos 1, 2 y 3 de la tabla \ref{tab:tablamodelos}).
+
+\begin{figure}[H]
+	\centering
+	\hspace{1em}
+	\subcaptionbox{Valores promedio de AUC obtenidos para el conjunto de datos de MAPA.\label{fig:AUC_exploracion_dataset1}}
+	{\includegraphics[width=0.96\textwidth]{./Figures/AUC_exploracion_dataset1.png}}
+	\hspace{1em}
+	\subcaptionbox{Valores promedio de AUC obtenidos para el conjunto de datos de MAPA y datos clínicos.\label{fig:AUC_exploracion_dataset2}}
+	{\includegraphics[width=0.96\textwidth]{./Figures/AUC_exploracion_dataset2.png}}
+	\caption[Valores promedio de AUC obtenidos mediante $k=5$ iteraciones de validación cruzada.]{Valores promedio de AUC obtenidos mediante $k=5$ iteraciones de validación cruzada para los modelos evaluados.}\label{fig:AUC_exploracion_dataset}
+\end{figure}
+
+Con base en los hallazgos anteriores, se llevó a cabo una búsqueda más exhaustiva para determinar la 
+arquitectura óptima del modelo. Para el primer conjunto de datos, se realizaron pruebas con modelos 
+que incluían dos capas ocultas, explorando diferentes combinaciones. La primera capa se configuró 
+con un rango de 20 a 50 nodos, incrementando de uno en uno, mientras que la segunda capa se definió 
+con la mitad de las neuronas de la primera capa, es decir, de 10 a 25 nodos, también en incrementos 
+de uno. Los resultados obtenidos para cada configuración se registraron en la tabla \ref{tab:tablamodelos_2layers}. 
+Por otro lado, para el conjunto de datos que incluía variables clínicas adicionales, se realizó una 
+búsqueda de la cantidad de nodos óptima para la capa oculta, dentro de un rango de 30 a 55, con un 
+incremento de un nodo. Los resultados de esta exploración se presentan en la tabla \ref{tab:tablamodelos_2layers}.
+
+\begin{table}[H]
+	\centering
+	\caption[Configuraciones de modelos explorados]{Configuraciones de modelos explorados con la cantidad de neuronas por capa oculta.}
+	\begin{tabular}{l c c c c c c}    
+		\toprule
+		\textbf{Modelo} & \textbf{Capa 1} & \textbf{Capa 2} & \textbf{\emph{Accuracy}} & \textbf{\emph{Precision}} & \textbf{\emph{Recall}}  & \textbf{AUC}\\
+		\midrule
+    
+      1 & 50 & 25	& 0.935 $\pm$ 0.021 & 0.902  $\pm$ 0.037	& 0.977  $\pm$ 0.014 & 0.968  $\pm$ 0.016\\
+      2 & 49 & 24 & 0.930 $\pm$ 0.026 & 0.900  $\pm$ 0.044 & 0.971  $\pm$ 0.005 & 0.964 $\pm$ 0.010\\
+      3 & 48 & 24 & 0.931 $\pm$ 0.022 & 0.901 $\pm$ 0.033 & 0.971 $\pm$ 0.011 & 0.967 $\pm$ 0.009\\
+      4 & 47 & 23 & 0.924 $\pm$ 0.017 & 0.890 $\pm$ 0.028 & 0.971 $\pm$ 0.015 & 0.963 $\pm$ 0.008\\
+      5 & 46 & 23 & 0.922 $\pm$ 0.025 & 0.888 $\pm$ 0.040 & 0.968 $\pm$ 0.011 & 0.953 $\pm$ 0.011\\
+      6 & 45 & 22 & 0.924 $\pm$ 0.024 & 0.889 $\pm$ 0.041 & 0.973 $\pm$ 0.009 & 0.961 $\pm$ 0.011\\ 
+      7 & 44 & 22 & 0.921 $\pm$ 0.019 & 0.877 $\pm$ 0.034 & 0.982 $\pm$ 0.015 & 0.958 $\pm$ 0.016\\ 
+      8 & 43 & 21 & 0.933 $\pm$ 0.017 & 0.902 $\pm$ 0.025 & 0.973 $\pm$ 0.009 & 0.963 $\pm$ 0.012\\ 
+      9 & 42 & 21 & 0.922 $\pm$ 0.015 & 0.887 $\pm$ 0.021 & 0.968 $\pm$ 0.004 & 0.962 $\pm$ 0.010\\ 
+      10 & 41 & 20 & 0.920 $\pm$ 0.021 & 0.881 $\pm$ 0.034 & 0.973 $\pm$ 0.011 & 0.961 $\pm$ 0.011\\ 
+      11 & 40 & 20 & 0.920 $\pm$ 0.028 & 0.880 $\pm$ 0.049 & 0.977 $\pm$ 0.014 & 0.958 $\pm$ 0.017\\ 
+      12 & 39 & 19 & 0.923 $\pm$ 0.024 & 0.891 $\pm$ 0.033 & 0.966 $\pm$ 0.014 & 0.961 $\pm$ 0.015\\ 
+      13 & 38 & 19 & 0.923 $\pm$ 0.022 & 0.888 $\pm$ 0.036 & 0.971 $\pm$ 0.011 & 0.956 $\pm$ 0.009\\ 
+      14 & 37 & 18 & 0.929 $\pm$ 0.012 & 0.898 $\pm$ 0.024 & 0.968 $\pm$ 0.013 & 0.964 $\pm$ 0.012\\ 
+      15 & 36 & 18 & 0.928 $\pm$ 0.016 & 0.899 $\pm$ 0.032 & 0.966 $\pm$ 0.012 & 0.960 $\pm$ 0.006\\ 
+      16 & 35 & 17 & 0.925 $\pm$ 0.023 & 0.899 $\pm$ 0.041 & 0.962 $\pm$ 0.006 & 0.960 $\pm$ 0.012\\ 
+      17 & 34 & 17 & 0.910 $\pm$ 0.008 & 0.866 $\pm$ 0.018 & 0.971 $\pm$ 0.017 & 0.940 $\pm$ 0.011\\ 
+      18 & 33 & 16 & 0.920 $\pm$ 0.014 & 0.885 $\pm$ 0.022 & 0.966 $\pm$ 0.007 & 0.965 $\pm$ 0.013\\ 
+      19 & 32 & 16 & 0.921 $\pm$ 0.012 & 0.885 $\pm$ 0.021 & 0.968 $\pm$ 0.013 & 0.959 $\pm$ 0.011\\ 
+      20 & 31 & 15 & 0.920 $\pm$ 0.020 & 0.881 $\pm$ 0.030 & 0.973 $\pm$ 0.013 & 0.959 $\pm$ 0.009\\ 
+      21 & 30 & 15 & 0.921 $\pm$ 0.017 & 0.889 $\pm$ 0.028 & 0.964 $\pm$ 0.011 & 0.959 $\pm$ 0.012\\ 
+      22 & 29 & 14 & 0.923 $\pm$ 0.020 & 0.891 $\pm$ 0.031 & 0.966 $\pm$ 0.007 & 0.961 $\pm$ 0.016\\ 
+      23 & 28 & 14 & 0.930 $\pm$ 0.034 & 0.901 $\pm$ 0.053 & 0.971 $\pm$ 0.014 & 0.965 $\pm$ 0.021\\ 
+      24 & 27 & 13 & 0.920 $\pm$ 0.027 & 0.887 $\pm$ 0.046 & 0.966 $\pm$ 0.016 & 0.957 $\pm$ 0.012\\ 
+      25 & 26 & 13 & 0.909 $\pm$ 0.023 & 0.868 $\pm$ 0.037 & 0.966 $\pm$ 0.016 & 0.953 $\pm$ 0.019\\ 
+      26 & 25 & 12 & 0.922 $\pm$ 0.014 & 0.887 $\pm$ 0.025 & 0.969 $\pm$ 0.027 & 0.957 $\pm$ 0.012\\ 
+      27 & 24 & 12 & 0.916 $\pm$ 0.013 & 0.878 $\pm$ 0.021 & 0.968 $\pm$ 0.008 & 0.952 $\pm$ 0.010\\ 
+      28 & 23 & 11 & 0.919 $\pm$ 0.017 & 0.884 $\pm$ 0.028 & 0.966 $\pm$ 0.012 & 0.950 $\pm$ 0.015\\ 
+      29 & 22 & 11 & 0.920 $\pm$ 0.019 & 0.885 $\pm$ 0.027 & 0.966 $\pm$ 0.007 & 0.953 $\pm$ 0.013\\ 
+      30 & 21 & 10 & 0.916 $\pm$ 0.011 & 0.878 $\pm$ 0.022 & 0.968 $\pm$ 0.013 & 0.954 $\pm$ 0.013\\ 
+      31 & 20 & 10 & 0.920 $\pm$ 0.023 & 0.884 $\pm$ 0.035 & 0.968 $\pm$ 0.017 & 0.945 $\pm$ 0.026\\
+      
+		\bottomrule
+		\hline
+	\end{tabular}
+	\label{tab:tablamodelos_2layers}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AGREGAR!
+%%%%FALTA AGREGAR LA TABLA DEL DATASET 2%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+La figura \ref{fig:arquitectura_datasets} muestra la arquitectura final utilizada para cada conjunto de datos. 
+Se observa que se optó por una estructura basada en capas densas, también conocidas como capas 
+completamente conectadas, complementadas con capas de \emph{dropout}. La incorporación de las capas 
+densas permitió capturar relaciones complejas presentes en los datos, mientras que las capas de 
+\emph{dropout} desempeñaron un papel fundamental en la regularización del modelo y en la prevención 
+del sobreajuste. Como resultado, se logró obtener un modelo con una mayor capacidad de generalización 
+y un mejor desempeño en la predicción de datos desconocidos.
+
+
+\begin{figure}[H]
+	\centering
+	\hspace{1em}
+	\subcaptionbox{Arquitectura del modelo para el conjunto de datos de MAPA.\label{fig:arquitectura_dataset1}}
+	{\includegraphics[width=0.45\textwidth]{./Figures/arquitectura_dataset1.png}}
+	\hspace{1em}
+	\subcaptionbox{Arquitectura del modelo para el conjunto de datos de MAPA y datos clínicos.\label{fig:arquitectura_dataset2}}
+	{\includegraphics[width=0.45\textwidth]{./Figures/arquitectura_dataset2.png}}
+	\caption{Arquitectura elegida para los modelos.}\label{fig:arquitectura_datasets}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Selección de funciones de activación, función de pérdida y algoritmo de optimización}
+Se empleó la función de activación ReLU en las capas ocultas de la red neuronal. Esta función es 
+comúnmente elegida debido a su capacidad para introducir no linealidad en el modelo y capturar 
+patrones complejos en los datos. Además, se utilizó la función de activación sigmoide en la capa 
+de salida, ya que el problema abordado se trata de una clasificación binaria. La función sigmoide
+ es adecuada en este contexto, considerando que mapea los valores de salida a un rango entre 0 y 1, 
+ lo que se interpreta como la probabilidad de pertenecer a una de las dos clases posibles.
+
+ Por otro lado, se optó por utilizar la función de pérdida \emph{binary cross entropy} debido a 
+ que el problema en cuestión involucra una clasificación binaria. Esta función de pérdida es 
+ adecuada para este tipo de problemas, ya que penaliza de manera efectiva las discrepancias 
+ entre las predicciones del modelo y los valores reales. En cuanto al algoritmo de optimización, 
+ se eligió Adam debido a su eficiencia en la convergencia y adaptabilidad a diferentes tasas de 
+ aprendizaje, cómo se explicó en la subsección \ref{sec:optimizador}.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%% AGREGAR!
+%AGREGAR ACA LA MODIFICACION A LA FUNCIÓN DE PERDIDA Y CURVAS DE PARETO?
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Selección de hiperparámetros}
+
+Una vez definida la arquitectura inicial de la red neuronal, se realizó una búsqueda de hiperparámetros 
+adicionales utilizando el enfoque de búsqueda aleatoria, también conocido cómo \emph{RandomSearch} \citep{CITE:50}. 
+Esto se combinó con una validación cruzada de $k=5$ iteraciones para evaluar el rendimiento del modelo en diferentes 
+conjuntos de datos y asegurar que los hiperparámetros ajustados generalicen bien. Este ajuste tuvo como objetivo 
+encontrar el equilibrio adecuado entre el rendimiento del modelo y la capacidad de generalización. 
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%% AGREGAR!
+%La tabla \ref{} muestra los hiperparámetros ajustados, los rangos de búsqueda aleatoria y los mejores resultados 
+%obtenidos para el conjunto de datos de presurometrías. Por otro lado, la tabla \ref{X2} presenta la misma información 
+%para el conjunto de datos que incluye datos clínicos.
