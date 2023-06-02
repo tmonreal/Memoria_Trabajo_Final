@@ -446,7 +446,7 @@ datos utilizado para el desarrollo del modelo incluye las siguientes variables d
 \section{Diseño y desarrollo de modelos}
 El proceso de diseño e implementación de los modelos se llevó a cabo de igual manera para ambos 
 conjuntos de datos. A continuación, se presentan en detalle las métricas utilizadas, la 
-arquitectura de los modelos y el proceso de entrenamiento.
+arquitectura de los modelos y las estrategias implementadas para evitar el \emph{overfitting}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -570,8 +570,8 @@ que incluían dos capas ocultas, explorando diferentes combinaciones. La primera
 con un rango de 20 a 50 nodos, incrementando de uno en uno, mientras que la segunda capa se definió 
 con la mitad de las neuronas de la primera capa, es decir, de 10 a 25 nodos, también en incrementos 
 de uno. Los resultados obtenidos para cada configuración se registraron en la tabla \ref{tab:tablamodelos_2layers}. 
-Por otro lado, para el conjunto de datos que incluía variables clínicas adicionales, se realizó una 
-búsqueda de la cantidad de nodos óptima para la capa oculta, dentro de un rango de 30 a 55, con un 
+Por otro lado, para el conjunto de datos que incluye variables clínicas adicionales, se realizó una 
+búsqueda de la cantidad de nodos óptima para la única capa oculta, dentro de un rango de 30 a 55, con un 
 incremento de un nodo. Los resultados de esta exploración se presentan en la tabla \ref{tab:tablamodelos_1layers}.
 
 \begin{table}[H]
@@ -676,7 +676,7 @@ y un mejor desempeño en la predicción de datos desconocidos.
 \begin{figure}[H]
 	\centering
 	\hspace{1em}
-	\subcaptionbox{Arquitectura del modelo para el conjunto de datos de MAPA.\label{fig:arquitectura_dataset1}}
+	\subcaptionbox{Arquitectura del modelo para el \\conjunto de datos de MAPA.\label{fig:arquitectura_dataset1}}
 	{\includegraphics[width=0.45\textwidth]{./Figures/arquitectura_dataset1.png}}
 	\hspace{1em}
 	\subcaptionbox{Arquitectura del modelo para el conjunto de datos de MAPA y datos clínicos.\label{fig:arquitectura_dataset2}}
